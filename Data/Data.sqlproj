@@ -65,4 +65,8 @@
   <ItemGroup>
     <None Include="PublishLocations\StockPileData.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Stored Procedures\spUser_GetUserById.sql" />
+  </ItemGroup>
 </Project>

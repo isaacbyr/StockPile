@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopUI.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        WindowStartupLocation="CenterScreen"
+        Title="ShellView" Height="700" Width="1250">
+    <DockPanel>
+        <Grid>
+            <ContentControl x:Name="ActiveItem" Margin="5"></ContentControl>
+        </Grid>
+    </DockPanel>
 </Window>
