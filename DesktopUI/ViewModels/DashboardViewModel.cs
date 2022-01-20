@@ -20,6 +20,7 @@ namespace DesktopUI.ViewModels
     {
         private readonly IStockDataEndpoint _stockDataEndpoint;
         private readonly INewsEndpoint _newsEndpoint;
+        private readonly IWatchListEndpoint _watchListEndpoint;
 
         public SeriesCollection SpySeriesCollection { get; set; }
         public List<string> SpyLabels { get; set; }
@@ -27,17 +28,53 @@ namespace DesktopUI.ViewModels
         public SeriesCollection DowSeriesCollection { get; set; }
         public List<string> DowLabels { get; set; }
 
-        public DashboardViewModel(IStockDataEndpoint stockDataEndpoint, INewsEndpoint newsEndpoint)
+        public DashboardViewModel(IStockDataEndpoint stockDataEndpoint, INewsEndpoint newsEndpoint, IWatchListEndpoint watchListEndpoint)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _newsEndpoint = newsEndpoint;
+            _watchListEndpoint = watchListEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
         {
-            await LoadSpyChartData();
-            await LoadDowChartData();
+            await LoadLeftChartData("aapl");
+            await LoadRightChartData("^dji");
+            await LoadWatchListData();
             await LoadMarketNews("amzn+aapl+wmt+fb");
+        }
+
+        private async Task LoadWatchListData()
+        {
+            
+            var watchlist = await _watchListEndpoint.LoadWatchList();
+
+            if(watchlist != null)
+            {
+                var watchlistData = new List<WatchlistDisplayModel>();
+
+                string query = "";
+                int index = 1;
+                foreach (var stock in watchlist)
+                {
+                    if(index < watchlist.Count)
+                    {
+                        query = query + stock.Ticker + "%2C";
+                    }
+                    else
+                    {
+                        query = query + stock.Ticker;
+                    }
+                    
+                    index++;
+                }
+
+                var stockData = await LoadMultipleStockData(query);
+
+                WatchlistStocks = new BindingList<StockDashboardDataModel>(stockData);
+
+                
+            }
+
         }
 
         private async Task LoadMarketNews(string query)
@@ -57,12 +94,16 @@ namespace DesktopUI.ViewModels
 
         }
 
-        private async Task LoadSpyChartData()
+        private async Task LoadLeftChartData(string ticker)
         {
             SpyLabels = new List<string>();
             var Values = new ChartValues<OhlcPoint>();
 
-            var results = await _stockDataEndpoint.GetDashboardCharts("aapl");
+            var stockData = await LoadStockData(ticker);
+            LeftChartPrice = stockData.MarketPrice;
+            LeftChartStock = stockData.Ticker;
+
+            var results = await _stockDataEndpoint.GetDashboardCharts(ticker);
 
             foreach (var result in results)
             {
@@ -83,12 +124,16 @@ namespace DesktopUI.ViewModels
             NotifyOfPropertyChange(() => SpyLabels);
         }
 
-        private async Task LoadDowChartData()
+        private async Task LoadRightChartData(string ticker)
         {
             DowLabels = new List<string>();
             var Values = new ChartValues<OhlcPoint>();
 
-            var results = await _stockDataEndpoint.GetDashboardCharts("^dji");
+            var stockData = await LoadStockData(ticker);
+            RightChartPrice = stockData.MarketPrice;
+            RightChartStock = stockData.Ticker;
+
+            var results = await _stockDataEndpoint.GetDashboardCharts(ticker);
 
             foreach (var result in results)
             {
@@ -109,6 +154,79 @@ namespace DesktopUI.ViewModels
             NotifyOfPropertyChange(() => DowLabels);
         }
 
+        public async Task<List<StockDashboardDataModel>> LoadMultipleStockData(string query)
+        {
+            var result = await _stockDataEndpoint.GetMultipleStockDashboardData(query);
+            return result;
+        }
+
+        public async Task<StockDashboardDataModel> LoadStockData(string ticker)
+        {
+            var result = await _stockDataEndpoint.GetStockDashboardData(ticker);
+            return result;
+        }
+
+        private string _leftChartStock;
+
+        public string LeftChartStock
+        {
+            get { return _leftChartStock; }
+            set 
+            { 
+                _leftChartStock = value;
+                NotifyOfPropertyChange(() => LeftChartStock);
+            }
+        }
+
+        private string _rightChartStock;
+
+        public string RightChartStock
+        {
+            get { return _rightChartStock; }
+            set 
+            { 
+                _rightChartStock = value;
+                NotifyOfPropertyChange(() => RightChartStock);
+            }
+        }
+
+        private string _rightChartPrice;
+
+        public string RightChartPrice
+        {
+            get { return _rightChartPrice; }
+            set 
+            { 
+                _rightChartPrice = value;
+                NotifyOfPropertyChange(() => RightChartPrice);
+            }
+        }
+
+        private string _searchInputLeftChart;
+
+        public string SearchInputLeftChart
+        {
+            get { return _searchInputLeftChart; }
+            set 
+            { 
+                _searchInputLeftChart = value;
+                NotifyOfPropertyChange(() => SearchInputLeftChart);
+            }
+        }
+
+        private string _searchInputRightChart;
+
+        public string SearchInputRightChart
+        {
+            get { return _searchInputRightChart; }
+            set 
+            {
+                _searchInputRightChart = value;
+                NotifyOfPropertyChange(() => SearchInputRightChart);
+            }
+        }
+
+
         private BindingList<NewsArticleModel> _articles;
 
         public BindingList<NewsArticleModel> Articles
@@ -122,6 +240,19 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private BindingList<StockDashboardDataModel> _watchlistStocks;
+
+        public BindingList<StockDashboardDataModel> WatchlistStocks
+        {
+            get { return _watchlistStocks; }
+            set 
+            { 
+                _watchlistStocks = value;
+                NotifyOfPropertyChange(() => WatchlistStocks);
+            }
+        }
+
+
         private NewsArticleModel _selectedArticle;
 
         public NewsArticleModel SelectedArticle
@@ -134,7 +265,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private string _searchInput;
+        private string _searchInput = "AAPL";
 
         public string SearchInput
         {
@@ -144,6 +275,28 @@ namespace DesktopUI.ViewModels
                 _searchInput = value;
                 NotifyOfPropertyChange(() => SearchInput);
             }
+        }
+
+        private string _leftChartPrice;
+
+        public string LeftChartPrice
+        {
+            get { return _leftChartPrice; }
+            set 
+            {
+                _leftChartPrice = value;
+                NotifyOfPropertyChange(() => LeftChartPrice);
+            }
+        }
+
+        public async Task SearchLeftChart()
+        {
+            await LoadLeftChartData(SearchInputLeftChart);
+        }
+
+        public async Task SearchRightChart()
+        {
+            await LoadRightChartData(SearchInputRightChart);
         }
 
         public async Task SearchNews()

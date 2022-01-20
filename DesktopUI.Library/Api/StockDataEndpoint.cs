@@ -29,7 +29,7 @@ namespace DesktopUI.Library.Api
             httpClient.DefaultRequestHeaders.Add("X-API-KEY", "9l4Vorm2Kb7Z5HeFpMN8raQTY4X8z0HL9bMNChR6");
             httpClient.DefaultRequestHeaders.Add("accept", "application/json");
 
-            var response = await httpClient.GetAsync($"v8/finance/chart/{ticker}?range1mo=&region=US&interval=15m&lang=en");
+            var response = await httpClient.GetAsync($"v8/finance/chart/{ticker}?range=3mo&region=US&interval=1d&lang=en");
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -65,6 +65,73 @@ namespace DesktopUI.Library.Api
 
         }
 
+        public async Task<StockDashboardDataModel> GetStockDashboardData(string ticker)
+        {
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://yfapi.net/");
+            httpClient.DefaultRequestHeaders.Add("X-API-KEY", "9l4Vorm2Kb7Z5HeFpMN8raQTY4X8z0HL9bMNChR6");
+            httpClient.DefaultRequestHeaders.Add("accept", "application/json");
+
+            var response = await httpClient.GetAsync($"v6/finance/quote?region=US&lang=en&symbols={ticker}");
+
+            if(response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                var data = (JObject)JsonConvert.DeserializeObject(responseBody);
+
+                var stock = new StockDashboardDataModel
+                {
+                    Ticker = ticker.ToUpper(),
+                    MarketPrice = data.SelectToken("quoteResponse.result[0].regularMarketPrice").ToString(),
+                    PercentChanged = data.SelectToken("quoteResponse.result[0].regularMarketChangePercent").ToString()
+                };
+
+                return stock;
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
+
+        public async Task<List<StockDashboardDataModel>> GetMultipleStockDashboardData(string query)
+        {
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://yfapi.net/");
+            httpClient.DefaultRequestHeaders.Add("X-API-KEY", "9l4Vorm2Kb7Z5HeFpMN8raQTY4X8z0HL9bMNChR6");
+            httpClient.DefaultRequestHeaders.Add("accept", "application/json");
+
+            var response = await httpClient.GetAsync($"v6/finance/quote?region=US&lang=en&symbols={query}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                var data = (JObject)JsonConvert.DeserializeObject(responseBody);
+
+                var stocks = new List<StockDashboardDataModel>();
+
+                
+                foreach(var s in data.SelectToken("quoteResponse.result"))
+                {
+                    var stock = new StockDashboardDataModel
+                    {
+                        Ticker = s.SelectToken("symbol").ToString(),
+                        MarketPrice = s.SelectToken("regularMarketPrice").ToString(),
+                        PercentChanged = s.SelectToken("regularMarketChangePercent").ToString()
+                    };
+                    stocks.Add(stock);
+
+                } 
+
+                return stocks;
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
 
         //public async Task<List<StockDataModel>> GetDowData(string ticker)
         //{
@@ -91,7 +158,7 @@ namespace DesktopUI.Library.Api
         //    }
         //    return models;
 
-       // }
+        // }
 
 
     }

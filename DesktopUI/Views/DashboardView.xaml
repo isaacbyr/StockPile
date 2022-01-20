@@ -55,6 +55,7 @@
                 </Grid>
             </StackPanel>
 
+
             <Border CornerRadius="18" Background="#1D2D44"
                     Grid.Row="1" Grid.RowSpan="4" Margin="10 10 5 5">
                 <!--Top SideBar-->
@@ -66,7 +67,7 @@
                             <RowDefinition Height="25"></RowDefinition>
                             <RowDefinition Height="270"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Stocks" Margin="25 0 5 0" FontSize="16"></TextBlock>
+                        <TextBlock HorizontalAlignment="Center" Grid.Row="0" Text="Stocks" Margin="0 0 5 0" FontSize="16"></TextBlock>
                         <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
                                           x:Name="Stocks" BorderBrush="Transparent">
                             <ListView.View>
@@ -116,12 +117,13 @@
                             <RowDefinition Height="25"></RowDefinition>
                             <RowDefinition Height="270"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Portfolios" Margin="25 0 0 0" FontSize="16"></TextBlock>
+                        <TextBlock HorizontalAlignment="Center" Grid.Row="0" Text="Watchlist" Margin="0 0 0 0" FontSize="16"></TextBlock>
                         <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
-                                          x:Name="Portfolios" BorderBrush="Transparent" >
+                                          x:Name="WatchlistStocks" BorderBrush="Transparent" 
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="90">
+                                    <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="65">
                                         <GridViewColumn.HeaderContainerStyle>
                                             <Style TargetType="GridViewColumnHeader">
                                                 <Setter Property="Background" Value="Transparent"></Setter>
@@ -130,7 +132,7 @@
                                             </Style>
                                         </GridViewColumn.HeaderContainerStyle>
                                     </GridViewColumn>
-                                    <GridViewColumn DisplayMemberBinding="{Binding DailyChange}" Header="Daily %" Width="90">
+                                    <GridViewColumn DisplayMemberBinding="{Binding MarketPrice}" Header="Price" Width="65">
                                         <GridViewColumn.HeaderContainerStyle>
                                             <Style TargetType="GridViewColumnHeader">
                                                 <Setter Property="Background" Value="Transparent"></Setter>
@@ -139,16 +141,25 @@
                                             </Style>
                                         </GridViewColumn.HeaderContainerStyle>
                                     </GridViewColumn>
-
+                                    <GridViewColumn DisplayMemberBinding="{Binding PercentChanged}" Header="% Changed" Width="75">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
-
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
                                 </Style>
 
                             </ListView.ItemContainerStyle>
-
+                            
                         </ListView>
                     </Grid>
                 </StackPanel>
@@ -167,9 +178,25 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <!--Spy Chart-->
+                    <!--Chart-->
                     <StackPanel Grid.Column="0" Grid.Row="0" Margin="0 0 0 0">
-                        <TextBlock Text="Spy" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22"></TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Margin="5 0 0 0" Grid.Column="0" Text="{Binding LeftChartStock}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22"></TextBlock>
+                            <TextBlock Grid.Column="1" Text="{Binding LeftChartPrice}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"></TextBlock>
+                            <TextBox VerticalContentAlignment="Center" MinWidth="70" FontSize="12" MaxWidth="70" Grid.Column="2"
+                                 Background="#1D2D44" Foreground="White" x:Name="SearchInputLeftChart" HorizontalAlignment="Right"
+                                 Text="Ticker"></TextBox>
+                            <Button Grid.Column="3" Margin="0" Content="Search" Foreground="White" Background="SteelBlue" FontSize="10"
+                              Padding="0 0 0 0"  VerticalContentAlignment="Center"
+                                x:Name="SearchLeftChart"></Button>
+                        </Grid>
+                    
                     </StackPanel>
                     <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 5 0" Series="{Binding SpySeriesCollection}">
                         <lvc:CartesianChart.AxisX>
@@ -200,12 +227,31 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="35"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="70"></RowDefinition>
                     </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0 0 0 0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Margin="5 0 0 0" Grid.Column="0" Text="{Binding RightChartStock}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22"></TextBlock>
+                            <TextBlock Grid.Column="1" Text="{Binding RightChartPrice}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"></TextBlock>
+                            <TextBox VerticalContentAlignment="Center" MinWidth="70" FontSize="12" MaxWidth="70" Grid.Column="2"
+                                 Background="#1D2D44" Foreground="White" x:Name="SearchInputRightChart" HorizontalAlignment="Right"
+                                 Text="Ticker"></TextBox>
+                            <Button Grid.Column="3" Margin="0" Content="Search" Foreground="White" Background="SteelBlue" FontSize="10"
+                              Padding="0 0 0 0"  VerticalContentAlignment="Center"
+                                x:Name="SearchRightChart"></Button>
+                        </Grid>
 
-                    <!--Dow Chart-->
+                    </StackPanel>
+
+                    <!--Chart-->
                     <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 5 0" Series="{Binding DowSeriesCollection}">
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Labels="{Binding DowLabels}"/>

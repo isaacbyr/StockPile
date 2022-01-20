@@ -94,8 +94,10 @@
     <Compile Include="Api\IApiHelper.cs" />
     <Compile Include="Api\INewsEndpoint.cs" />
     <Compile Include="Api\IStockDataEndpoint.cs" />
+    <Compile Include="Api\IWatchListEndpoint.cs" />
     <Compile Include="Api\NewsEndpoint.cs" />
     <Compile Include="Api\StockDataEndpoint.cs" />
+    <Compile Include="Api\WatchListEndpoint.cs" />
     <Compile Include="EventModels\LogOnEvent.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\ILoggedInUserModel.cs" />
@@ -103,7 +105,10 @@
     <Compile Include="Models\NewsArticleModel.cs" />
     <Compile Include="Models\OhlcStockModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
+    <Compile Include="Models\StockDashboardDataModel.cs" />
     <Compile Include="Models\StockDataModel.cs" />
+    <Compile Include="Models\WatchlistDisplayModel.cs" />
+    <Compile Include="Models\WatchlistModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

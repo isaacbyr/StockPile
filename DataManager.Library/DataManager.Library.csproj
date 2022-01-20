@@ -47,7 +47,9 @@
   <ItemGroup>
     <Compile Include="DataAccess\InternalAccess\SqlDataAccess.cs" />
     <Compile Include="DataAccess\UserData.cs" />
+    <Compile Include="DataAccess\WatchlistData.cs" />
     <Compile Include="Models\LoggedInUserModel.cs" />
+    <Compile Include="Models\WatchlistModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
