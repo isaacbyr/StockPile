@@ -9,7 +9,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
-        Title="ShellView" Height="725" Width="1300">
+        Title="ShellView" Height="750" Width="1350">
     <DockPanel>
         <Border CornerRadius="18" Background="White">
             <Grid>

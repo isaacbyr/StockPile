@@ -95,6 +95,7 @@
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\ILoggedInUserModel.cs" />
     <Compile Include="Models\LoggedInUserModel.cs" />
+    <Compile Include="Models\OhlcStockModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Models\StockDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

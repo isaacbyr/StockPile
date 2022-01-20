@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:DesktopUI.Views"
              mc:Ignorable="d" Background="Transparent"
               FontFamily="Microsoft Sans Serif" Foreground="White"
-             d:DesignHeight="700" d:DesignWidth="1250">
+             d:DesignHeight="750" d:DesignWidth="1350">
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -23,8 +23,9 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="45"></RowDefinition>
+                <RowDefinition Height="150"></RowDefinition>
+                <RowDefinition Height="150"></RowDefinition>
             </Grid.RowDefinitions>
             
             <!--Header-->
@@ -52,121 +53,164 @@
             </StackPanel>
 
             <Border CornerRadius="18" Background="#1D2D44"
-                    Grid.Row="1" Grid.RowSpan="5" Margin="0 20 0 0">
-                <!--Stock Left Sidebar-->
-                <StackPanel Margin="0 0 0 0" Orientation="Vertical" Grid.Column="0"
-                        >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="300"></RowDefinition>
-                            <RowDefinition Height="300"></RowDefinition>
-                        </Grid.RowDefinitions>
-
-                        <!--Top SideBar-->
-                        <StackPanel Orientation="Vertical" Grid.Column="0"
+                    Grid.Row="1" Grid.RowSpan="3" Margin="10 20 5 5">
+                <!--Top SideBar-->
+                <StackPanel Orientation="Vertical" Grid.Column="0"
                             Grid.Row="0">
-                            <Grid>
+                    <Grid>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="25"></RowDefinition>
-                                    <RowDefinition Height="270"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Stocks" Margin="25 0 0 0" FontSize="16"></TextBlock>
-                                <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
-                                          x:Name="Stocks" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="90">
-                                                <GridViewColumn.HeaderContainerStyle>
-                                                    <Style TargetType="GridViewColumnHeader">
-                                                        <Setter Property="Background" Value="Transparent"></Setter>
-                                                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                                        <Setter Property="Foreground" Value="White"></Setter>
-                                                    </Style>
-                                                </GridViewColumn.HeaderContainerStyle>
-                                            </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding DailyChange}" Header="Daily %" Width="90">
-                                                <GridViewColumn.HeaderContainerStyle>
-                                                    <Style TargetType="GridViewColumnHeader">
-                                                        <Setter Property="Background" Value="Transparent"></Setter>
-                                                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                                        <Setter Property="Foreground" Value="White"></Setter>
-                                                    </Style>
-                                                </GridViewColumn.HeaderContainerStyle>
-                                            </GridViewColumn>
-                                            
-                                        </GridView>
-                                    </ListView.View>
-                                    <ListView.ItemContainerStyle>
-                                        <Style TargetType="ListViewItem">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="270"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Stocks" Margin="25 0 5 0" FontSize="16"></TextBlock>
+                        <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
+                                          x:Name="Stocks" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="90">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding DailyChange}" Header="Daily %" Width="90">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
 
-                                        </Style>
-                                        
-                                    </ListView.ItemContainerStyle>
-                                    
-                                </ListView>
-                            </Grid>
-                        </StackPanel>
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+    
+                                </Style>
 
-                        <!--Bottom SideBar-->
-                        <StackPanel Orientation="Vertical" Grid.Column="0"
-                            Grid.Row="1">
-                            <Grid>
+                            </ListView.ItemContainerStyle>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="25"></RowDefinition>
-                                    <RowDefinition Height="270"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Portfolios" Margin="25 0 0 0" FontSize="16"></TextBlock>
-                                <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
-                                          x:Name="Portfolios" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="90">
-                                                <GridViewColumn.HeaderContainerStyle>
-                                                    <Style TargetType="GridViewColumnHeader">
-                                                        <Setter Property="Background" Value="Transparent"></Setter>
-                                                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                                        <Setter Property="Foreground" Value="White"></Setter>
-                                                    </Style>
-                                                </GridViewColumn.HeaderContainerStyle>
-                                            </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding DailyChange}" Header="Daily %" Width="90">
-                                                <GridViewColumn.HeaderContainerStyle>
-                                                    <Style TargetType="GridViewColumnHeader">
-                                                        <Setter Property="Background" Value="Transparent"></Setter>
-                                                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                                        <Setter Property="Foreground" Value="White"></Setter>
-                                                    </Style>
-                                                </GridViewColumn.HeaderContainerStyle>
-                                            </GridViewColumn>
-
-                                        </GridView>
-                                    </ListView.View>
-                                    <ListView.ItemContainerStyle>
-                                        <Style TargetType="ListViewItem">
-
-                                        </Style>
-
-                                    </ListView.ItemContainerStyle>
-
-                                </ListView>
-                            </Grid>
-                        </StackPanel>
+                        </ListView>
                     </Grid>
                 </StackPanel>
             </Border>
-           
+
+            <!--Portfolios sidebar-->
+            <Border CornerRadius="18" Grid.Row="4" Grid.RowSpan="3"
+                    Background="#1D2D44" Margin="10 10 5 5">
+                <!--Bottom SideBar-->
+                <StackPanel Orientation="Vertical" Grid.Column="0"
+                            Grid.Row="1">
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="270"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Portfolios" Margin="25 0 0 0" FontSize="16"></TextBlock>
+                        <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
+                                          x:Name="Portfolios" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="90">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding DailyChange}" Header="Daily %" Width="90">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+
+                                </Style>
+
+                            </ListView.ItemContainerStyle>
+
+                        </ListView>
+                    </Grid>
+                </StackPanel>
+            </Border>
             
-            <!--Spy Chart-->
-            <lvc:CartesianChart Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Series="{Binding SeriesCollection}">
-                <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Labels="{Binding Labels}"/>
-                </lvc:CartesianChart.AxisX>
-            </lvc:CartesianChart>
+            <!--Spy Chart Border-->
+            <Border Background="#1D2D44" Grid.Column="1" Grid.Row="5"
+                    Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="5 0 5 10"
+                    CornerRadius="18">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--Spy Chart-->
+                    <TextBlock Text="Spy" HorizontalAlignment="Center"></TextBlock>
+                    <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 5 0" Series="{Binding SpySeriesCollection}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Labels="{Binding SpyLabels}"/>
+                        </lvc:CartesianChart.AxisX>
+                    </lvc:CartesianChart>
+
+                    
+                </Grid>
+            </Border>
+
+            <!--Dow Chart Border-->
+            <Border Background="#1D2D44" Grid.Column="3" Grid.Row="5"
+                    Grid.RowSpan="2" Grid.ColumnSpan="2"
+                    CornerRadius="18" Margin="5 0 5 10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--Dow Chart-->
+                    <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 5 0" Series="{Binding DowSeriesCollection}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Labels="{Binding DowLabels}"/>
+                        </lvc:CartesianChart.AxisX>
+                    </lvc:CartesianChart>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="5" Grid.Row="1" Grid.RowSpan="3"
+                    Margin="5 10 10 5" Background="#1D2D44"
+                    CornerRadius="18">
+                
+            </Border>
+            <Border Grid.Column="5" Grid.Row="4" Grid.RowSpan="3"
+                    Margin="5 10 10 5" Background="#1D2D44"
+                    CornerRadius="18">
+
+            </Border>
         </Grid>
     </Border>
+
 </UserControl>
