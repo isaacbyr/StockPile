@@ -46,6 +46,9 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=5.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.5.0.1\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="NewsAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewsAPI.0.6.0\lib\portable45-net45+win8+wpa81\NewsAPI.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -89,12 +92,15 @@
     <Compile Include="Api\ApiHelper.cs" />
     <Compile Include="Api\AuthenticatedUser.cs" />
     <Compile Include="Api\IApiHelper.cs" />
+    <Compile Include="Api\INewsEndpoint.cs" />
     <Compile Include="Api\IStockDataEndpoint.cs" />
+    <Compile Include="Api\NewsEndpoint.cs" />
     <Compile Include="Api\StockDataEndpoint.cs" />
     <Compile Include="EventModels\LogOnEvent.cs" />
     <Compile Include="Models\AuthenticatedUserModel.cs" />
     <Compile Include="Models\ILoggedInUserModel.cs" />
     <Compile Include="Models\LoggedInUserModel.cs" />
+    <Compile Include="Models\NewsArticleModel.cs" />
     <Compile Include="Models\OhlcStockModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Models\StockDataModel.cs" />

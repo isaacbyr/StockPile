@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace DesktopUI.Library.Api
 {
-    public interface IStockDataEndpoint
+    public interface INewsEndpoint
     {
-        Task<List<OhlcStockModel>> GetDashboardCharts(string ticker);
+        Task<List<NewsArticleModel>> GetMarketNews(string query);
     }
 }

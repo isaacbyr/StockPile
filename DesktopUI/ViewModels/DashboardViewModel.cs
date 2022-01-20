@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,7 @@ namespace DesktopUI.ViewModels
     public class DashboardViewModel: Screen
     {
         private readonly IStockDataEndpoint _stockDataEndpoint;
+        private readonly INewsEndpoint _newsEndpoint;
 
         public SeriesCollection SpySeriesCollection { get; set; }
         public List<string> SpyLabels { get; set; }
@@ -24,62 +27,53 @@ namespace DesktopUI.ViewModels
         public SeriesCollection DowSeriesCollection { get; set; }
         public List<string> DowLabels { get; set; }
 
-        public DashboardViewModel(IStockDataEndpoint stockDataEndpoint)
+        public DashboardViewModel(IStockDataEndpoint stockDataEndpoint, INewsEndpoint newsEndpoint)
         {
             _stockDataEndpoint = stockDataEndpoint;
+            _newsEndpoint = newsEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
         {
-            // await LoadSpyChartData();
-            //await LoadDowChartData();
-            await LoadSpyIntraData();
-            await LoadDowIntraData();
+            await LoadSpyChartData();
+            await LoadDowChartData();
+            await LoadMarketNews("amzn+aapl+wmt+fb");
         }
 
-        private async Task LoadDowIntraData()
+        private async Task LoadMarketNews(string query)
         {
-            DowLabels = new List<string>();
-            var Values = new ChartValues<OhlcPoint>();
+            var results = await _newsEndpoint.GetMarketNews(query);
 
-            var results = await _stockDataEndpoint.GetSpyIntra("^dji");
-
-            foreach (var result in results)
+            // substring title
+            foreach(var r in results)
             {
-                var point = new OhlcPoint((double)result.Open, (double)result.High, (double)result.Low, (double)result.Close);
-                Values.Add(point);
-                //SpyLabels.Add(result.Date);
+                if(r.Title.Length > 75)
+                {
+                    r.Title = r.Title.Substring(0, 75) + "...";
+                }
             }
 
-            DowSeriesCollection = new SeriesCollection
-            {
-                new OhlcSeries()
-                {
-                    Values = Values
-                }
-            };
+            Articles = new BindingList<NewsArticleModel>(results);
 
-            NotifyOfPropertyChange(() => DowSeriesCollection);
-            NotifyOfPropertyChange(() => DowLabels);
         }
 
-        private async Task LoadSpyIntraData()
+        private async Task LoadSpyChartData()
         {
             SpyLabels = new List<string>();
             var Values = new ChartValues<OhlcPoint>();
 
-            var results = await _stockDataEndpoint.GetSpyIntra("spy");
+            var results = await _stockDataEndpoint.GetDashboardCharts("aapl");
 
             foreach (var result in results)
             {
                 var point = new OhlcPoint((double) result.Open, (double)result.High, (double)result.Low,(double) result.Close);
                 Values.Add(point);
-                //SpyLabels.Add(result.Date);
+                
             }
 
             SpySeriesCollection = new SeriesCollection
             {
-                new OhlcSeries()
+                new CandleSeries()
                 {
                     Values = Values
                 }
@@ -94,18 +88,18 @@ namespace DesktopUI.ViewModels
             DowLabels = new List<string>();
             var Values = new ChartValues<OhlcPoint>();
 
-            var results = await _stockDataEndpoint.GetDowData("^dji");
+            var results = await _stockDataEndpoint.GetDashboardCharts("^dji");
 
             foreach (var result in results)
             {
-                var point = new OhlcPoint(result.Open, result.High, result.Low, result.Close);
+                var point = new OhlcPoint((double)result.Open, (double)result.High, (double)result.Low, (double)result.Close);
                 Values.Add(point);
-                DowLabels.Add(result.Date);
+                //DowLabels.Add(result.Date);
             }
 
             DowSeriesCollection = new SeriesCollection
             {
-                new OhlcSeries()
+                new CandleSeries()
                 {
                     Values = Values
                 }
@@ -115,32 +109,55 @@ namespace DesktopUI.ViewModels
             NotifyOfPropertyChange(() => DowLabels);
         }
 
-        private async Task LoadSpyChartData()
+        private BindingList<NewsArticleModel> _articles;
+
+        public BindingList<NewsArticleModel> Articles
         {
-            SpyLabels = new List<string>();
-            var Values = new ChartValues<OhlcPoint>();
-
-            var results = await _stockDataEndpoint.GetSpyData("spy", "2020-01-01", "2022-01-01", "daily");
-
-            foreach(var result in results)
-            {
-                var point = new OhlcPoint(result.Open, result.High, result.Low, result.Close);
-                Values.Add(point);
-                SpyLabels.Add(result.Date);
+            get { return _articles; }
+            
+            set 
+            { 
+                _articles = value;
+                NotifyOfPropertyChange(() => Articles);
             }
-
-            SpySeriesCollection = new SeriesCollection
-            {
-                new OhlcSeries()
-                {
-                    Values = Values
-                }
-            };
-
-            NotifyOfPropertyChange(() => SpySeriesCollection);
-            NotifyOfPropertyChange(() => SpyLabels);
         }
 
-        
+        private NewsArticleModel _selectedArticle;
+
+        public NewsArticleModel SelectedArticle
+        {
+            get { return _selectedArticle; }
+            set 
+            { 
+                _selectedArticle = value;
+                NotifyOfPropertyChange(() => SelectedArticle);
+            }
+        }
+
+        private string _searchInput;
+
+        public string SearchInput
+        {
+            get { return _searchInput; }
+            set 
+            {
+                _searchInput = value;
+                NotifyOfPropertyChange(() => SearchInput);
+            }
+        }
+
+        public async Task SearchNews()
+        {
+            await LoadMarketNews(SearchInput);
+        }
+
+        public void Article_View()
+        {
+            if(SelectedArticle == null)
+            {
+                return;
+            }
+            Process.Start(SelectedArticle.Url);
+        }
     }
 }

@@ -30,6 +30,7 @@ namespace DesktopUI
                 .Singleton<IApiHelper, ApiHelper>()
                 .Singleton<IStockDataEndpoint, StockDataEndpoint>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
+                .Singleton<INewsEndpoint, NewsEndpoint>()
                 .Singleton<IEventAggregator, EventAggregator>();
 
             GetType().Assembly.GetTypes()
