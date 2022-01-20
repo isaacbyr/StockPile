@@ -11,18 +11,19 @@
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="225"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="250"></ColumnDefinition>
+                <ColumnDefinition Width="225"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="86"></RowDefinition>
+                <RowDefinition Height="86"></RowDefinition>
+                <RowDefinition Height="86"></RowDefinition>
+                <RowDefinition Height="86"></RowDefinition>
                 <RowDefinition Height="45"></RowDefinition>
                 <RowDefinition Height="150"></RowDefinition>
                 <RowDefinition Height="150"></RowDefinition>
@@ -53,7 +54,7 @@
             </StackPanel>
 
             <Border CornerRadius="18" Background="#1D2D44"
-                    Grid.Row="1" Grid.RowSpan="3" Margin="10 20 5 5">
+                    Grid.Row="1" Grid.RowSpan="4" Margin="10 10 5 5">
                 <!--Top SideBar-->
                 <StackPanel Orientation="Vertical" Grid.Column="0"
                             Grid.Row="0">
@@ -102,7 +103,7 @@
             </Border>
 
             <!--Portfolios sidebar-->
-            <Border CornerRadius="18" Grid.Row="4" Grid.RowSpan="3"
+            <Border CornerRadius="18" Grid.Row="5" Grid.RowSpan="3"
                     Background="#1D2D44" Margin="10 10 5 5">
                 <!--Bottom SideBar-->
                 <StackPanel Orientation="Vertical" Grid.Column="0"
@@ -152,8 +153,8 @@
             </Border>
             
             <!--Spy Chart Border-->
-            <Border Background="#1D2D44" Grid.Column="1" Grid.Row="5"
-                    Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="5 0 5 10"
+            <Border Background="#1D2D44" Grid.Column="1" Grid.Row="6"
+                    Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="5 5 5 10"
                     CornerRadius="18">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -178,9 +179,9 @@
             </Border>
 
             <!--Dow Chart Border-->
-            <Border Background="#1D2D44" Grid.Column="3" Grid.Row="5"
+            <Border Background="#1D2D44" Grid.Column="3" Grid.Row="6"
                     Grid.RowSpan="2" Grid.ColumnSpan="2"
-                    CornerRadius="18" Margin="5 0 5 10">
+                    CornerRadius="18" Margin="5 5 5 10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -200,16 +201,32 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Column="5" Grid.Row="1" Grid.RowSpan="3"
+            <Border Grid.Column="5" Grid.Row="1" Grid.RowSpan="4"
                     Margin="5 10 10 5" Background="#1D2D44"
                     CornerRadius="18">
                 
             </Border>
-            <Border Grid.Column="5" Grid.Row="4" Grid.RowSpan="3"
+            <Border Grid.Column="5" Grid.Row="5" Grid.RowSpan="3"
                     Margin="5 10 10 5" Background="#1D2D44"
                     CornerRadius="18">
 
             </Border>
+
+            <!--Dashboard Border-->
+            <Border CornerRadius="18" Background="#1D2D44"
+                    Margin="5 10 5 5" Grid.Column="1"
+                    Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="2"></Border>
+       
+            <!--Portfolio Summary Border-->
+            <Border CornerRadius="18" Background="#1D2D44"
+                    Margin="5 10 5 5" Grid.Column="3"
+                    Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2"></Border>
+
+            <!--News Border-->
+            <Border CornerRadius="18" Background="#1D2D44"
+                    Margin="5 5 5 5" Grid.Column="3"
+                    Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="2"></Border>
+
         </Grid>
     </Border>
 
