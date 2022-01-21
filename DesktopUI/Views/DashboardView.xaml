@@ -6,9 +6,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views"
+             xmlns:converters="clr-namespace:DesktopUI.Converters"
              mc:Ignorable="d" Background="Transparent"
               FontFamily="Microsoft Sans Serif" Foreground="White"
              d:DesignHeight="800" d:DesignWidth="1400">
+   
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -95,11 +97,9 @@
                             </ListView.View>
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
-    
+
                                 </Style>
-
                             </ListView.ItemContainerStyle>
-
                         </ListView>
                     </Grid>
                 </StackPanel>
@@ -152,8 +152,12 @@
                                     </GridViewColumn>
                                 </GridView>
                             </ListView.View>
+                            <ListView.Resources>
+                                <converters:ListViewItemColorConverter x:Key="ListViewItemColorConverter"></converters:ListViewItemColorConverter>
+                            </ListView.Resources>
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
+                                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource ListViewItemColorConverter}}"></Setter>
                                     <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                     <Setter Property="HorizontalAlignment" Value="Center"></Setter>
                                 </Style>

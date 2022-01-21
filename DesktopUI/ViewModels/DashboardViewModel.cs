@@ -37,10 +37,10 @@ namespace DesktopUI.ViewModels
 
         protected override async void OnViewLoaded(object view)
         {
-            await LoadLeftChartData("aapl");
-            await LoadRightChartData("^dji");
+            //await LoadLeftChartData("aapl");
+            //await LoadRightChartData("^dji");
             await LoadWatchListData();
-            await LoadMarketNews("amzn+aapl+wmt+fb");
+            //await LoadMarketNews("amzn+aapl+wmt+fb");
         }
 
         private async Task LoadWatchListData()

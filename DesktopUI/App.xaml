@@ -6,9 +6,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                
                 <ResourceDictionary>
                     <local:Bootstrapper x:Key="Bootstrapper"></local:Bootstrapper>
                 </ResourceDictionary>
+             
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
