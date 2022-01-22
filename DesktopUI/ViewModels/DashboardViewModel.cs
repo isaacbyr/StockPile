@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace DesktopUI.ViewModels
 {
@@ -21,6 +22,7 @@ namespace DesktopUI.ViewModels
         private readonly IStockDataEndpoint _stockDataEndpoint;
         private readonly INewsEndpoint _newsEndpoint;
         private readonly IWatchListEndpoint _watchListEndpoint;
+        private readonly IPortfolioEndpoint _portfolioEndpoint;
 
         public SeriesCollection SpySeriesCollection { get; set; }
         public List<string> SpyLabels { get; set; }
@@ -28,19 +30,145 @@ namespace DesktopUI.ViewModels
         public SeriesCollection DowSeriesCollection { get; set; }
         public List<string> DowLabels { get; set; }
 
-        public DashboardViewModel(IStockDataEndpoint stockDataEndpoint, INewsEndpoint newsEndpoint, IWatchListEndpoint watchListEndpoint)
+        public SeriesCollection TopHoldingsSeriesCollection { get; set; }
+        public List<string> TopHoldingsLabels { get; set; }
+        public Func<int, string> Formatter { get; set; }
+
+        public SeriesCollection PieSeriesCollection { get; set; }
+
+
+        public DashboardViewModel(IStockDataEndpoint stockDataEndpoint, INewsEndpoint newsEndpoint, 
+            IWatchListEndpoint watchListEndpoint, IPortfolioEndpoint portfolioEndpoint)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _newsEndpoint = newsEndpoint;
             _watchListEndpoint = watchListEndpoint;
+            _portfolioEndpoint = portfolioEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
         {
-            //await LoadLeftChartData("aapl");
+            //await LoadLeftChartData("spy");
             //await LoadRightChartData("^dji");
-            await LoadWatchListData();
-            //await LoadMarketNews("amzn+aapl+wmt+fb");
+            //await LoadWatchListData();
+            //await LoadPortfolioData();
+            //await LoadDailyGainers();
+            await LoadMarketNews("amzn+aapl+wmt+fb");
+            LoadAccountPie();
+            LoadTopHoldings();
+            StartClock();
+        }
+
+        private void LoadTopHoldings()
+        {
+            TopHoldingsSeriesCollection = new SeriesCollection
+            {
+                new ColumnSeries()
+                {
+                    Values = new ChartValues<double> {10000},
+                    Title = "AAPL", 
+                    Fill = System.Windows.Media.Brushes.AliceBlue
+                },
+                new ColumnSeries()
+                {
+                    Values = new ChartValues<double> {11800},
+                    Title = "NFLX",
+                    Fill = System.Windows.Media.Brushes.CadetBlue
+                },
+                new ColumnSeries()
+                {
+                    Values = new ChartValues<double> {7500},
+                    Title = "LULU",
+                    Fill = System.Windows.Media.Brushes.LightBlue
+                },
+            };
+
+            TopHoldingsLabels = new List<string>{ "AAPL", "NFLX", "LULU"};
+            Formatter = value => value.ToString("N");
+
+            NotifyOfPropertyChange(() => TopHoldingsLabels);
+            NotifyOfPropertyChange(() => TopHoldingsSeriesCollection);
+            
+        }
+
+        private void LoadAccountPie()
+        {
+            PieSeriesCollection = new SeriesCollection
+            {
+                new PieSeries()
+                {
+                    Values = new ChartValues<decimal> {1},
+                    Title = "Cash",
+                    Fill = System.Windows.Media.Brushes.AliceBlue
+                },
+                new PieSeries()
+                {
+                    Values = new ChartValues<decimal> {2},
+                    Title = "AAPL",
+                    Fill = System.Windows.Media.Brushes.CadetBlue
+                },
+                new PieSeries()
+                {
+                    Values = new ChartValues<decimal> {3},
+                    Title = "NFLX",
+                    Fill = System.Windows.Media.Brushes.LightBlue
+                },
+            };
+
+            NotifyOfPropertyChange(() => PieSeriesCollection);
+        }
+
+        private async Task LoadDailyGainers()
+        {
+            var gainers = await _stockDataEndpoint.GetDailyGainers();
+
+            if(gainers != null)
+            {
+                DailyGainers = new BindingList<StockDashboardDataModel>(gainers);
+            }
+        }
+
+        private async Task LoadPortfolioData()
+        {
+            var portfolio = await _portfolioEndpoint.LoadPortfolioStocks();
+            
+            if(portfolio != null)
+            {
+                string query = ConvertStocksIntoQuery(portfolio);
+                var stockData = await LoadMultipleStockData(query);
+
+                var portfolioStocks = new List<PortfolioStockDisplayModel>();
+
+                for(int i = 0; i < stockData.Count; i++)
+                {
+                    decimal price;
+                    decimal.TryParse(stockData[i].MarketPrice, out price);
+
+                    var stock = new PortfolioStockDisplayModel
+                    {
+                        Ticker = stockData[i].Ticker,
+                        Price = stockData[i].MarketPrice,
+                        ProfitLoss = (double)(price - portfolio[i].AveragePrice) * portfolio[i].Shares
+                    };
+                    portfolioStocks.Add(stock);
+                }
+
+                PortfolioStocks = new BindingList<PortfolioStockDisplayModel>(portfolioStocks);
+
+            }
+        }
+
+        private void StartClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMinutes(1);
+            timer.Tick += tickevent;
+            timer.Start();
+        }
+
+        private void tickevent(object sender, EventArgs e)
+        {
+            CurrentTime = DateTime.Now.ToString("t");
         }
 
         private async Task LoadWatchListData()
@@ -52,29 +180,44 @@ namespace DesktopUI.ViewModels
             {
                 var watchlistData = new List<WatchlistDisplayModel>();
 
-                string query = "";
-                int index = 1;
-                foreach (var stock in watchlist)
-                {
-                    if(index < watchlist.Count)
-                    {
-                        query = query + stock.Ticker + "%2C";
-                    }
-                    else
-                    {
-                        query = query + stock.Ticker;
-                    }
-                    
-                    index++;
-                }
+                string query = ConvertStocksIntoQuery(watchlist);
 
                 var stockData = await LoadMultipleStockData(query);
+
+                foreach(var stock in stockData)
+                {
+                    decimal temp;
+                    decimal.TryParse(stock.PercentChanged, out temp);
+                    temp = Math.Round(temp, 3);
+                    stock.PercentChanged = temp.ToString("");
+                }
 
                 WatchlistStocks = new BindingList<StockDashboardDataModel>(stockData);
 
                 
             }
 
+        }
+
+        public string ConvertStocksIntoQuery(dynamic stocks)
+        {
+            string query = "";
+            int index = 1;
+            foreach(var stock in stocks)
+            {
+                if (index < stocks.Count)
+                {
+                    query = query + stock.Ticker + "%2C";
+                }
+                else
+                {
+                    query = query + stock.Ticker;
+                }
+
+                index++;
+            }
+
+            return query;
         }
 
         private async Task LoadMarketNews(string query)
@@ -107,7 +250,7 @@ namespace DesktopUI.ViewModels
 
             foreach (var result in results)
             {
-                var point = new OhlcPoint((double) result.Open, (double)result.High, (double)result.Low,(double) result.Close);
+                var point = new OhlcPoint(Math.Round((double) result.Open,2), Math.Round((double)result.High,2), Math.Round((double)result.Low,2), Math.Round((double) result.Close,2));
                 Values.Add(point);
                 
             }
@@ -137,7 +280,7 @@ namespace DesktopUI.ViewModels
 
             foreach (var result in results)
             {
-                var point = new OhlcPoint((double)result.Open, (double)result.High, (double)result.Low, (double)result.Close);
+                var point = new OhlcPoint(Math.Round((double)result.Open, 2), Math.Round((double)result.High, 2), Math.Round((double)result.Low, 2), Math.Round((double)result.Close, 2));
                 Values.Add(point);
                 //DowLabels.Add(result.Date);
             }
@@ -165,6 +308,45 @@ namespace DesktopUI.ViewModels
             var result = await _stockDataEndpoint.GetStockDashboardData(ticker);
             return result;
         }
+
+        private BindingList<StockDashboardDataModel> _dailyGainers;
+
+        public BindingList<StockDashboardDataModel> DailyGainers
+        {
+            get { return _dailyGainers; }
+            set 
+            {
+                _dailyGainers = value;
+                NotifyOfPropertyChange(() => DailyGainers);
+            }
+        }
+
+
+        private BindingList<PortfolioStockDisplayModel> _portfolioStocks;
+
+        public BindingList<PortfolioStockDisplayModel> PortfolioStocks
+        {
+            get { return _portfolioStocks; }
+            set 
+            {
+                _portfolioStocks = value;
+                NotifyOfPropertyChange(() => PortfolioStocks);
+            }
+        }
+
+
+        private string _currentTime = DateTime.Now.ToString("t");
+
+        public string CurrentTime
+        {
+            get { return _currentTime; }
+            set 
+            { 
+                _currentTime = value;
+                NotifyOfPropertyChange(() => CurrentTime);
+            }
+        }
+
 
         private string _leftChartStock;
 

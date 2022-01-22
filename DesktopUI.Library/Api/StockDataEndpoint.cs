@@ -95,6 +95,41 @@ namespace DesktopUI.Library.Api
             }
         }
 
+        public async Task<List<StockDashboardDataModel>> GetDailyGainers()
+        {
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://yfapi.net/");
+            httpClient.DefaultRequestHeaders.Add("X-API-KEY", "9l4Vorm2Kb7Z5HeFpMN8raQTY4X8z0HL9bMNChR6");
+            httpClient.DefaultRequestHeaders.Add("accept", "application/json");
+
+            var response = await httpClient.GetAsync("ws/screeners/v1/finance/screener/predefined/saved?count=25&scrIds=day_gainers");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                var data = (JObject)JsonConvert.DeserializeObject(responseBody);
+
+                var stocks = new List<StockDashboardDataModel>();
+
+                foreach (var s in data.SelectToken("finance.result[0].quotes"))
+                {
+                    var stock = new StockDashboardDataModel
+                    {
+                        Ticker = s.SelectToken("symbol").ToString(),
+                        MarketPrice = s.SelectToken("regularMarketPrice").ToString(),
+                        PercentChanged = s.SelectToken("regularMarketChangePercent").ToString()
+                    };
+                    stocks.Add(stock);
+                }
+                return stocks;
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
+
         public async Task<List<StockDashboardDataModel>> GetMultipleStockDashboardData(string query)
         {
             var httpClient = new HttpClient();
@@ -122,7 +157,6 @@ namespace DesktopUI.Library.Api
                         PercentChanged = s.SelectToken("regularMarketChangePercent").ToString()
                     };
                     stocks.Add(stock);
-
                 } 
 
                 return stocks;

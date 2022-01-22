@@ -28,6 +28,7 @@ namespace DesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IApiHelper, ApiHelper>()
+                .Singleton<IPortfolioEndpoint, PortfolioEndpoint>()
                 .Singleton<IWatchListEndpoint, WatchListEndpoint>()
                 .Singleton<IStockDataEndpoint, StockDataEndpoint>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()

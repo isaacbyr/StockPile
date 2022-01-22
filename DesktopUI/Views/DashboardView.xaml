@@ -39,42 +39,63 @@
                        VerticalAlignment="Center"></TextBlock>
             
             <!--Menu-->
-            <StackPanel Margin="50 0 0 0" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                     
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <Button Background="SteelBlue"
+                    <Button Background="SteelBlue" Margin="0 10 2 10"
                             Foreground="White" Grid.Column="0"
                             Content="Account"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="1"
+                            Content="Performance"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="2"
+                            Content=""></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="3"
+                            Content="Logout"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="4"
+                            Content="Exit"></Button>
                 </Grid>
             </StackPanel>
 
+            <!--Time-->
+            <Border CornerRadius="18" Grid.Column="5" Grid.Row="0"
+                    Background="#1d2d44" Margin="15 10 15 5">
+
+                <TextBlock Foreground="White" Text="{Binding CurrentTime}" FontSize="30"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </Border>
 
             <Border CornerRadius="18" Background="#1D2D44"
-                    Grid.Row="1" Grid.RowSpan="4" Margin="10 10 5 5">
+                    Grid.Row="1" Grid.RowSpan="5" Margin="10 10 5 5">
                 <!--Top SideBar-->
                 <StackPanel Orientation="Vertical" Grid.Column="0"
                             Grid.Row="0">
                     <Grid>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="30"></RowDefinition>
                             <RowDefinition Height="270"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock HorizontalAlignment="Center" Grid.Row="0" Text="Stocks" Margin="0 0 5 0" FontSize="16"></TextBlock>
-                        <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
-                                          x:Name="Stocks" BorderBrush="Transparent">
+                        <TextBlock TextDecorations="Underline" HorizontalAlignment="Center" Grid.Row="0" Text="Portfolio Stocks" Margin="0 5 0 0" FontSize="16"></TextBlock>
+                        <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                          x:Name="PortfolioStocks" BorderBrush="Transparent">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="90">
+                                    <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="65">
                                         <GridViewColumn.HeaderContainerStyle>
                                             <Style TargetType="GridViewColumnHeader">
                                                 <Setter Property="Background" Value="Transparent"></Setter>
@@ -83,7 +104,7 @@
                                             </Style>
                                         </GridViewColumn.HeaderContainerStyle>
                                     </GridViewColumn>
-                                    <GridViewColumn DisplayMemberBinding="{Binding DailyChange}" Header="Daily %" Width="90">
+                                    <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="65">
                                         <GridViewColumn.HeaderContainerStyle>
                                             <Style TargetType="GridViewColumnHeader">
                                                 <Setter Property="Background" Value="Transparent"></Setter>
@@ -92,32 +113,48 @@
                                             </Style>
                                         </GridViewColumn.HeaderContainerStyle>
                                     </GridViewColumn>
-
+                                    <GridViewColumn DisplayMemberBinding="{Binding ProfitLoss}" Header="P/L" Width="75">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
+                            <ListView.Resources>
+                                <converters:PortfolioItemColorConverter x:Key="PortfolioItemColorConverter"></converters:PortfolioItemColorConverter>
+                            </ListView.Resources>
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
-
+                                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource PortfolioItemColorConverter}}"></Setter>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
                                 </Style>
+
                             </ListView.ItemContainerStyle>
+
                         </ListView>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <!--Portfolios sidebar-->
-            <Border CornerRadius="18" Grid.Row="5" Grid.RowSpan="4"
-                    Background="#1D2D44" Margin="10 10 5 10">
-                <!--Bottom SideBar-->
+            <!--Watchlist sidebar-->
+            <Border CornerRadius="18" Grid.Row="6" Grid.RowSpan="4"
+                    Background="#1D2D44" Margin="10 5 5 10">
+                
                 <StackPanel Orientation="Vertical" Grid.Column="0"
-                            Grid.Row="1">
+                            Grid.Row="0">
                     <Grid>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="25"></RowDefinition>
-                            <RowDefinition Height="270"></RowDefinition>
+                            <RowDefinition Height="30"></RowDefinition>
+                            <RowDefinition Height="260"></RowDefinition>
+                            <RowDefinition Height="20"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock HorizontalAlignment="Center" Grid.Row="0" Text="Watchlist" Margin="0 0 0 0" FontSize="16"></TextBlock>
+                        <TextBlock HorizontalAlignment="Center" Grid.Row="0" TextDecorations="Underline" Text="Watchlist" Margin="0 5 0 0" FontSize="16"></TextBlock>
                         <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
                                           x:Name="WatchlistStocks" BorderBrush="Transparent" 
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -153,11 +190,11 @@
                                 </GridView>
                             </ListView.View>
                             <ListView.Resources>
-                                <converters:ListViewItemColorConverter x:Key="ListViewItemColorConverter"></converters:ListViewItemColorConverter>
+                                <converters:WatchlistItemColorConverter x:Key="WatchlistItemColorConverter"></converters:WatchlistItemColorConverter>
                             </ListView.Resources>
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
-                                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource ListViewItemColorConverter}}"></Setter>
+                                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource WatchlistItemColorConverter}}"></Setter>
                                     <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                     <Setter Property="HorizontalAlignment" Value="Center"></Setter>
                                 </Style>
@@ -165,6 +202,16 @@
                             </ListView.ItemContainerStyle>
                             
                         </ListView>
+                        <StackPanel Grid.Row="2" Margin="25 5 25 0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Delete" Background="SteelBlue" Foreground="White"></Button>
+                                <Button Grid.Column="1" Content="Refresh" Background="SteelBlue" Foreground="White"></Button>
+                            </Grid>
+                        </StackPanel>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -195,14 +242,14 @@
                             <TextBlock Grid.Column="1" Text="{Binding LeftChartPrice}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"></TextBlock>
                             <TextBox VerticalContentAlignment="Center" MinWidth="70" FontSize="12" MaxWidth="70" Grid.Column="2"
                                  Background="#1D2D44" Foreground="White" x:Name="SearchInputLeftChart" HorizontalAlignment="Right"
-                                 Text="Ticker"></TextBox>
-                            <Button Grid.Column="3" Margin="0" Content="Search" Foreground="White" Background="SteelBlue" FontSize="10"
+                                 Text="Ticker" Margin="0 5 0 0"></TextBox>
+                            <Button Grid.Column="3" Margin="0 5 15 0" Content="Search" Foreground="White" Background="SteelBlue" FontSize="10"
                               Padding="0 0 0 0"  VerticalContentAlignment="Center"
                                 x:Name="SearchLeftChart"></Button>
                         </Grid>
                     
                     </StackPanel>
-                    <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 5 0" Series="{Binding SpySeriesCollection}">
+                    <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 15 15" Series="{Binding SpySeriesCollection}">
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Labels="{Binding SpyLabels}"/>
                         </lvc:CartesianChart.AxisX>
@@ -247,8 +294,8 @@
                             <TextBlock Grid.Column="1" Text="{Binding RightChartPrice}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"></TextBlock>
                             <TextBox VerticalContentAlignment="Center" MinWidth="70" FontSize="12" MaxWidth="70" Grid.Column="2"
                                  Background="#1D2D44" Foreground="White" x:Name="SearchInputRightChart" HorizontalAlignment="Right"
-                                 Text="Ticker"></TextBox>
-                            <Button Grid.Column="3" Margin="0" Content="Search" Foreground="White" Background="SteelBlue" FontSize="10"
+                                 Text="Ticker" Margin="0 5 0 0"></TextBox>
+                            <Button Grid.Column="3" Margin="0 5 15 0" Content="Search" Foreground="White" Background="SteelBlue" FontSize="10"
                               Padding="0 0 0 0"  VerticalContentAlignment="Center"
                                 x:Name="SearchRightChart"></Button>
                         </Grid>
@@ -256,7 +303,7 @@
                     </StackPanel>
 
                     <!--Chart-->
-                    <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 5 0" Series="{Binding DowSeriesCollection}">
+                    <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 15 15" Series="{Binding DowSeriesCollection}">
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Labels="{Binding DowLabels}"/>
                         </lvc:CartesianChart.AxisX>
@@ -274,14 +321,162 @@
                     Margin="5 5 10 10" Background="#1D2D44"
                     CornerRadius="18">
 
+                <StackPanel Orientation="Vertical" Grid.Column="0"
+                            Grid.Row="0">
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"></RowDefinition>
+                            <RowDefinition Height="270"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock TextDecorations="Underline" HorizontalAlignment="Center" Grid.Row="0" Text="Daily Gainers" Margin="0 5 0 0" FontSize="16"></TextBlock>
+                        <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
+                                          x:Name="DailyGainers" BorderBrush="Transparent"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="65">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding MarketPrice}" Header="Price" Width="65">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding PercentChanged}" Header="% Changed" Width="75">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                            <ListView.Resources>
+                                <converters:WatchlistItemColorConverter x:Key="WatchlistItemColorConverter"></converters:WatchlistItemColorConverter>
+                            </ListView.Resources>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource WatchlistItemColorConverter}}"></Setter>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                </Style>
+
+                            </ListView.ItemContainerStyle>
+
+                        </ListView>
+                    </Grid>
+                </StackPanel>
             </Border>
 
-            <!--Dashboard Border-->
+            <!--Portfolio Border-->
             <Border CornerRadius="18" Background="#1D2D44"
                     Margin="5 10 5 5" Grid.Column="1"
-                    Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="2"></Border>
+                    Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="118"></ColumnDefinition>
+                        <ColumnDefinition Width="118"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!--Header-->
+                    <TextBlock Text="Portfolio Summary" Grid.Column="0" Margin="18 0 0 0"
+                               Grid.ColumnSpan="2" VerticalAlignment="Center"
+                               Grid.Row="0" FontSize="22"
+                               TextDecorations="Underline"></TextBlock>
+                    <Button Content="View More" Foreground="White" Background="SteelBlue"
+                            Grid.Column="3" Grid.Row="0" VerticalAlignment="Center"
+                            Margin="30 10 18 10"></Button>
+                    
+                    <!--Stats-->
+                    
+                    <!--Starting Amount-->
+                    <TextBlock Text="Starting Amount:" Grid.Column="0" Grid.Row="1"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="100000"></TextBlock>
+
+                    <!--Account Balance-->
+                    <TextBlock Text="Account Balance:" Grid.Column="0" Grid.Row="2"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="100000"></TextBlock>
+
+                    <!--Number of stocks-->
+                    <TextBlock Text="Number of Holdings:" Grid.Column="0" Grid.Row="3"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="10"></TextBlock>
+
+                    <!--Unrealized Profit Loss-->
+                    <TextBlock Text="Unrealized P/L:" Grid.Column="2" Grid.Row="1"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="$10000"></TextBlock>
+                   
+                    <!--Realized Profit Loss-->
+                    <TextBlock Text="Realized P/L:" Grid.Column="2" Grid.Row="2"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="3" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="$10000"></TextBlock>
+
+                    <!--Asset Alloc-->
+                    <TextBlock Text="Asset Allocation" Grid.Column="0" FontSize="15"
+                               Grid.Row="4" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
+                               HorizontalAlignment="Center" Margin="10 0 0 0">
+                        
+                    </TextBlock>
+                    
+                    <!--Pie Chart-->
+                    <lvc:PieChart Grid.Column="0" Grid.ColumnSpan="2" Margin="10 10 10 10" Foreground="Black"
+                                  Grid.Row="5" Series="{Binding PieSeriesCollection}">
+                        
+                    </lvc:PieChart>
+                    
+                    <!--Top Holdings-->
+                    <TextBlock Text="Top Holdings" Grid.Column="2" Grid.Row="4"
+                               VerticalAlignment="Bottom" Grid.ColumnSpan="2"
+                               HorizontalAlignment="Center" FontSize="15"></TextBlock>
+                    <lvc:CartesianChart Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="5" 
+                                        Margin="10 10 15 0" Series="{Binding TopHoldingsSeriesCollection}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Labels="{Binding TopHoldingsLabels}" FontSize="9" LabelsRotation="60"></lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Shares" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+                </Grid>
+            </Border>
        
-            <!--Portfolio Summary Border-->
+            <!--News Border-->
             <Border CornerRadius="18" Background="#1D2D44"
                     Margin="5 10 10 5" Grid.Column="3"
                     Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3">
@@ -306,7 +501,7 @@
 
                     <ListBox Grid.Row="1" Background="Transparent" Margin="5 2 5 5" x:Name="Articles"
                              SelectedItem="{Binding SelectedArticle}" MinHeight="125" MaxHeight="125"
-                             MinWidth="620" MaxWidth="620" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                             MinWidth="620" MaxWidth="620" ScrollViewer.VerticalScrollBarVisibility="Hidden"
                              BorderBrush="Transparent">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -319,7 +514,7 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="{Binding Title}" Grid.Column="0"
                                                Grid.Row="0" FontSize="15" Margin="0 0 0 3"
-                                               Foreground="White"></TextBlock>
+                                               Foreground="AliceBlue"></TextBlock>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -329,24 +524,12 @@
                             Value="[Event MouseDoubleClick] = [Action Article_View()]"></Setter>
                             </Style>
                         </ListBox.ItemContainerStyle>
-                        <ListBox.Resources>
-                            <Style x:Key="{x:Type RepeatButton}" TargetType="{x:Type RepeatButton}">
-                                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                                <Setter Property="Background" Value="#1D2D44"></Setter>
-                                <Setter Property="Foreground" Value="White"></Setter>
-                            </Style>
-                            <Style TargetType="ScrollBar">
-                                <Setter Property="Background" Value="#1d2d44"></Setter>
-                            </Style>
-                            <Style x:Key="{x:Type Thumb}" TargetType="{x:Type Thumb}">
-                                <Setter Property="Background" Value="SteelBlue"></Setter>
-                            </Style>
-                        </ListBox.Resources>
+                        
                     </ListBox>
                 </Grid>
             </Border>
 
-            <!--News Border-->
+            <!--Dashboard Border-->
             <Border CornerRadius="18" Background="#1D2D44"
                     Margin="5 5 10 5" Grid.Column="3"
                     Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="3">

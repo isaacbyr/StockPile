@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace DesktopUI.Converters
 {
-    public class ListViewItemColorConverter : IValueConverter
+    public class WatchlistItemColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -24,7 +24,7 @@ namespace DesktopUI.Converters
             }
             else
             {
-                return "Green";
+                return "#03AC13";
             }
         }
 

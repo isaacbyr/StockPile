@@ -89,7 +89,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Converters\ListViewItemColorConverter.cs" />
+    <Compile Include="Converters\PortfolioItemColorConverter.cs" />
+    <Compile Include="Converters\WatchlistItemColorConverter.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
