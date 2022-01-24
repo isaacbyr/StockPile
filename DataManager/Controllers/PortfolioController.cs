@@ -22,5 +22,16 @@ namespace DataManager.Controllers
 
             return portfolioData.LoadPortfolio(id);
         }
+
+        [HttpGet]
+        [Route("{ticker}")]
+        public PortfolioStockDashboardModel GetPortfolioStock(string ticker)
+        {
+            var portfolioData = new PortfolioData();
+
+            string id = RequestContext.Principal.Identity.GetUserId();
+
+            return portfolioData.LoadPortfolioStock(id, ticker);
+        }
     }
 }

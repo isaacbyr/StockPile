@@ -74,6 +74,8 @@
     <Build Include="dbo\Tables\WatchList.sql" />
     <Build Include="dbo\Stored Procedures\spWatchlist_LoadAllById.sql" />
     <Build Include="dbo\Stored Procedures\spPortfolio_GetAllByUserId.sql" />
+    <Build Include="dbo\Stored Procedures\spUserAccount_GetPortfolioOverview.sql" />
+    <Build Include="dbo\Stored Procedures\spPortfolio_GetStockByTicker.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

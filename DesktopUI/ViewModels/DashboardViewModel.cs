@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
+using DesktopUI.Library.EventModels;
 using DesktopUI.Library.Models;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -23,6 +24,8 @@ namespace DesktopUI.ViewModels
         private readonly INewsEndpoint _newsEndpoint;
         private readonly IWatchListEndpoint _watchListEndpoint;
         private readonly IPortfolioEndpoint _portfolioEndpoint;
+        private readonly IUserAccountEndpoint _userAccountEndpoint;
+        private readonly IEventAggregator _events;
 
         public SeriesCollection SpySeriesCollection { get; set; }
         public List<string> SpyLabels { get; set; }
@@ -38,23 +41,26 @@ namespace DesktopUI.ViewModels
 
 
         public DashboardViewModel(IStockDataEndpoint stockDataEndpoint, INewsEndpoint newsEndpoint, 
-            IWatchListEndpoint watchListEndpoint, IPortfolioEndpoint portfolioEndpoint)
+            IWatchListEndpoint watchListEndpoint, IPortfolioEndpoint portfolioEndpoint, 
+            IUserAccountEndpoint userAccountEndpoint, IEventAggregator events)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _newsEndpoint = newsEndpoint;
             _watchListEndpoint = watchListEndpoint;
             _portfolioEndpoint = portfolioEndpoint;
+            _userAccountEndpoint = userAccountEndpoint;
+            _events = events;
         }
 
         protected override async void OnViewLoaded(object view)
         {
-            //await LoadLeftChartData("spy");
-            //await LoadRightChartData("^dji");
-            //await LoadWatchListData();
-            //await LoadPortfolioData();
-            //await LoadDailyGainers();
+            await LoadLeftChartData("spy");
+            await LoadRightChartData("^dji");
+            await LoadWatchListData();
+            await LoadPortfolioData();
+            await LoadDailyGainers();
             await LoadMarketNews("amzn+aapl+wmt+fb");
-            LoadAccountPie();
+            await LoadPortfolioOverview();
             LoadTopHoldings();
             StartClock();
         }
@@ -91,8 +97,12 @@ namespace DesktopUI.ViewModels
             
         }
 
-        private void LoadAccountPie()
+        private async Task LoadPortfolioOverview()
         {
+            // load account balance and starting amount
+            //var result = await _userAccountEndpoint.GetPortfolioOverview();
+
+            // Load in pie chart
             PieSeriesCollection = new SeriesCollection
             {
                 new PieSeries()
@@ -242,16 +252,16 @@ namespace DesktopUI.ViewModels
             SpyLabels = new List<string>();
             var Values = new ChartValues<OhlcPoint>();
 
-            var stockData = await LoadStockData(ticker);
-            LeftChartPrice = stockData.MarketPrice;
-            LeftChartStock = stockData.Ticker;
+            var (results, symbol, marketPrice) = await _stockDataEndpoint.GetDashboardCharts(ticker);
 
-            var results = await _stockDataEndpoint.GetDashboardCharts(ticker);
+            LeftChartPrice = marketPrice;
+            LeftChartStock = symbol;
 
             foreach (var result in results)
             {
                 var point = new OhlcPoint(Math.Round((double) result.Open,2), Math.Round((double)result.High,2), Math.Round((double)result.Low,2), Math.Round((double) result.Close,2));
                 Values.Add(point);
+                SpyLabels.Add(result.Date);
                 
             }
 
@@ -259,9 +269,11 @@ namespace DesktopUI.ViewModels
             {
                 new CandleSeries()
                 {
+                    Title = symbol,
                     Values = Values
                 }
             };
+
 
             NotifyOfPropertyChange(() => SpySeriesCollection);
             NotifyOfPropertyChange(() => SpyLabels);
@@ -270,25 +282,25 @@ namespace DesktopUI.ViewModels
         private async Task LoadRightChartData(string ticker)
         {
             DowLabels = new List<string>();
-            var Values = new ChartValues<OhlcPoint>();
+            var Values = new ChartValues<OhlcPoint>();            
 
-            var stockData = await LoadStockData(ticker);
-            RightChartPrice = stockData.MarketPrice;
-            RightChartStock = stockData.Ticker;
+            var (results, symbol, marketPrice) = await _stockDataEndpoint.GetDashboardCharts(ticker);
 
-            var results = await _stockDataEndpoint.GetDashboardCharts(ticker);
+            RightChartPrice = marketPrice;
+            RightChartStock = symbol;
 
             foreach (var result in results)
             {
                 var point = new OhlcPoint(Math.Round((double)result.Open, 2), Math.Round((double)result.High, 2), Math.Round((double)result.Low, 2), Math.Round((double)result.Close, 2));
                 Values.Add(point);
-                //DowLabels.Add(result.Date);
+                DowLabels.Add(result.Date);
             }
 
             DowSeriesCollection = new SeriesCollection
             {
                 new CandleSeries()
                 {
+                    Title = symbol,
                     Values = Values
                 }
             };
@@ -331,6 +343,18 @@ namespace DesktopUI.ViewModels
             {
                 _portfolioStocks = value;
                 NotifyOfPropertyChange(() => PortfolioStocks);
+            }
+        }
+
+        private PortfolioStockDisplayModel _selectedPortfolioStock;
+
+        public PortfolioStockDisplayModel SelectedPortfolioStock
+        {
+            get { return _selectedPortfolioStock; }
+            set 
+            { 
+                _selectedPortfolioStock = value;
+                NotifyOfPropertyChange(() => SelectedPortfolioStock);
             }
         }
 
@@ -484,6 +508,17 @@ namespace DesktopUI.ViewModels
         public async Task SearchNews()
         {
             await LoadMarketNews(SearchInput);
+        }
+
+        public void LoadPortfolioStockView()
+        {
+            if (SelectedPortfolioStock == null)
+            {
+                return;
+            }
+
+            // TODO: Add loggedInUsreMdoel UserId as a parameter
+            _events.PublishOnUIThread(new OpenPortfolioStockView(SelectedPortfolioStock.Ticker));
         }
 
         public void Article_View()

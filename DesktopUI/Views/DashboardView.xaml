@@ -92,7 +92,8 @@
                         </Grid.RowDefinitions>
                         <TextBlock TextDecorations="Underline" HorizontalAlignment="Center" Grid.Row="0" Text="Portfolio Stocks" Margin="0 5 0 0" FontSize="16"></TextBlock>
                         <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                          x:Name="PortfolioStocks" BorderBrush="Transparent">
+                                          x:Name="PortfolioStocks" BorderBrush="Transparent"
+                                  SelectedItem="{Binding SelectedPortfolioStock}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="65">
@@ -132,8 +133,10 @@
                                     <Setter Property="Foreground" Value="{Binding Converter={StaticResource PortfolioItemColorConverter}}"></Setter>
                                     <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                     <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                    <Setter Property="cal:Message.Attach"
+                                            Value="[Event MouseDoubleClick] = [Action LoadPortfolioStockView()]"></Setter>
                                 </Style>
-
+                             
                             </ListView.ItemContainerStyle>
 
                         </ListView>
@@ -249,9 +252,13 @@
                         </Grid>
                     
                     </StackPanel>
-                    <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 15 15" Series="{Binding SpySeriesCollection}">
+                    <lvc:CartesianChart Foreground="Black" Grid.Row="1" Grid.Column="0" Margin="5 0 15 18" Series="{Binding SpySeriesCollection}">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Labels="{Binding SpyLabels}"/>
+                            <lvc:Axis Labels="{Binding SpyLabels}" LabelsRotation="60">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator IsEnabled="False" Step="5"></lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Price"></lvc:Axis>
@@ -303,9 +310,13 @@
                     </StackPanel>
 
                     <!--Chart-->
-                    <lvc:CartesianChart Grid.Row="1" Grid.Column="0" Margin="5 0 15 15" Series="{Binding DowSeriesCollection}">
+                    <lvc:CartesianChart Foreground="Black" Grid.Row="1" Grid.Column="0" Margin="5 0 15 18" Series="{Binding DowSeriesCollection}">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Labels="{Binding DowLabels}"/>
+                            <lvc:Axis Labels="{Binding DowLabels}" LabelsRotation="60">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator IsEnabled="False" Step="5"></lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                     </lvc:CartesianChart>
                 </Grid>
@@ -463,8 +474,9 @@
                     <!--Top Holdings-->
                     <TextBlock Text="Top Holdings" Grid.Column="2" Grid.Row="4"
                                VerticalAlignment="Bottom" Grid.ColumnSpan="2"
-                               HorizontalAlignment="Center" FontSize="15"></TextBlock>
-                    <lvc:CartesianChart Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="5" 
+                               HorizontalAlignment="Center" FontSize="15"
+                               ></TextBlock>
+                    <lvc:CartesianChart Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="5" Foreground="Black"
                                         Margin="10 10 15 0" Series="{Binding TopHoldingsSeriesCollection}">
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Labels="{Binding TopHoldingsLabels}" FontSize="9" LabelsRotation="60"></lvc:Axis>

@@ -13,5 +13,6 @@ namespace DesktopUI.Library.Models
         public decimal Open { get; set; }
         public decimal Close { get; set; }
         public long Volume { get; set; }
+        public string Date { get; set; }
     }
 }

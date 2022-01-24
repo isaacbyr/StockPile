@@ -7,5 +7,6 @@ namespace DesktopUI.Library.Api
     public interface IPortfolioEndpoint
     {
         Task<List<PortfolioStockDashboardModel>> LoadPortfolioStocks();
+        Task<PortfolioStockDashboardModel> GetPortfolioStock(string ticker);
     }
 }

@@ -32,5 +32,21 @@ namespace DesktopUI.Library.Api
                 }
             }
         }
+
+        public async Task<PortfolioStockDashboardModel> GetPortfolioStock(string ticker)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/portfolio/{ticker}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<PortfolioStockDashboardModel>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

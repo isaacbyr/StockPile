@@ -47,10 +47,12 @@
   <ItemGroup>
     <Compile Include="DataAccess\InternalAccess\SqlDataAccess.cs" />
     <Compile Include="DataAccess\PortfolioData.cs" />
+    <Compile Include="DataAccess\UserAccountData.cs" />
     <Compile Include="DataAccess\UserData.cs" />
     <Compile Include="DataAccess\WatchlistData.cs" />
     <Compile Include="Models\LoggedInUserModel.cs" />
     <Compile Include="Models\PortfolioStockDashboardModel.cs" />
+    <Compile Include="Models\UserPortfolioOverviewModel.cs" />
     <Compile Include="Models\WatchlistModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

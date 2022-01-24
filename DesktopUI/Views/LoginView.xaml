@@ -8,32 +8,110 @@
              Background="Transparent"
              FontSize="24"
              Foreground="White"
-             d:DesignHeight="700" d:DesignWidth="1250">
-    <Border CornerRadius="18" Background="#0D1321">
+             d:DesignHeight="800" d:DesignWidth="1400">
+    <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="230"></ColumnDefinition>
-                <ColumnDefinition Width="300"></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="200"></RowDefinition>
-                <RowDefinition Height="80"></RowDefinition>
+                <RowDefinition Height="120"></RowDefinition>
+                <RowDefinition Height="480"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="110"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <!--Header-->
+            <!--Login Form Border-->
+            <Border CornerRadius="18" Background="#1D2D44"
+                    Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
+                    Grid.RowSpan="1"
+                    >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150"></RowDefinition>
+                        <RowDefinition Height="80"></RowDefinition>
+                        <RowDefinition Height="120"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!--Header-->
+                    <TextBlock Text="StockPile" FontWeight="ExtraBold"
+                   Grid.Row="0" HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom" FontSize="64"></TextBlock>
+
+                    <!--UserName-->
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" 
+                                HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Email:" Grid.Column="0"
+                   HorizontalAlignment="Right" Margin="0 0 3 0"
+                   VerticalAlignment="Center"></TextBlock>
+                            <TextBox Grid.Row="2" Grid.Column="2" VerticalContentAlignment="Center"
+                 Margin="3 0 0 0 " MaxWidth="250" MinWidth="250" MinHeight="40" MaxHeight="40"
+                 HorizontalAlignment="Left" x:Name="Email"></TextBox>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Top"
+                                HorizontalAlignment="Center" Margin="0 0 39 0" >
+                        <TextBlock Text="Password:" Grid.Column="1" Grid.Row="3"
+                   HorizontalAlignment="Right" Margin="0 0 5 0"
+                   VerticalAlignment="Center"></TextBlock>
+                        <TextBox Grid.Row="3" Grid.Column="2" VerticalContentAlignment="Center"
+                 Margin="5 10 5 10" MaxWidth="250" MinWidth="250" MinHeight="40" MaxHeight="40"
+                 HorizontalAlignment="Left" x:Name="Password"></TextBox>
+                    </StackPanel>
+                    
+                    <!--Login Button-->
+                    <Button Content="Login" Foreground="White" Background="SteelBlue"
+                     Grid.Row="4" MinHeight="40" MaxHeight="40" MinWidth="120" MaxWidth="120"
+                    x:Name="Login" VerticalAlignment="Top"></Button>
+                </Grid>
+            </Border>
+            
+
+            <!--Register Account Border-->
+            <Border CornerRadius="18" Background="#1D2D44"
+                    Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Dont have an account?" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 3 0"></TextBlock>
+                            <Button Content="Register" Foreground="White" Background="SteelBlue"
+                Grid.Column="1"  x:Name="Register" Margin="3 0 0 0" MinWidth="150" MaxWidth="150"
+                 HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Center"
+                            MinHeight="40" MaxHeight="40"></Button>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+                
+
+            </Border>
+            <!--Header--><!--
             <TextBlock Margin="0 0 130 0" Text="Welcome to StockPile!" FontWeight="Bold"
                    Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center"
                    VerticalAlignment="Bottom" FontSize="48"></TextBlock>
 
-            <!--Email-->
+            --><!--Email--><!--
             <TextBlock Text="Email:" Grid.Column="1" Grid.Row="2"
                    HorizontalAlignment="Right" Margin="0 0 5 0"
                    VerticalAlignment="Center"></TextBlock>
@@ -41,7 +119,7 @@
                  Margin="5 10 5 10" MaxWidth="250" MinWidth="250"
                  HorizontalAlignment="Left" x:Name="Email"></TextBox>
 
-            <!--Password-->
+            --><!--Password--><!--
             <TextBlock Text="Password:" Grid.Column="1" Grid.Row="3"
                    HorizontalAlignment="Right" Margin="0 0 5 0"
                    VerticalAlignment="Center"></TextBlock>
@@ -49,15 +127,12 @@
                  Margin="5 10 5 10" MaxWidth="250" MinWidth="250"
                  HorizontalAlignment="Left" x:Name="Password"></TextBox>
 
-            <!--Login Button-->
+            --><!--Login Button--><!--
             <Button Content="Login" Foreground="White" Background="#748CAB"
                 Grid.Column="2" Grid.Row="4" 
                 Margin="10 15 140 0" x:Name="Login"></Button>
 
-            <!--Register-->
-            <Button Content="Register" Foreground="White" Background="#748CAB"
-                Grid.Column="2" Grid.Row="6" 
-                Margin="10 15 140 0" x:Name="Register"></Button>
+            -->
 
         </Grid>
     </Border>

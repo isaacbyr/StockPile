@@ -22,20 +22,36 @@ namespace DesktopUI.Library.Api
            _apiHelper = apiHelper;
         }
 
-        public async Task<List<OhlcStockModel>> GetDashboardCharts(string ticker)
+        public async Task<(List<OhlcStockModel>, string, string)> GetDashboardCharts(string ticker, string range = "3mo", string interval = "1d")
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://yfapi.net/");
             httpClient.DefaultRequestHeaders.Add("X-API-KEY", "9l4Vorm2Kb7Z5HeFpMN8raQTY4X8z0HL9bMNChR6");
             httpClient.DefaultRequestHeaders.Add("accept", "application/json");
 
-            var response = await httpClient.GetAsync($"v8/finance/chart/{ticker}?range=3mo&region=US&interval=1d&lang=en");
+            var response = await httpClient.GetAsync($"v8/finance/chart/{ticker}?range={range}&region=US&interval={interval}&lang=en");
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
             var data = (JObject)JsonConvert.DeserializeObject(responseBody);
 
             //var test = data.SelectToken("chart.result[0].indicators.quote[0]");
+
+            var timestamp = data.SelectToken("chart.result[0].timestamp").ToList();
+
+            List<string> dates = new List<string>();
+
+            foreach (var time in timestamp)
+            {
+                var ts = (int)time;
+                DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(ts).ToLocalTime();
+                string formattedDate = dt.ToString("dd-MMM");
+                dates.Add(formattedDate);
+            }
+
+            var symbol = data.SelectToken("chart.result[0].meta.symbol").ToString();
+
+            var marketPrice = data.SelectToken("chart.result[0].meta.regularMarketPrice").ToString();
 
             var open = data.SelectToken("chart.result[0].indicators.quote[0].open").ToList();
 
@@ -57,11 +73,12 @@ namespace DesktopUI.Library.Api
                     Close = close[i].ToObject<decimal>(),
                     High = high[i].ToObject<decimal>(),
                     Low = low[i].ToObject<decimal>(),
-                    Volume = volume[i].ToObject<long>()
-                });
+                    Volume = volume[i].ToObject<long>(),
+                    Date = dates[i]
+                }) ;
             }
 
-            return stocks;
+            return (stocks, symbol, marketPrice);
 
         }
 
