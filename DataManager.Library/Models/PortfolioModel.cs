@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopUI.Library.Models
+namespace DataManager.Library.Models
 {
-    public class PortfolioStockDisplayModel
+    public class PortfolioModel
     {
+        public string UserId { get; set; }
         public string Ticker { get; set; }
         public decimal Price { get; set; }
-        public double ProfitLoss { get; set; }
         public int Shares { get; set; }
-        public decimal AveragePrice { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DesktopUI.Library.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,48 @@ namespace DesktopUI.Library.Api
                 if(response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsAsync<UserPortfolioOverviewModel>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task UpdateAccountBalance(decimal cashAmount)
+        {
+            var amount = new UpdateUserAccountModel
+            {
+                Amount = cashAmount
+            };
+
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/useraccount/updatebalance", amount))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task<decimal> UpdateAfterSale(decimal realizedProfitLoss, decimal cashAmount)
+        {
+            var amount = new UpdateUserAccountModel
+            {
+                Amount = cashAmount,
+                RealizedProfitLoss = realizedProfitLoss
+            };
+
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/useraccount/sale", amount))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<decimal>();
                     return result;
                 }
                 else

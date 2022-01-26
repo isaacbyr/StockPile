@@ -9,7 +9,7 @@ namespace DesktopUI.Library.Models
     public class StockDashboardDataModel
     {
         public string Ticker { get; set; }
-        public string MarketPrice { get; set; }
+        public decimal MarketPrice { get; set; }
         public string PercentChanged { get; set; }
     }
 }

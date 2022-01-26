@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DesktopUI.Library.Models
 {
-    public class PortfolioStockDisplayModel
+    public class TransactionModel
     {
         public string Ticker { get; set; }
-        public decimal Price { get; set; }
-        public double ProfitLoss { get; set; }
         public int Shares { get; set; }
-        public decimal AveragePrice { get; set; }
+        public bool Buy { get; set; }
+        public bool Sell { get; set; }
+        public decimal Price { get; set; }
     }
 }

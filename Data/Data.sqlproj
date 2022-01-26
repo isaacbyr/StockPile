@@ -76,6 +76,13 @@
     <Build Include="dbo\Stored Procedures\spPortfolio_GetAllByUserId.sql" />
     <Build Include="dbo\Stored Procedures\spUserAccount_GetPortfolioOverview.sql" />
     <Build Include="dbo\Stored Procedures\spPortfolio_GetStockByTicker.sql" />
+    <Build Include="dbo\Stored Procedures\spUserAccount_UpdateAccountBalance.sql" />
+    <Build Include="dbo\Stored Procedures\spTransaction_PostTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\spPortfolio_PostStock.sql" />
+    <Build Include="dbo\Stored Procedures\spPortfolio_DeleteStock.sql" />
+    <Build Include="dbo\Stored Procedures\spPortfolio_UpdatePortfolioSell.sql" />
+    <Build Include="dbo\Stored Procedures\spUserAccount_UpdateAfterSale.sql" />
+    <Build Include="dbo\Stored Procedures\spPortfolio_UpdatePortfolioBuy.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

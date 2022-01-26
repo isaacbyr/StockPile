@@ -8,5 +8,9 @@ namespace DesktopUI.Library.Api
     {
         Task<List<PortfolioStockDashboardModel>> LoadPortfolioStocks();
         Task<PortfolioStockDashboardModel> GetPortfolioStock(string ticker);
+        Task UpdatePortfolioBuy(PortfolioModel stock);
+        Task PostStock(PortfolioModel stock);
+        Task<decimal> UpdatePortfolioSell(PortfolioModel stock);
+        Task<decimal> UpdateAndDeletePortfolio(PortfolioModel stock);
     }
 }

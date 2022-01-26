@@ -48,5 +48,67 @@ namespace DesktopUI.Library.Api
                 }
             }
         }
+
+        public async Task UpdatePortfolioBuy(PortfolioModel stock)
+        {
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/portfolio/buy", stock))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task<decimal> UpdatePortfolioSell(PortfolioModel stock)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/portfolio/sell", stock))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<decimal>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task PostStock(PortfolioModel stock)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/portfolio", stock))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task<decimal> UpdateAndDeletePortfolio(PortfolioModel stock)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/portfolio/delete", stock))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<decimal>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

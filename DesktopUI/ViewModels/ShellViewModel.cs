@@ -24,8 +24,8 @@ namespace DesktopUI.ViewModels
             _portfolioStockVM = portfolioStockVM;
             _events.Subscribe(this);
 
-            ActivateItem(_loginVM);
-            //ActivateItem(_portfolioStockVM);
+            //ActivateItem(_loginVM);
+            ActivateItem(_portfolioStockVM);
             //ActivateItem(_dashboardVM);
         }
 

@@ -60,8 +60,8 @@
                             Foreground="White" Grid.Column="1"
                             Content="Performance"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="2"
-                            Content=""></Button>
+                            Foreground="White" Grid.Column="2" x:Name="BuyStocks"
+                            Content="Buy Stocks"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="3"
                             Content="Logout"></Button>

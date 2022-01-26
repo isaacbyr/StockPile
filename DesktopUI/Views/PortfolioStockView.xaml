@@ -214,40 +214,23 @@
                                Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"
                               FontSize="20"></TextBlock>
 
-                    <StackPanel Orientation="Horizontal" Grid.Column="0" 
-                                Grid.ColumnSpan="4" Grid.Row="5" HorizontalAlignment="Center">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock HorizontalAlignment="Center" Text="Stock" Grid.Column="0" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
-                            <TextBlock HorizontalAlignment="Center" Text="Shares" Grid.Column="1" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
-                            <TextBlock HorizontalAlignment="Center" Text="Price" Grid.Column="2" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
-                        </Grid>
-                    </StackPanel>
-                    
-                    <StackPanel Orientation="Horizontal" Grid.Column="0" 
-                                Grid.ColumnSpan="4" Grid.Row="6" HorizontalAlignment="Center">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ChartSymbol}" Grid.Column="0"></TextBlock>
-                            <TextBox Grid.Column="1" Margin="0 0 0 18" MaxWidth="100" MinWidth="100"
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Stock" Grid.Column="0" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Shares" Grid.Column="1" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Price" Grid.Column="2" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Cash Amount" Grid.Column="3" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
+
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding ChartSymbol}" Grid.Column="0" Grid.Row="6"></TextBlock>
+                    <TextBox Margin="0 0 0 5" Grid.Column="1"  MaxWidth="100" MinWidth="100" Grid.Row="6" x:Name="NewPositionShares"
                                      VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Background="Transparent"
                                      Foreground="White"></TextBox>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ChartPrice}" Grid.Column="2"></TextBlock>
-                        </Grid>
-                    </StackPanel>
-                    
-                    <Button Content="Buy" Background="LightGreen" Foreground="White"
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Text="{Binding ChartPrice}" Grid.Column="2"></TextBlock>
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Text="{Binding CashAmount}" Grid.Column="3"></TextBlock>
+
+
+                    <Button Content="Buy" Background="LightGreen" Foreground="White" x:Name="Buy"
                             Grid.Column="1" Grid.Row="7" MinHeight="30" MaxHeight="30"></Button>
 
-                    <Button Content="Sell" Background="Red" Foreground="White"
+                    <Button Content="Sell" Background="Red" Foreground="White" x:Name="Sell"
                             Grid.Column="2" Grid.Row="7" MinHeight="30" MaxHeight="30"></Button>
                 </Grid>
 
@@ -281,6 +264,77 @@
                     <!--Header-->
                     <TextBlock Text="Company Overview" FontSize="24" TextDecorations="Underline" Grid.Column="1"
                                VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="18 0 0 0"></TextBlock>
+                    <!--Symbol-->
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Symbol:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Symbol}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--Sector-->
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Sector:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Sector}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--MarketCap-->
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="Market Cap:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding MarketCapitalization}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--EBITDA-->
+                    <TextBlock Grid.Column="2" Grid.Row="2" Text="EBITDA:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding EBITDA}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--PERation-->
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="P/E Ratio:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding PERatio}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--PEGRatio-->
+                    <TextBlock Grid.Column="0" Grid.Row="4" Text="PEG Ratio:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding PEGRatio}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--Dividend Yield-->
+                    <TextBlock Grid.Column="2" Grid.Row="3" Text="Dividend Yield:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding Symbol}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--EPS-->
+                    <TextBlock Grid.Column="0" Grid.Row="5" Text="EPS:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding EPS}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--Beta-->
+                    <TextBlock Grid.Column="0" Grid.Row="6" Text="Beta:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding Beta}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--ForwardPE-->
+                    <TextBlock Grid.Column="2" Grid.Row="4" Text="Forward PE:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding ForwardPE}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--Trailing PE-->
+                    <TextBlock Grid.Column="2" Grid.Row="5" Text="Trailing PE:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="5" Text="{Binding TrailingPE}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
+
+                    <!--Shares-->
+                    <TextBlock Grid.Column="2" Grid.Row="6" Text="Shares:" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Column="3" Grid.Row="6" Text="{Binding SharesOutstanding}" VerticalAlignment="Center"
+                               HorizontalAlignment="Left"></TextBlock>
                 </Grid>
             </Border>
         </Grid>

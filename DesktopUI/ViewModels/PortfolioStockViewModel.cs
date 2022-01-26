@@ -1,14 +1,17 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
 using DesktopUI.Library.EventModels;
+using DesktopUI.Library.Models;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace DesktopUI.ViewModels
@@ -19,25 +22,63 @@ namespace DesktopUI.ViewModels
         private readonly IEventAggregator _events;
         private readonly IUserAccountEndpoint _userAccountEndpoint;
         private readonly IPortfolioEndpoint _portfolioEndpoint;
+        private readonly ITransactionEndoint _transactionEndpoint;
+        private readonly IWindowManager _window;
+        private readonly TransactionInfoViewModel _transactionInfoVM;
 
         public string TickerOnLoad { get; set; } = "AAPL";
         public SeriesCollection SeriesCollection { get; set; }
         public List<string> Labels { get; set; }
 
         public PortfolioStockViewModel(IStockDataEndpoint stockDataEndpoint, IEventAggregator events,
-            IUserAccountEndpoint userAccountEndpoint, IPortfolioEndpoint portfolioEndpoint)
+            IUserAccountEndpoint userAccountEndpoint, IPortfolioEndpoint portfolioEndpoint,
+            ITransactionEndoint transactionEndpoint, IWindowManager window, TransactionInfoViewModel transactionInfoVM)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _events = events;
             _userAccountEndpoint = userAccountEndpoint;
             _portfolioEndpoint = portfolioEndpoint;
+            _transactionEndpoint = transactionEndpoint;
+            _window = window;
+            _transactionInfoVM = transactionInfoVM;
         }
 
         protected override async void OnViewLoaded(object view)
         {
             await LoadChart(TickerOnLoad);
             await LoadBuyPanel(TickerOnLoad);
+            await LoadAccountBalance();
+            await LoadCompanyOverview(TickerOnLoad);
+            ChartSearch = TickerOnLoad;
             StartClock();
+        }
+
+        private async Task LoadCompanyOverview(string ticker)
+        {
+            var result = await _stockDataEndpoint.GetCompanyOverview(ticker);
+
+            if(result != null)
+            {
+                Symbol = result.Symbol;
+                Sector = result.Sector;
+                MarketCapitalization = result.MarketCapitalization;
+                EBITDA = result.EBITDA;
+                PEGRatio = result.PEGRatio;
+                PERatio = result.PERatio;
+                DividendYield = result.DividendYield;
+                EPS = result.EPS;
+                Beta = result.Beta;
+                TrailingPE = result.TrailingPE;
+                ForwardPE = result.ForwardPE;
+                SharesOutstanding = result.SharesOutstanding;
+            }
+            
+        }
+
+        private async Task LoadAccountBalance()
+        {
+            var result = await _userAccountEndpoint.GetPortfolioOverview();
+            AccountBalance = Math.Round(result.AccountBalance,2);
         }
 
         private async Task LoadBuyPanel(string ticker)
@@ -47,11 +88,11 @@ namespace DesktopUI.ViewModels
             if(result != null)
             {
                 CurrentPositionAveragePrice = result.AveragePrice.ToString();
-                CurrentPositionShares = result.Shares.ToString();
+                CurrentPositionShares = result.Shares;
             }
             else
             {
-                CurrentPositionShares = "0";
+                CurrentPositionShares = 0;
                 CurrentPositionAveragePrice = "0";
             }
         }
@@ -101,6 +142,163 @@ namespace DesktopUI.ViewModels
             NotifyOfPropertyChange(() => Labels);
         }
 
+        private string _symbol;
+
+        public string Symbol
+        {
+            get { return _symbol; }
+            set 
+            { 
+                _symbol = value;
+                NotifyOfPropertyChange(() => Symbol);
+            }
+        }
+
+        private string _sector;
+
+        public string Sector
+        {
+            get { return _sector; }
+            set 
+            {
+                _sector = value;
+                NotifyOfPropertyChange(() => Sector);
+            }
+        }
+
+        private string _marketCapitalization;
+
+        public string MarketCapitalization
+        {
+            get { return _marketCapitalization; }
+            set 
+            {
+                _marketCapitalization = value;
+                NotifyOfPropertyChange(() => MarketCapitalization);
+            }
+        }
+
+        private string _ebitda;
+
+        public string EBITDA
+        {
+            get { return _ebitda; }
+            set 
+            {
+                _ebitda = value;
+                NotifyOfPropertyChange(() => EBITDA);
+            }
+        }
+
+        private string _peRatio;
+
+        public string PERatio
+        {
+            get { return _peRatio; }
+            set 
+            {
+                _peRatio = value;
+                NotifyOfPropertyChange(() => PERatio);
+            }
+        }
+
+        private string _pegRatio;
+
+        public string PEGRatio
+        {
+            get { return _pegRatio; }
+            set 
+            {
+                _pegRatio = value;
+                NotifyOfPropertyChange(() => PEGRatio);
+            }
+        }
+
+        private string _dividendYield;
+
+        public string DividendYield
+        {
+            get { return _dividendYield; }
+            set 
+            {
+                _dividendYield = value;
+                NotifyOfPropertyChange(() => DividendYield);
+            }
+        }
+
+        private string _eps;
+
+        public string EPS
+        {
+            get { return _eps; }
+            set 
+            {
+                _eps = value;
+                NotifyOfPropertyChange(() => EPS);
+            }
+        }
+
+        private string _beta;
+
+        public string Beta
+        {
+            get { return _beta; }
+            set 
+            { 
+                _beta = value;
+                NotifyOfPropertyChange(() => Beta);
+            }
+        }
+
+        private string _trailingPE;
+
+        public string TrailingPE
+        {
+            get { return _trailingPE; }
+            set 
+            {
+                _trailingPE = value;
+                NotifyOfPropertyChange(() => TrailingPE);
+            }
+        }
+
+        private string _forwardPE;
+
+        public string ForwardPE
+        {
+            get { return _forwardPE; }
+            set 
+            {
+                _forwardPE = value;
+                NotifyOfPropertyChange(() => ForwardPE);
+            }
+        }
+
+        private string _sharesOutstanding;
+
+        public string SharesOutstanding
+        {
+            get { return _sharesOutstanding; }
+            set 
+            {
+                _sharesOutstanding = value;
+                NotifyOfPropertyChange(() => SharesOutstanding);
+            }
+        }
+
+
+        private decimal _accountBalance;
+
+        public decimal AccountBalance
+        {
+            get { return _accountBalance; }
+            set 
+            { 
+                _accountBalance = value;
+                NotifyOfPropertyChange(() => AccountBalance);
+            }
+        }
+
 
         private string _chartPrice;
 
@@ -126,7 +324,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private string _chartSearch = "Ticker";
+        private string _chartSearch;
 
         public string ChartSearch
         {
@@ -186,9 +384,9 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private string _currentPositionShares;
+        private int _currentPositionShares;
 
-        public string CurrentPositionShares
+        public int CurrentPositionShares
         {
             get { return _currentPositionShares; }
             set 
@@ -210,7 +408,37 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private int _newPositionShares;
 
+        public int NewPositionShares
+        {
+            get { return _newPositionShares; }
+            set
+            { 
+                _newPositionShares = value;
+                NotifyOfPropertyChange(() => NewPositionShares);
+                NotifyOfPropertyChange(() => CashAmount);
+                NotifyOfPropertyChange(() => CanBuy);
+                NotifyOfPropertyChange(() => CanSell);
+            }
+        }
+
+        private decimal _cashAmount;
+
+        public decimal CashAmount
+        {
+            get 
+            {
+                decimal price;
+                decimal.TryParse(ChartPrice, out price);
+                return Math.Round(NewPositionShares * price,2);
+            }
+            set 
+            { 
+                _cashAmount = value;
+                NotifyOfPropertyChange(() => CanBuy);
+            }
+        }
 
         private string _currentTime = DateTime.Now.ToString("t");
 
@@ -224,10 +452,136 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        public bool CanBuy
+        {
+            get
+            {
+                if(CashAmount < AccountBalance) return true;
+                else return false;
+            }
+        }
+
+        public bool CanSell
+        {
+            get
+            {
+                if (NewPositionShares <= CurrentPositionShares && NewPositionShares > 0) return true;
+                else return false;
+            }
+        }
+
+        public async Task Buy()
+        {
+            //change account balance
+            await _userAccountEndpoint.UpdateAccountBalance(CashAmount);
+
+            //add to transaction table
+            decimal price;
+            decimal.TryParse(ChartPrice, out price);
+            var transaction = new TransactionModel
+            {
+                Ticker = ChartSymbol,
+                Buy = true,
+                Price = price,
+                Sell = false,
+                Shares = NewPositionShares,
+
+            };
+            await _transactionEndpoint.PostTransaction(transaction);
+
+            // update portfolio table
+            var stock = new PortfolioModel
+            {
+                Ticker = ChartSymbol,
+                Price = price,
+                Shares = NewPositionShares
+            };
+
+            if(CurrentPositionShares == 0)
+            {
+                await _portfolioEndpoint.PostStock(stock);
+            }
+            else
+            {
+                await _portfolioEndpoint.UpdatePortfolioBuy(stock);
+            }
+
+            //Display Popup and Reset Buy Panel
+            DisplayTransactionCompletion("Transaction Complete", $"Bought {NewPositionShares} shares of {ChartSymbol} for ${ChartPrice}");
+            await ResetBuyPanel();
+
+        }
+
+        public async Task Sell()
+        {
+            //add to transaction table
+            decimal price;
+            decimal.TryParse(ChartPrice, out price);
+            var transaction = new TransactionModel
+            {
+                Ticker = ChartSymbol,
+                Buy = false,
+                Price = price,
+                Sell = true,
+                Shares = NewPositionShares,
+            };
+
+            await _transactionEndpoint.PostTransaction(transaction);
+
+            //Update Portfolio
+            var stock = new PortfolioModel
+            {
+                Ticker = ChartSymbol,
+                Price = price,
+                Shares = NewPositionShares
+            };
+
+            // if sold shares equals shares in portfolio delete entry
+            decimal realizedProfitLoss;
+
+            if (CurrentPositionShares == NewPositionShares)
+            {
+               realizedProfitLoss = await _portfolioEndpoint.UpdateAndDeletePortfolio(stock);
+            }
+            else
+            {
+                // else update exisitng position
+                realizedProfitLoss = await _portfolioEndpoint.UpdatePortfolioSell(stock);
+            }
+
+            // update user account table, account balance and realizedgains
+            var result = await _userAccountEndpoint.UpdateAfterSale(realizedProfitLoss, CashAmount);
+            AccountBalance = result;
+            // DisplayTransactionCompletion("Transaction Complete",$"Sold {NewPositionShares} shares of {ChartSymbol} for {ChartPrice}");
+            await ResetBuyPanel();
+
+        }
+
+        public void DisplayTransactionCompletion(string header, string message)
+        {
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            settings.ResizeMode = ResizeMode.NoResize;
+            settings.WindowStyle = WindowStyle.None;
+            //settings.Title = "Transaction Status";
+            
+
+            _transactionInfoVM.UpdateMessage(header, message);
+            _window.ShowDialog(_transactionInfoVM, null, settings);
+        }
+
+        private async Task ResetBuyPanel()
+        {
+            NewPositionShares = 0;
+            CashAmount = 0;
+            await LoadBuyPanel(ChartSymbol);
+        }
+
         public async Task SearchChart()
         {
             await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
             await LoadBuyPanel(ChartSearch);
+            await LoadCompanyOverview(ChartSearch);
         }
 
         public void ReturnHome()

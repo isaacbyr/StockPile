@@ -22,5 +22,31 @@ namespace DataManager.Controllers
 
             return userAccountData.LoadPortfolioOverview(id);
         }
+
+        [HttpPut]
+        [Route("updatebalance")]
+        public void UpdateAccountBalance(UpdateUserAccountModel update)
+        {
+            var userAccountData = new UserAccountData();
+
+            //TODO: Remove hardcode of user id
+            update.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
+            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+
+            userAccountData.UpdateAccountBalance(update);
+        }
+
+        [HttpPut]
+        [Route("sale")]
+        public decimal UpdateAfterSale(UpdateUserAccountModel update)
+        {
+            var userAccountData = new UserAccountData();
+
+            //TODO: Remove hardcode of user id
+            update.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
+            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+
+            return userAccountData.UpdateAfterSale(update);
+        }
     }
 }

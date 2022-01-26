@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using System.Windows.Media;
 
 namespace DesktopUI.ViewModels
 {
@@ -99,32 +100,43 @@ namespace DesktopUI.ViewModels
 
         private async Task LoadPortfolioOverview()
         {
-            // load account balance and starting amount
-            //var result = await _userAccountEndpoint.GetPortfolioOverview();
+            List<SolidColorBrush> colors = new List<SolidColorBrush> 
+            { Brushes.AliceBlue, Brushes.LightBlue, Brushes.CadetBlue, Brushes.CornflowerBlue, Brushes.DodgerBlue};
 
-            // Load in pie chart
-            PieSeriesCollection = new SeriesCollection
+            // load account balance and starting amount
+            var result = await _userAccountEndpoint.GetPortfolioOverview();
+
+            PieSeriesCollection = new SeriesCollection();
+
+            var cash = new PieSeries()
             {
-                new PieSeries()
-                {
-                    Values = new ChartValues<decimal> {1},
-                    Title = "Cash",
-                    Fill = System.Windows.Media.Brushes.AliceBlue
-                },
-                new PieSeries()
-                {
-                    Values = new ChartValues<decimal> {2},
-                    Title = "AAPL",
-                    Fill = System.Windows.Media.Brushes.CadetBlue
-                },
-                new PieSeries()
-                {
-                    Values = new ChartValues<decimal> {3},
-                    Title = "NFLX",
-                    Fill = System.Windows.Media.Brushes.LightBlue
-                },
+                Values = new ChartValues<decimal> { result.AccountBalance - 52400 },
+                Title = "Cash",
+                Fill = colors[0]
             };
 
+            PieSeriesCollection.Add(cash);
+
+            // Load in pie chart
+            if(PortfolioStocks != null)
+            {
+                int index = 1;
+                foreach (var stock in PortfolioStocks)
+                {
+
+                    var holding = new PieSeries()
+                    {
+                        Values = new ChartValues<decimal> { stock.AveragePrice * stock.Shares },
+                        Title = stock.Ticker,
+                        Fill = colors[index]
+                    };
+
+                    index++;
+                    PieSeriesCollection.Add(holding);
+
+                }
+            }
+            
             NotifyOfPropertyChange(() => PieSeriesCollection);
         }
 
@@ -142,7 +154,7 @@ namespace DesktopUI.ViewModels
         {
             var portfolio = await _portfolioEndpoint.LoadPortfolioStocks();
             
-            if(portfolio != null)
+            if(portfolio.Count > 0)
             {
                 string query = ConvertStocksIntoQuery(portfolio);
                 var stockData = await LoadMultipleStockData(query);
@@ -151,14 +163,16 @@ namespace DesktopUI.ViewModels
 
                 for(int i = 0; i < stockData.Count; i++)
                 {
-                    decimal price;
-                    decimal.TryParse(stockData[i].MarketPrice, out price);
+                    //decimal price;
+                    //decimal.TryParse(stockData[i].MarketPrice, out price);
 
                     var stock = new PortfolioStockDisplayModel
                     {
                         Ticker = stockData[i].Ticker,
                         Price = stockData[i].MarketPrice,
-                        ProfitLoss = (double)(price - portfolio[i].AveragePrice) * portfolio[i].Shares
+                        ProfitLoss = (double)(stockData[i].MarketPrice - portfolio[i].AveragePrice) * portfolio[i].Shares,
+                        Shares = portfolio[i].Shares,
+                        AveragePrice = portfolio[i].AveragePrice
                     };
                     portfolioStocks.Add(stock);
                 }
@@ -505,6 +519,12 @@ namespace DesktopUI.ViewModels
             await LoadRightChartData(SearchInputRightChart);
         }
 
+        public void BuyStocks()
+        {
+            // TODO: Add loggedInUsreMdoel UserId as a parameter
+            _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
+        }
+
         public async Task SearchNews()
         {
             await LoadMarketNews(SearchInput);
@@ -529,5 +549,7 @@ namespace DesktopUI.ViewModels
             }
             Process.Start(SelectedArticle.Url);
         }
+
+        
     }
 }

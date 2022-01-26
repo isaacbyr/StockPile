@@ -27,5 +27,39 @@ namespace DataManager.Library.DataAccess
                 throw new Exception(ex.Message);
             }
         }
+
+        public void UpdateAccountBalance(UpdateUserAccountModel update)
+        {
+            var sql = new SqlDataAccess();
+            var p = new { UserId = update.UserId, CashAmount = update.Amount };
+
+            try
+            {
+                sql.StartTransaction("StockPileData");
+                sql.SaveDataInTransaction("dbo.spUserAccount_UpdateAccountBalance", p);
+                sql.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                sql.RollbackTransaction();
+                throw new Exception(e.Message);
+            }
+        }
+
+        public decimal UpdateAfterSale(UpdateUserAccountModel update)
+        {
+            var sql = new SqlDataAccess();
+            var p = new { UserId = update.UserId, RealizedProfitLoss = update.RealizedProfitLoss, SaleAmount = update.Amount};
+
+            try
+            {
+                var output = sql.LoadData<decimal, dynamic>("dbo.spUserAccount_UpdateAfterSale", p, "StockPileData").First();
+                return output;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
