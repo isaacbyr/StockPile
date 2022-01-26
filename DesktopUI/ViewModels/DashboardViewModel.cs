@@ -101,16 +101,21 @@ namespace DesktopUI.ViewModels
         private async Task LoadPortfolioOverview()
         {
             List<SolidColorBrush> colors = new List<SolidColorBrush> 
-            { Brushes.AliceBlue, Brushes.LightBlue, Brushes.CadetBlue, Brushes.CornflowerBlue, Brushes.DodgerBlue};
+            { Brushes.AliceBlue, Brushes.LightBlue, Brushes.CadetBlue, Brushes.CornflowerBlue, Brushes.DodgerBlue, Brushes.LightSkyBlue,
+                Brushes.LightSteelBlue, Brushes.PaleTurquoise, Brushes.PowderBlue, Brushes.SkyBlue, Brushes.DeepSkyBlue, Brushes.PaleTurquoise,
+                Brushes.LightCyan, Brushes.AliceBlue, Brushes.LightBlue, Brushes.CadetBlue, Brushes.CornflowerBlue, Brushes.DodgerBlue, Brushes.LightSkyBlue};
 
             // load account balance and starting amount
             var result = await _userAccountEndpoint.GetPortfolioOverview();
+            StartAmount = Math.Round(result.StartAmount,2);
+            AccountBalance = Math.Round(result.AccountBalance,2);
+            RealizedProfitLoss = Math.Round(result.RealizedProfitLoss,2);
 
             PieSeriesCollection = new SeriesCollection();
 
             var cash = new PieSeries()
             {
-                Values = new ChartValues<decimal> { result.AccountBalance - 52400 },
+                Values = new ChartValues<decimal> { result.AccountBalance },
                 Title = "Cash",
                 Fill = colors[0]
             };
@@ -120,6 +125,8 @@ namespace DesktopUI.ViewModels
             // Load in pie chart
             if(PortfolioStocks != null)
             {
+                NumHoldings = PortfolioStocks.Count();
+
                 int index = 1;
                 foreach (var stock in PortfolioStocks)
                 {
@@ -385,6 +392,56 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private decimal _realizedProfitLoss;
+
+        public decimal RealizedProfitLoss
+        {
+            get { return _realizedProfitLoss; }
+            set 
+            {
+                _realizedProfitLoss = value;
+                NotifyOfPropertyChange(() => RealizedProfitLoss);
+            }
+        }
+
+
+        private decimal _accountBalance;
+
+        public decimal AccountBalance
+        {
+            get { return _accountBalance; }
+            set 
+            {
+                _accountBalance = value;
+                NotifyOfPropertyChange(() => AccountBalance);
+            }
+        }
+
+
+        private decimal _startAmount;
+
+        public decimal StartAmount
+        {
+            get { return _startAmount; }
+            set 
+            {
+                _startAmount = value;
+                NotifyOfPropertyChange(() => StartAmount);
+            }
+        }
+
+        private int _numHoldings = 0;
+
+        public int NumHoldings
+        {
+            get { return _numHoldings; }
+            set 
+            {
+                _numHoldings = value;
+                NotifyOfPropertyChange(() => NumHoldings);
+            }
+        }
+
 
         private string _leftChartStock;
 
@@ -507,6 +564,16 @@ namespace DesktopUI.ViewModels
                 _leftChartPrice = value;
                 NotifyOfPropertyChange(() => LeftChartPrice);
             }
+        }
+
+        public async Task RefreshWatchlist()
+        {
+            await LoadWatchListData();
+        }
+
+        public async Task RefreshPortfolio()
+        {
+            await LoadPortfolioData();
         }
 
         public async Task SearchLeftChart()

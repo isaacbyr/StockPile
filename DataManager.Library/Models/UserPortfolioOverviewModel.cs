@@ -10,5 +10,6 @@ namespace DataManager.Library.Models
     {
         public decimal StartAmount { get; set; }
         public decimal AccountBalance { get; set; }
+        public decimal RealizedProfitLoss { get; set; }
     }
 }

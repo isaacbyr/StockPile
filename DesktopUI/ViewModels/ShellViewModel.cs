@@ -26,7 +26,7 @@ namespace DesktopUI.ViewModels
 
             //ActivateItem(_loginVM);
             ActivateItem(_portfolioStockVM);
-            //ActivateItem(_dashboardVM);
+            ActivateItem(_dashboardVM);
         }
 
         public void Handle(LogOnEvent message)

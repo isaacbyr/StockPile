@@ -24,5 +24,10 @@ namespace DesktopUI.Views
         {
             InitializeComponent();
         }
+
+        private void PortfolioStocks_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
