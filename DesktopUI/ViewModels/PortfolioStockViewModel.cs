@@ -25,6 +25,7 @@ namespace DesktopUI.ViewModels
         private readonly ITransactionEndoint _transactionEndpoint;
         private readonly IWindowManager _window;
         private readonly TransactionInfoViewModel _transactionInfoVM;
+        private readonly IWatchListEndpoint _watchlistEndpoint;
 
         public string TickerOnLoad { get; set; } = "AAPL";
         public SeriesCollection SeriesCollection { get; set; }
@@ -32,7 +33,8 @@ namespace DesktopUI.ViewModels
 
         public PortfolioStockViewModel(IStockDataEndpoint stockDataEndpoint, IEventAggregator events,
             IUserAccountEndpoint userAccountEndpoint, IPortfolioEndpoint portfolioEndpoint,
-            ITransactionEndoint transactionEndpoint, IWindowManager window, TransactionInfoViewModel transactionInfoVM)
+            ITransactionEndoint transactionEndpoint, IWindowManager window, TransactionInfoViewModel transactionInfoVM,
+            IWatchListEndpoint watchlistEndpoint)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _events = events;
@@ -41,6 +43,7 @@ namespace DesktopUI.ViewModels
             _transactionEndpoint = transactionEndpoint;
             _window = window;
             _transactionInfoVM = transactionInfoVM;
+            _watchlistEndpoint = watchlistEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -333,6 +336,7 @@ namespace DesktopUI.ViewModels
             { 
                 _chartSearch = value;
                 NotifyOfPropertyChange(() => ChartSearch);
+                NotifyOfPropertyChange(() => CanSearchChart);
             }
         }
 
@@ -369,6 +373,7 @@ namespace DesktopUI.ViewModels
             { 
                 _selectedChartRange = value;
                 NotifyOfPropertyChange(() => SelectedChartRange);
+                NotifyOfPropertyChange(() => CanSearchChart);
             }
         }
 
@@ -381,6 +386,8 @@ namespace DesktopUI.ViewModels
             { 
                 _selectedChartInterval = value;
                 NotifyOfPropertyChange(() => SelectedChartInterval);
+                NotifyOfPropertyChange(() => CanSearchChart);
+
             }
         }
 
@@ -470,6 +477,21 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        public bool CanSearchChart
+        {
+            get
+            {
+                if(SelectedChartRange != null && SelectedChartInterval != null && ChartSearch != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         public async Task Buy()
         {
             //change account balance
@@ -509,7 +531,7 @@ namespace DesktopUI.ViewModels
             //Display Popup and Reset Buy Panel
             DisplayTransactionCompletion("Transaction Complete", $"Bought {NewPositionShares} shares of {ChartSymbol} for ${ChartPrice}");
             await ResetBuyPanel();
-
+            await LoadAccountBalance();
         }
 
         public async Task Sell()
@@ -551,8 +573,8 @@ namespace DesktopUI.ViewModels
 
             // update user account table, account balance and realizedgains
             var result = await _userAccountEndpoint.UpdateAfterSale(realizedProfitLoss, CashAmount);
-            AccountBalance = result;
-            // DisplayTransactionCompletion("Transaction Complete",$"Sold {NewPositionShares} shares of {ChartSymbol} for {ChartPrice}");
+            AccountBalance = Math.Round(result,2);
+            DisplayTransactionCompletion("Transaction Complete",$"Sold {NewPositionShares} shares of {ChartSymbol} for {ChartPrice}");
             await ResetBuyPanel();
 
         }
@@ -577,11 +599,18 @@ namespace DesktopUI.ViewModels
             await LoadBuyPanel(ChartSymbol);
         }
 
+
         public async Task SearchChart()
         {
             await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
             await LoadBuyPanel(ChartSearch);
             await LoadCompanyOverview(ChartSearch);
+        }
+
+        public async Task AddToWatchlist()
+        {
+            var result = await _watchlistEndpoint.PostWatchlistStock(ChartSymbol);
+            DisplayTransactionCompletion(result.Header, result.Message);
         }
 
         public void ReturnHome()

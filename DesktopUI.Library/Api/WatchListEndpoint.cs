@@ -32,5 +32,26 @@ namespace DesktopUI.Library.Api
                 }
             }
         }
+
+        public async Task<ResponseModel> PostWatchlistStock(string ticker)
+        {
+            var stock = new WatchlistModel
+            {
+                Ticker = ticker
+            };
+
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/watchlist", stock))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<ResponseModel>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

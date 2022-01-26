@@ -27,5 +27,22 @@ namespace DataManager.Library.DataAccess
                 throw new Exception();
             }
         }
+
+        public void PostWatchlistStock(WatchlistModel stock)
+        {
+            var sql = new SqlDataAccess();
+
+            try
+            {
+                sql.StartTransaction("StockPileData");
+                sql.SaveDataInTransaction("dbo.spWatchlist_InsertWatchlistStock", stock);
+                sql.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                sql.RollbackTransaction();
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

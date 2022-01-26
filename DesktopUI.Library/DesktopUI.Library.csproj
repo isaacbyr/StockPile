@@ -117,6 +117,7 @@
     <Compile Include="Models\PortfolioStockDashboardModel.cs" />
     <Compile Include="Models\PortfolioStockDisplayModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
+    <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\StockDashboardDataModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\UpdateUserAccountModel.cs" />

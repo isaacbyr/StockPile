@@ -7,7 +7,7 @@
              mc:Ignorable="d" FontFamily="Microsoft Sans Serif"
              Foreground="White"
              Background="#3E4C76"
-             Height="150" Width="400">
+             Height="150" Width="450">
     <Grid>
 
         <Grid.ColumnDefinitions>

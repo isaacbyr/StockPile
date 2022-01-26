@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataManager.Library.Models
 {
-    public class WatchlistModel
+    public class ResponseModel
     {
-        public string UserId { get; set; }
-        public string Ticker { get; set; }
+        public string Header { get; set; }
+        public string Message { get; set; }
     }
 }

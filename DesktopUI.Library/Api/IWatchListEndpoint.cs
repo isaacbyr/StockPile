@@ -7,5 +7,6 @@ namespace DesktopUI.Library.Api
     public interface IWatchListEndpoint
     {
         Task<List<WatchlistModel>> LoadWatchList();
+        Task<ResponseModel> PostWatchlistStock(string ticker);
     }
 }

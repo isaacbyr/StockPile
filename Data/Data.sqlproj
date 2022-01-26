@@ -83,6 +83,7 @@
     <Build Include="dbo\Stored Procedures\spPortfolio_UpdatePortfolioSell.sql" />
     <Build Include="dbo\Stored Procedures\spUserAccount_UpdateAfterSale.sql" />
     <Build Include="dbo\Stored Procedures\spPortfolio_UpdatePortfolioBuy.sql" />
+    <Build Include="dbo\Stored Procedures\spWatchlist_InsertWatchlistStock.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />
