@@ -3,7 +3,8 @@
 AS
 BEGIN
 	SET NOCOUNT ON;
-	SELECT StartAmount, AccountBalance, RealizedProfitLoss
-	FROM [dbo].[UserAccount]
-	WHERE UserId = @UserId
+	SELECT [u].StartAmount, [u].AccountBalance, [r].TotalRealized
+	FROM [dbo].[UserAccount] AS u
+	FULL JOIN [dbo].[RealizedProfitLoss] AS r ON [u].UserId = [r].UserId
+	WHERE [u].UserId = @UserId
 END

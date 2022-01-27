@@ -24,5 +24,31 @@ namespace DataManager.Controllers
 
             transactionData.PostTransaction(transaction);
         }
+
+        [HttpGet]
+        public List<TransactionModel> LoadTransactions()
+        {
+
+            var transactionData = new TransactionData();
+
+            //TODO: Change hardcode on user id
+            string id = "34b965a6-ba23-4a13-b834-1e456f21d86c";
+            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+
+            return transactionData.LoadTransactions(id);
+        }
+
+        [HttpGet]
+        [Route("chart")]
+        public List<TransactionChartData> LoadChartData()
+        {
+            var transactionData = new TransactionData();
+
+            //TODO: Change hardcode on user id
+            string id = "34b965a6-ba23-4a13-b834-1e456f21d86c";
+            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+
+            return transactionData.LoadChartData(id);
+        }
     }
 }

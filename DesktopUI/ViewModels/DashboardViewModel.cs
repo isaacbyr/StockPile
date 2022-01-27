@@ -55,14 +55,14 @@ namespace DesktopUI.ViewModels
 
         protected override async void OnViewLoaded(object view)
         {
-            await LoadLeftChartData("spy");
-            await LoadRightChartData("^dji");
-            await LoadWatchListData();
-            await LoadPortfolioData();
-            await LoadDailyGainers();
-            await LoadMarketNews("amzn+aapl+wmt+fb");
-            await LoadPortfolioOverview();
-            LoadTopHoldings();
+            //await LoadLeftChartData("spy");
+            //await LoadRightChartData("^dji");
+            //await LoadWatchListData();
+            //await LoadPortfolioData();
+            //await LoadDailyGainers();
+            //await LoadMarketNews("amzn+aapl+wmt+fb");
+            //await LoadPortfolioOverview();
+            //LoadTopHoldings();
             StartClock();
         }
 
@@ -126,6 +126,7 @@ namespace DesktopUI.ViewModels
             if(PortfolioStocks != null)
             {
                 NumHoldings = PortfolioStocks.Count();
+                UnrealizedProfitLoss = Math.Round((decimal)PortfolioStocks.Sum(s => s.ProfitLoss),2);
 
                 int index = 1;
                 foreach (var stock in PortfolioStocks)
@@ -177,7 +178,7 @@ namespace DesktopUI.ViewModels
                     {
                         Ticker = stockData[i].Ticker,
                         Price = stockData[i].MarketPrice,
-                        ProfitLoss = (double)(stockData[i].MarketPrice - portfolio[i].AveragePrice) * portfolio[i].Shares,
+                        ProfitLoss = Math.Round((decimal)(stockData[i].MarketPrice - portfolio[i].AveragePrice) * portfolio[i].Shares,2),
                         Shares = portfolio[i].Shares,
                         AveragePrice = portfolio[i].AveragePrice
                     };
@@ -392,7 +393,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private decimal _realizedProfitLoss;
+        private decimal _realizedProfitLoss = 0;
 
         public decimal RealizedProfitLoss
         {
@@ -401,6 +402,18 @@ namespace DesktopUI.ViewModels
             {
                 _realizedProfitLoss = value;
                 NotifyOfPropertyChange(() => RealizedProfitLoss);
+            }
+        }
+
+        private decimal _unrealizedProfitLoss = 0;
+
+        public decimal UnrealizedProfitLoss
+        {
+            get { return _unrealizedProfitLoss; }
+            set 
+            { 
+                _unrealizedProfitLoss = value;
+                NotifyOfPropertyChange(() => UnrealizedProfitLoss);
             }
         }
 
@@ -584,6 +597,16 @@ namespace DesktopUI.ViewModels
         public async Task SearchRightChart()
         {
             await LoadRightChartData(SearchInputRightChart);
+        }
+
+        public void Performance()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+        }
+
+        public void ViewMorePortfolioSummary()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
         }
 
         public void BuyStocks()

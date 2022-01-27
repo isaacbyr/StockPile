@@ -9,6 +9,7 @@ namespace DesktopUI.Library.Models
     public class TransactionModel
     {
         public string Ticker { get; set; }
+        public DateTime Date { get; set; }
         public int Shares { get; set; }
         public bool Buy { get; set; }
         public bool Sell { get; set; }

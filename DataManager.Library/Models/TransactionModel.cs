@@ -9,6 +9,7 @@ namespace DataManager.Library.Models
     public class TransactionModel
     {
         public string UserId { get; set; }
+        public DateTime Date { get; set; }
         public int Shares { get; set; }
         public string Ticker { get; set; }
         public bool Buy { get; set; }

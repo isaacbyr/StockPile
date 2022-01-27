@@ -118,6 +118,7 @@ namespace DesktopUI.ViewModels
         {
             Labels = new List<string>();
             var Values = new ChartValues<OhlcPoint>();
+            var volume = new ChartValues<long>();
 
             var (results, symbol, marketPrice) = await _stockDataEndpoint.GetDashboardCharts(ticker, range, interval);
 
@@ -127,6 +128,7 @@ namespace DesktopUI.ViewModels
             foreach (var result in results)
             {
                 var point = new OhlcPoint(Math.Round((double)result.Open, 2), Math.Round((double)result.High, 2), Math.Round((double)result.Low, 2), Math.Round((double)result.Close, 2));
+                volume.Add(result.Volume);
                 Values.Add(point);
                 Labels.Add(result.Date);
             }
@@ -573,6 +575,7 @@ namespace DesktopUI.ViewModels
 
             // update user account table, account balance and realizedgains
             var result = await _userAccountEndpoint.UpdateAfterSale(realizedProfitLoss, CashAmount);
+            
             AccountBalance = Math.Round(result,2);
             DisplayTransactionCompletion("Transaction Complete",$"Sold {NewPositionShares} shares of {ChartSymbol} for {ChartPrice}");
             await ResetBuyPanel();

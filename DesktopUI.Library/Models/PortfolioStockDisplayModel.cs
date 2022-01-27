@@ -10,7 +10,7 @@ namespace DesktopUI.Library.Models
     {
         public string Ticker { get; set; }
         public decimal Price { get; set; }
-        public double ProfitLoss { get; set; }
+        public decimal ProfitLoss { get; set; }
         public int Shares { get; set; }
         public decimal AveragePrice { get; set; }
     }

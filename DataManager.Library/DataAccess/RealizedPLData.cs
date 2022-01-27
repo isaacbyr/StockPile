@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace DataManager.Library.DataAccess
 {
-    public class TransactionData
+    public class RealizedPLData
     {
-        public void PostTransaction(TransactionModel transaction)
+        public void PostRealizedPL(UpdateRealizedPLModel realizedPL)
         {
             var sql = new SqlDataAccess();
 
             try
             {
                 sql.StartTransaction("StockPileData");
-                sql.SaveDataInTransaction("dbo.spTransaction_PostTransaction", transaction);
+                sql.SaveDataInTransaction("dbo.spRealizedPL_PostRealizedPL", realizedPL);
                 sql.CommitTransaction();
             }
             catch (Exception e)
@@ -27,7 +27,7 @@ namespace DataManager.Library.DataAccess
             }
         }
 
-        public List<TransactionModel> LoadTransactions(string id)
+        public List<RealizedPLChartModel> LoadHistory(string id)
         {
             var sql = new SqlDataAccess();
 
@@ -35,24 +35,7 @@ namespace DataManager.Library.DataAccess
 
             try
             {
-                var output = sql.LoadData<TransactionModel, dynamic>("dbo.spTransaction_LoadById", p, "StockPileData");
-                return output;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public List<TransactionChartData> LoadChartData(string id)
-        {
-            var sql = new SqlDataAccess();
-
-            var p = new { UserId = id };
-
-            try
-            {
-                var output = sql.LoadData<TransactionChartData, dynamic>("dbo.spTransaction_LoadChartData", p, "StockPileData");
+                var output = sql.LoadData<RealizedPLChartModel, dynamic>("dbo.spRealizedPL_LoadHistoryByUser", p, "StockPileData");
                 return output;
             }
             catch (Exception ex)
@@ -61,4 +44,6 @@ namespace DataManager.Library.DataAccess
             }
         }
     }
+
 }
+

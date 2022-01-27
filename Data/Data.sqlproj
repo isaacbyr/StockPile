@@ -84,6 +84,11 @@
     <Build Include="dbo\Stored Procedures\spUserAccount_UpdateAfterSale.sql" />
     <Build Include="dbo\Stored Procedures\spPortfolio_UpdatePortfolioBuy.sql" />
     <Build Include="dbo\Stored Procedures\spWatchlist_InsertWatchlistStock.sql" />
+    <Build Include="dbo\Tables\RealizedProfitLoss.sql" />
+    <Build Include="dbo\Stored Procedures\spRealizedPL_PostRealizedPL.sql" />
+    <Build Include="dbo\Stored Procedures\spRealizedPL_LoadHistoryByUser.sql" />
+    <Build Include="dbo\Stored Procedures\spTransaction_LoadById.sql" />
+    <Build Include="dbo\Stored Procedures\spTransaction_LoadChartData.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

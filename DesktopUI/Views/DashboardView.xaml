@@ -58,7 +58,7 @@
                             Content="Account"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="1"
-                            Content="Performance"></Button>
+                            Content="Performance" x:Name="Performance"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="2" x:Name="BuyStocks"
                             Content="Buy Stocks"></Button>
@@ -420,7 +420,7 @@
                                Grid.Row="0" FontSize="22"
                                TextDecorations="Underline"></TextBlock>
                     <Button Content="View More" Foreground="White" Background="SteelBlue"
-                            Grid.Column="3" Grid.Row="0" VerticalAlignment="Center"
+                            Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" x:Name="ViewMorePortoflioSummary"
                             Margin="30 10 18 10"></Button>
                     
                     <!--Stats-->
@@ -451,7 +451,7 @@
                                VerticalAlignment="Center" HorizontalAlignment="Right"
                                Margin="0 0 5 0"></TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center"
-                               HorizontalAlignment="Left" Text="$10000"></TextBlock>
+                               HorizontalAlignment="Left" Text="{Binding UnrealizedProfitLoss}"></TextBlock>
                    
                     <!--Realized Profit Loss-->
                     <TextBlock Text="Realized P/L:" Grid.Column="2" Grid.Row="2"

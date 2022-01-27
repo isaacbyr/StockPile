@@ -32,6 +32,7 @@ namespace DesktopUI
                 .Singleton<IPortfolioEndpoint, PortfolioEndpoint>()
                 .Singleton<IWatchListEndpoint, WatchListEndpoint>()
                 .Singleton<IStockDataEndpoint, StockDataEndpoint>()
+                .Singleton<IRealizedProfitLossEndpoint, RealizedProfitLossEndpoint>()
                 .Singleton<ITransactionEndoint, TransactionEndpoint>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<INewsEndpoint, NewsEndpoint>()
