@@ -50,5 +50,14 @@ namespace DataManager.Controllers
 
             return transactionData.LoadChartData(id);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public List<SocialDashboardDataModel> LoadById(string id)
+        {
+            var transactionData = new TransactionData();
+
+            return transactionData.LoadDashboardById(id);
+        }
     }
 }

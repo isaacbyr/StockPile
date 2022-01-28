@@ -4,10 +4,11 @@
 	@Buy BIT,
 	@Sell BIT,
 	@Price MONEY,
-	@Ticker NVARCHAR(10)
+	@Ticker NVARCHAR(10),
+	@Date DATETIME2
 AS
 BEGIN
 	SET NOCOUNT ON;
-	INSERT INTO [dbo].[Transactions] (UserId, Shares, Buy, Sell, Price, Ticker)
-	VALUES (@UserId, @Shares, @Buy, @Sell, @Price, @Ticker)
+	INSERT INTO [dbo].[Transactions] (UserId, Shares, Buy, Sell, Price, Ticker, Date)
+	VALUES (@UserId, @Shares, @Buy, @Sell, @Price, @Ticker, @Date)
 END

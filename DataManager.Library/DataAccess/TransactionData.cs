@@ -60,5 +60,22 @@ namespace DataManager.Library.DataAccess
                 throw new Exception(ex.Message);
             }
         }
+
+        public List<SocialDashboardDataModel> LoadDashboardById(string id)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { Id = id };
+
+            try
+            {
+                var output = sql.LoadData<SocialDashboardDataModel, dynamic>("dbo.spTransaction_LoadDashboardById", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

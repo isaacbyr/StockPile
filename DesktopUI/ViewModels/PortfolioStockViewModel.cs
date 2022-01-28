@@ -547,6 +547,7 @@ namespace DesktopUI.ViewModels
                 Buy = false,
                 Price = price,
                 Sell = true,
+                Date = DateTime.Now,
                 Shares = NewPositionShares,
             };
 

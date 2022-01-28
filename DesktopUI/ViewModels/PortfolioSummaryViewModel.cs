@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
+using DesktopUI.Library.EventModels;
 using DesktopUI.Library.Models;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -21,6 +22,7 @@ namespace DesktopUI.ViewModels
         private readonly IStockDataEndpoint _stockDataEndpoint;
         private readonly IUserAccountEndpoint _userAccountEndpoint;
         private readonly ITransactionEndoint _transactionEndpoint;
+        private readonly IEventAggregator _events;
 
         public SeriesCollection SeriesCollection { get; set; }
         public List<string> Labels { get; set; }
@@ -32,13 +34,15 @@ namespace DesktopUI.ViewModels
 
 
         public PortfolioSummaryViewModel(IRealizedProfitLossEndpoint realizedPLEndpoint, IPortfolioEndpoint portfolioEndpoint,
-            IStockDataEndpoint stockDataEndpoint, IUserAccountEndpoint userAccountEndpoint, ITransactionEndoint transactionEndpoint)
+            IStockDataEndpoint stockDataEndpoint, IUserAccountEndpoint userAccountEndpoint, ITransactionEndoint transactionEndpoint,
+            IEventAggregator events)
         {
             _realizedPLEndpoint = realizedPLEndpoint;
             _portfolioEndpoint = portfolioEndpoint;
             _stockDataEndpoint = stockDataEndpoint;
             _userAccountEndpoint = userAccountEndpoint;
             _transactionEndpoint = transactionEndpoint;
+            _events = events;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -76,7 +80,8 @@ namespace DesktopUI.ViewModels
 
                     var transactionDisplay = new TransactionDisplayModel
                     {
-                        Date = r.Date.ToString("dd-MM-yy"),
+                        //TODO: Fix Date
+                        Date = r.Date,
                         Transaction = transaction
                     };
 
@@ -471,5 +476,21 @@ namespace DesktopUI.ViewModels
             await LoadPortfolioOverview();
         }
 
+        public void LoadPortfolioStockView()
+        {
+            if(SelectedPortfolioStock.Ticker != null)
+            {
+                _events.PublishOnUIThread(new OpenPortfolioStockView(SelectedPortfolioStock.Ticker));
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public void BuyStocks()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
+        }
     }
 }

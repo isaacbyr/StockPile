@@ -55,14 +55,14 @@ namespace DesktopUI.ViewModels
 
         protected override async void OnViewLoaded(object view)
         {
-            //await LoadLeftChartData("spy");
-            //await LoadRightChartData("^dji");
-            //await LoadWatchListData();
-            //await LoadPortfolioData();
-            //await LoadDailyGainers();
-            //await LoadMarketNews("amzn+aapl+wmt+fb");
-            //await LoadPortfolioOverview();
-            //LoadTopHoldings();
+            await LoadLeftChartData("spy");
+            await LoadRightChartData("^dji");
+            await LoadWatchListData();
+            await LoadPortfolioData();
+            await LoadDailyGainers();
+            await LoadMarketNews("amzn+aapl+wmt+fb");
+            await LoadPortfolioOverview();
+            LoadTopHoldings();
             StartClock();
         }
 
@@ -615,9 +615,19 @@ namespace DesktopUI.ViewModels
             _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
         }
 
+        public void Social()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
         public async Task SearchNews()
         {
             await LoadMarketNews(SearchInput);
+        }
+
+        public void ViewMorePortoflioSummary()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
         }
 
         public void LoadPortfolioStockView()

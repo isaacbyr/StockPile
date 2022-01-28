@@ -36,5 +36,14 @@ namespace DataManager.Controllers
 
             return realizedPLData.LoadHistory(id);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public List<LeaderboardModel> LoadById(string id)
+        {
+            var realizedPLData = new RealizedPLData();
+
+            return realizedPLData.LoadById(id);
+        }
     }
 }

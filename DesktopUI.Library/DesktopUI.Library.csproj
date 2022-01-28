@@ -91,16 +91,29 @@
   <ItemGroup>
     <Compile Include="Api\ApiHelper.cs" />
     <Compile Include="Api\AuthenticatedUser.cs" />
+    <Compile Include="Api\FriendRequestEndpoint.cs" />
+    <Compile Include="Api\FriendsEndpoint.cs" />
     <Compile Include="Api\IApiHelper.cs" />
+    <Compile Include="Api\IFriendRequestEndpoint.cs" />
+    <Compile Include="Api\IFriendsEndpoint.cs" />
     <Compile Include="Api\INewsEndpoint.cs" />
     <Compile Include="Api\IPortfolioEndpoint.cs" />
     <Compile Include="Api\IRealizedProfitLossEndpoint.cs" />
     <Compile Include="Api\IStockDataEndpoint.cs" />
     <Compile Include="Api\ITransactionEndoint.cs" />
     <Compile Include="Api\IUserAccountEndpoint.cs" />
+    <Compile Include="Api\IUserEndpoint.cs" />
     <Compile Include="Api\IWatchListEndpoint.cs" />
     <Compile Include="Api\NewsEndpoint.cs" />
     <Compile Include="Api\PortfolioEndpoint.cs" />
+    <Compile Include="Api\UserEndpoint.cs" />
+    <Compile Include="EventModels\OpenSocialView.cs" />
+    <Compile Include="Models\FriendDisplayModel.cs" />
+    <Compile Include="Models\FriendModel.cs" />
+    <Compile Include="Models\FriendRequestModel.cs" />
+    <Compile Include="Models\LeaderboardDisplayModel.cs" />
+    <Compile Include="Models\LeaderboardModel.cs" />
+    <Compile Include="Models\NewFriendshipModel.cs" />
     <Compile Include="Models\RealizedPLChartModel.cs" />
     <Compile Include="Api\RealizedProfitLossEndpoint.cs" />
     <Compile Include="Api\StockDataEndpoint.cs" />
@@ -122,6 +135,7 @@
     <Compile Include="Models\PortfolioStockDisplayModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\SocialDashboardDataModel.cs" />
     <Compile Include="Models\StockDashboardDataModel.cs" />
     <Compile Include="Models\TransactionChartData.cs" />
     <Compile Include="Models\TransactionDisplayModel.cs" />

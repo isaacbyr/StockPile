@@ -22,5 +22,14 @@ namespace DataManager.Controllers
 
             return userData.GetUserById(id);
         }
+
+        [HttpGet]
+        [Route("{searchInput}")]
+        public List<FriendModel> FriendSearch(string searchInput)
+        {
+            var userData = new UserData();
+
+            return userData.FriendSearch(searchInput);
+        }
     }
 }

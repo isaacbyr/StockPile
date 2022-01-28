@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\FriendRequestsData.cs" />
+    <Compile Include="DataAccess\FriendsData.cs" />
     <Compile Include="DataAccess\InternalAccess\SqlDataAccess.cs" />
     <Compile Include="DataAccess\PortfolioData.cs" />
     <Compile Include="DataAccess\RealizedPLData.cs" />
@@ -52,11 +54,16 @@
     <Compile Include="DataAccess\UserAccountData.cs" />
     <Compile Include="DataAccess\UserData.cs" />
     <Compile Include="DataAccess\WatchlistData.cs" />
+    <Compile Include="Models\FriendModel.cs" />
+    <Compile Include="Models\FriendRequestModel.cs" />
+    <Compile Include="Models\LeaderboardModel.cs" />
     <Compile Include="Models\LoggedInUserModel.cs" />
+    <Compile Include="Models\NewFriendshipModel.cs" />
     <Compile Include="Models\PortfolioModel.cs" />
     <Compile Include="Models\PortfolioStockDashboardModel.cs" />
     <Compile Include="Models\RealizedPLChartModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\SocialDashboardDataModel.cs" />
     <Compile Include="Models\TransactionChartData.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\UpdateRealizedPLModel.cs" />

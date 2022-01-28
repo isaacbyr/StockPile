@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DesktopUI.Library.Models
 {
-    public class TransactionDisplayModel
+    public class FriendDisplayModel
     {
-        public DateTime Date { get; set; }
-        public string Transaction { get; set; }
+        public string Id { get; set; }
+        public string FullName { get; set; }
     }
 }

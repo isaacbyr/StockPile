@@ -9,5 +9,6 @@ namespace DesktopUI.Library.Api
         Task PostTransaction(TransactionModel transaction);
         Task<List<TransactionModel>> LoadTransactions();
         Task<List<TransactionChartData>> LoadChartData();
+        Task<List<SocialDashboardDataModel>> LoadTransactionsById(string id);
     }
 }

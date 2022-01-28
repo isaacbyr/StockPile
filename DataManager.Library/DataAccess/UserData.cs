@@ -28,5 +28,22 @@ namespace DataManager.Library.DataAccess
             }
             
         }
+
+        public List<FriendModel> FriendSearch(string keyword)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { Keyword = keyword };
+
+            try
+            {
+                var output = sql.LoadData<FriendModel, dynamic>("dbo.spUser_FriendSearch", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

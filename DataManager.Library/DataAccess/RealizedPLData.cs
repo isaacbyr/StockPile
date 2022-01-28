@@ -43,6 +43,23 @@ namespace DataManager.Library.DataAccess
                 throw new Exception(ex.Message);
             }
         }
+
+        public List<LeaderboardModel> LoadById(string id)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { Id = id };
+
+            try
+            {
+                var output = sql.LoadData<LeaderboardModel, dynamic>("dbo.spRealizedPL_LoadById", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 
 }

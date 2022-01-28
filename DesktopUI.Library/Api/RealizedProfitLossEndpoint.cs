@@ -52,5 +52,21 @@ namespace DesktopUI.Library.Api
                 }
             }
         }
+
+        public async Task<List<LeaderboardModel>> LoadRealizedPL(string id)
+        {
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/realizedpl/{id}"))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<LeaderboardModel>>();
+                    return result;
+                } 
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

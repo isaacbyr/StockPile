@@ -92,8 +92,8 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="{Binding ChartSymbol}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32"></TextBlock>
-                        <TextBlock Grid.Column="1" Text="{Binding ChartPrice}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="32"></TextBlock>
+                        <TextBlock Grid.Column="0" Text="{Binding ChartSymbol}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" Margin="0 0 0 8"></TextBlock>
+                        <TextBlock Grid.Column="1" Text="{Binding ChartPrice}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="32" Margin="0 0 0 8"></TextBlock>
                     </Grid>
             </Border>
             

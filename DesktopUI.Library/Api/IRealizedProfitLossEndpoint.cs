@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DesktopUI.Library.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DesktopUI.Library.Api
@@ -7,5 +8,6 @@ namespace DesktopUI.Library.Api
     {
         Task PostProfitLoss(decimal realizedProfitLoss);
         Task<List<RealizedPLChartModel>> LoadHistory();
+        Task<List<LeaderboardModel>> LoadRealizedPL(string id);
     }
 }
