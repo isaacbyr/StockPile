@@ -33,8 +33,8 @@ namespace DesktopUI.ViewModels
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
-            //ActivateItem(_loginVM);
-            ActivateItem(_registerVM);
+            ActivateItem(_loginVM);
+            //ActivateItem(_registerVM);
             //ActivateItem(_portfolioStockVM);
             //ActivateItem(_dashboardVM);
             //ActivateItem(_portfolioSummaryVM);

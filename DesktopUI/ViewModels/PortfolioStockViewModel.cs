@@ -509,6 +509,7 @@ namespace DesktopUI.ViewModels
                 Price = price,
                 Sell = false,
                 Shares = NewPositionShares,
+                Date = DateTime.Now
 
             };
             await _transactionEndpoint.PostTransaction(transaction);

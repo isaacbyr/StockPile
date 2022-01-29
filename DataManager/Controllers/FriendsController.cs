@@ -1,5 +1,6 @@
 ﻿using DataManager.Library.DataAccess;
 using DataManager.Library.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,7 @@ namespace DataManager.Controllers
         {
             var friendsData = new FriendsData();
 
-            //TODO: Remove hardcode of user id
-            string id = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            string id = RequestContext.Principal.Identity.GetUserId();
 
             return friendsData.LoadFriends(id);
         }
@@ -29,9 +28,7 @@ namespace DataManager.Controllers
         {
             var friendsData = new FriendsData();
 
-            // TODO: Remove hardcode of user id
-            friends.FolloweeId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            friends.FolloweeId = RequestContext.Principal.Identity.GetUserId();
 
             //Post first relationship
             friendsData.PostFriendship(friends.FolloweeId, friends.FollowerId);

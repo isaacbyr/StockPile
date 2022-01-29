@@ -28,9 +28,7 @@ namespace DataManager.Controllers
         {
             var watchlistData = new WatchlistData();
 
-            //TODO: Remove hardcode of user id
-            stock.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
 
             // check to see if stock is already in db
             var watchlist = watchlistData.LoadWatchlistStocksById(stock.UserId);

@@ -188,6 +188,10 @@ namespace DesktopUI.ViewModels
                 PortfolioStocks = new BindingList<PortfolioStockDisplayModel>(portfolioStocks);
 
             }
+            else
+            {
+                PortfolioStocks = new BindingList<PortfolioStockDisplayModel>();
+            }
         }
 
         private void StartClock()
@@ -208,7 +212,7 @@ namespace DesktopUI.ViewModels
             
             var watchlist = await _watchListEndpoint.LoadWatchList();
 
-            if(watchlist != null)
+            if(watchlist.Count > 0)
             {
                 var watchlistData = new List<WatchlistDisplayModel>();
 
@@ -611,7 +615,6 @@ namespace DesktopUI.ViewModels
 
         public void BuyStocks()
         {
-            // TODO: Add loggedInUsreMdoel UserId as a parameter
             _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
         }
 
@@ -637,7 +640,6 @@ namespace DesktopUI.ViewModels
                 return;
             }
 
-            // TODO: Add loggedInUsreMdoel UserId as a parameter
             _events.PublishOnUIThread(new OpenPortfolioStockView(SelectedPortfolioStock.Ticker));
         }
 

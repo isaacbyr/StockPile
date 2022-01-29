@@ -15,12 +15,16 @@ namespace DesktopUI.ViewModels
         private readonly IApiHelper _apiHelper;
         private readonly IUserEndpoint _userEndpoint;
         private readonly IEventAggregator _events;
+        private readonly IUserAccountEndpoint _userAccountEndpoint;
+        private readonly IPortfolioEndpoint _portfolioEndpoint;
 
-        public RegisterViewModel(IApiHelper apiHelper, IUserEndpoint userEndpoint, IEventAggregator events)
+        public RegisterViewModel(IApiHelper apiHelper, IUserEndpoint userEndpoint, IEventAggregator events,
+            IUserAccountEndpoint userAccountEndpoint)
         {
             _apiHelper = apiHelper;
             _userEndpoint = userEndpoint;
             _events = events;
+            _userAccountEndpoint = userAccountEndpoint;
         }
 
 
@@ -107,6 +111,14 @@ namespace DesktopUI.ViewModels
                 await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 
                 await _userEndpoint.LogUser(logUser);
+
+                //create portfolio for user
+                var userAccount = new UserAccountModel
+                {
+                    StartAmount = 100000,
+                    AccountBalance = 100000,
+                };
+                await _userAccountEndpoint.PostNewUserAccount(userAccount);
 
                 _events.PublishOnUIThread(new LogOnEvent());
             }

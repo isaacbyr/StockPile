@@ -1,5 +1,6 @@
 ﻿using DataManager.Library.DataAccess;
 using DataManager.Library.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,7 @@ namespace DataManager.Controllers
         {
             var friendRequestsData = new FriendRequestsData();
 
-            //TODO: Remove hardcode of user id
-            string id = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            string id = RequestContext.Principal.Identity.GetUserId();
 
             return friendRequestsData.LoadFriendRequests(id);
         }
@@ -30,9 +29,7 @@ namespace DataManager.Controllers
         {
             var friendRequestData = new FriendRequestsData();
 
-            //TODO: Remove hardcode of user id
-            string followeeId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            string followeeId = RequestContext.Principal.Identity.GetUserId();
 
             friendRequestData.DeleteRequest(followeeId, followerId);
         }
@@ -42,9 +39,7 @@ namespace DataManager.Controllers
         {
             var friendReqData = new FriendRequestsData();
 
-            //TODO: Remove hardcode of user id
-            request.FollowerId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            request.FollowerId = RequestContext.Principal.Identity.GetUserId();
 
             friendReqData.PostRequest(request);
         }

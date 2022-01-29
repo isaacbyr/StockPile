@@ -18,9 +18,7 @@ namespace DataManager.Controllers
         {
             var transactionData = new TransactionData();
 
-            //TODO: Change hardcode on user id
-            transaction.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            transaction.UserId = RequestContext.Principal.Identity.GetUserId();
 
             transactionData.PostTransaction(transaction);
         }
@@ -31,9 +29,7 @@ namespace DataManager.Controllers
 
             var transactionData = new TransactionData();
 
-            //TODO: Change hardcode on user id
-            string id = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            string id = RequestContext.Principal.Identity.GetUserId();
 
             return transactionData.LoadTransactions(id);
         }
@@ -44,9 +40,7 @@ namespace DataManager.Controllers
         {
             var transactionData = new TransactionData();
 
-            //TODO: Change hardcode on user id
-            string id = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            string id = RequestContext.Principal.Identity.GetUserId();
 
             return transactionData.LoadChartData(id);
         }

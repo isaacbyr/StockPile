@@ -18,9 +18,7 @@ namespace DataManager.Controllers
         {
             var realizedPLData = new RealizedPLData();
 
-            //TODO: Change hardcode on user id
-            realizedPL.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            realizedPL.UserId = RequestContext.Principal.Identity.GetUserId();
 
             realizedPLData.PostRealizedPL(realizedPL);
         }
@@ -30,9 +28,7 @@ namespace DataManager.Controllers
         {
             var realizedPLData = new RealizedPLData();
 
-            //TODO: Change hardcode on user id
-            string id = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            string id = RequestContext.Principal.Identity.GetUserId();
 
             return realizedPLData.LoadHistory(id);
         }

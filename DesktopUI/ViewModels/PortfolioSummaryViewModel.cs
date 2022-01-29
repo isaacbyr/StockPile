@@ -61,7 +61,7 @@ namespace DesktopUI.ViewModels
             TransactionLabels = new List<string>();
 
             var results = await _transactionEndpoint.LoadTransactions();
-            Transactions = new List<TransactionDisplayModel>();
+            Transactions = new BindingList<TransactionDisplayModel>();
 
             if(results != null)
             {
@@ -86,7 +86,6 @@ namespace DesktopUI.ViewModels
                     };
 
                     Transactions.Add(transactionDisplay);
-
                 }
             }
 
@@ -238,7 +237,7 @@ namespace DesktopUI.ViewModels
 
             var results = await _realizedPLEndpoint.LoadHistory();
 
-            if (results != null)
+            if (results.Count >0)
             {
                 var Values = new ChartValues<decimal>();
                 Labels = new List<string>();
@@ -307,9 +306,9 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private List<TransactionDisplayModel> _transactions;
+        private BindingList<TransactionDisplayModel> _transactions;
 
-        public List<TransactionDisplayModel> Transactions
+        public BindingList<TransactionDisplayModel> Transactions
         {
             get { return _transactions; }
             set 

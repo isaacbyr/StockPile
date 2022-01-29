@@ -14,8 +14,7 @@ namespace DataManager.Library.DataAccess
         {
             var sql = new SqlDataAccess();
 
-            //TODO: Remove hardcode on user id
-            var p = new { UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c" };
+            var p = new { UserId = id };
 
             try
             {
@@ -58,6 +57,23 @@ namespace DataManager.Library.DataAccess
             }
             catch (Exception e)
             {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void PostNewUserAccount(UserAccountModel userAccount)
+        {
+            var sql = new SqlDataAccess();
+
+            try
+            {
+                sql.StartTransaction("StockPileData");
+                sql.SaveDataInTransaction("dbo.spUserAccount_AddNewUserAccount", userAccount);
+                sql.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                sql.RollbackTransaction();
                 throw new Exception(e.Message);
             }
         }

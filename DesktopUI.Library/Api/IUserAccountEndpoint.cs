@@ -8,5 +8,6 @@ namespace DesktopUI.Library.Api
         Task<UserPortfolioOverviewModel> GetPortfolioOverview();
         Task UpdateAccountBalance(decimal cashAmount);
         Task<decimal> UpdateAfterSale(decimal realizedProfitLoss, decimal cashAmount);
+        Task PostNewUserAccount(UserAccountModel userAccount);
     }
 }

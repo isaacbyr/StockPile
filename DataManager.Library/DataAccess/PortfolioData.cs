@@ -14,8 +14,7 @@ namespace DataManager.Library.DataAccess
         {
             var sql = new SqlDataAccess();
 
-            //TODO: Remove hardcode of user id
-            var p = new { UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c" };
+            var p = new { UserId = id };
 
             try
             {
@@ -32,8 +31,7 @@ namespace DataManager.Library.DataAccess
         {
             var sql = new SqlDataAccess();
 
-            //TODO: Remove hardcode of user id
-            var p = new { UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c", Ticker = ticker };
+            var p = new { UserId = id, Ticker = ticker };
 
             try
             {

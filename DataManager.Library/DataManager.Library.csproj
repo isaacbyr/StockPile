@@ -68,6 +68,7 @@
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\UpdateRealizedPLModel.cs" />
     <Compile Include="Models\UpdateUserAccountModel.cs" />
+    <Compile Include="Models\UserAccountModel.cs" />
     <Compile Include="Models\UserPortfolioOverviewModel.cs" />
     <Compile Include="Models\WatchlistModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

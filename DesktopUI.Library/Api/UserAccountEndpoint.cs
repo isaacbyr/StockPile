@@ -75,5 +75,20 @@ namespace DesktopUI.Library.Api
                 }
             }
         }
+
+        public async Task PostNewUserAccount(UserAccountModel userAccount)
+        {
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/useraccount", userAccount))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

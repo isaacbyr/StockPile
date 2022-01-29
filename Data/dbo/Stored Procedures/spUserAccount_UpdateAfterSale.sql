@@ -6,7 +6,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	UPDATE [dbo].[UserAccount]
-	SET AccountBalance = AccountBalance + @RealizedProfitLoss + @SaleAmount
+	SET AccountBalance = (AccountBalance + @RealizedProfitLoss + @SaleAmount)
 	WHERE UserId = @UserId
 
 	SELECT AccountBalance

@@ -40,9 +40,7 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //TODO: Remove hardcode of user id
-            stock.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
 
             portfolioData.UpdatePortfolioBuy(stock);
         }
@@ -53,9 +51,7 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //TODO: Remove hardcode of user id
-            stock.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
 
             return portfolioData.UpdatePortfolioSell(stock);
         }
@@ -65,9 +61,7 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //TODO: Remove hardcode of user id
-            stock.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
 
             portfolioData.PostStockToPortfolio(stock);
         }
@@ -78,8 +72,7 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //TODO: Remove hardcode of user id
-            stock.UserId = "34b965a6-ba23-4a13-b834-1e456f21d86c";
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
 
             return portfolioData.UpdateAndDeleteStock(stock);
         }
