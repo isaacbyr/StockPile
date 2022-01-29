@@ -19,7 +19,6 @@ using DataManager.Results;
 
 namespace DataManager.Controllers
 {
-    [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -320,6 +319,7 @@ namespace DataManager.Controllers
 
         // POST api/Account/Register
         [AllowAnonymous]
+        [HttpPost]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {

@@ -59,5 +59,10 @@ namespace DesktopUI.ViewModels
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public void Register()
+        {
+            _events.PublishOnUIThread(new OpenRegisterView());
+        }
     }
 }

@@ -32,5 +32,20 @@ namespace DesktopUI.Library.Api
                 }
             }
         }
+
+        public async Task LogUser(LoggedInUserModel user)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/user", user))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

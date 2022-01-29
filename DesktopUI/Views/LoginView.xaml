@@ -82,7 +82,7 @@
             
 
             <!--Register Account Border-->
-            <Border CornerRadius="18" Background="#1D2D44"
+            <Border CornerRadius="18" Background="#1D2D44" MaxWidth="600"
                     Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -95,7 +95,7 @@
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Dont have an account?" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 3 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
                             <Button Content="Register" Foreground="White" Background="SteelBlue"
                 Grid.Column="1"  x:Name="Register" Margin="3 0 0 0" MinWidth="150" MaxWidth="150"
                  HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Center"
@@ -103,8 +103,7 @@
                         </Grid>
                     </StackPanel>
                 </Grid>
-                
-
+             
             </Border>
             <!--Header--><!--
             <TextBlock Margin="0 0 130 0" Text="Welcome to StockPile!" FontWeight="Bold"

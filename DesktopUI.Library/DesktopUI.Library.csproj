@@ -107,6 +107,8 @@
     <Compile Include="Api\NewsEndpoint.cs" />
     <Compile Include="Api\PortfolioEndpoint.cs" />
     <Compile Include="Api\UserEndpoint.cs" />
+    <Compile Include="EventModels\OpenLoginView.cs" />
+    <Compile Include="EventModels\OpenRegisterView.cs" />
     <Compile Include="EventModels\OpenSocialView.cs" />
     <Compile Include="Models\FriendDisplayModel.cs" />
     <Compile Include="Models\FriendModel.cs" />

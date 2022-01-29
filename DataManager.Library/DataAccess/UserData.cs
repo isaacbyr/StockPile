@@ -45,5 +45,22 @@ namespace DataManager.Library.DataAccess
                 throw new Exception(ex.Message);
             }
         }
+
+        public void PostNewUser(LoggedInUserModel user)
+        {
+            var sql = new SqlDataAccess();
+
+            try
+            {
+                sql.StartTransaction("StockPileData");
+                sql.SaveDataInTransaction("dbo.spUser_InsertNewUser", user);
+                sql.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                sql.RollbackTransaction();
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

@@ -74,11 +74,11 @@ namespace DesktopUI.Library.Api
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadAsAsync<List<LoggedInUserModel>>();
-                    _loggedInUser.FirstName = result[0].FirstName;
-                    _loggedInUser.LastName = result[0].LastName;
-                    _loggedInUser.Email = result[0].Email;
-                    _loggedInUser.Id = result[0].Id;
+                    //var result = await response.Content.ReadAsAsync<List<LoggedInUserModel>>();
+                    //_loggedInUser.FirstName = result[0].FirstName;
+                    //_loggedInUser.LastName = result[0].LastName;
+                    //_loggedInUser.Email = result[0].Email;
+                    //_loggedInUser.Id = result[0].Id;
                     //    _loggedInUser.Token = token;
                     return;
                 }

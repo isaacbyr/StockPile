@@ -9,7 +9,7 @@ using DesktopUI.Library.EventModels;
 namespace DesktopUI.ViewModels
 {
     public class ShellViewModel: Conductor<object>, IHandle<LogOnEvent>, IHandle<OpenPortfolioStockView>, IHandle<ReturnHomeEvent>,
-        IHandle<OpenPortfolioSummaryView>, IHandle<OpenSocialView>
+        IHandle<OpenPortfolioSummaryView>, IHandle<OpenSocialView>, IHandle<OpenRegisterView>, IHandle<OpenLoginView>
     {
         private readonly IEventAggregator _events;
         private LoginViewModel _loginVM;
@@ -17,10 +17,11 @@ namespace DesktopUI.ViewModels
         private readonly PortfolioStockViewModel _portfolioStockVM;
         private readonly PortfolioSummaryViewModel _portfolioSummaryVM;
         private readonly SocialViewModel _socialVM;
+        private readonly RegisterViewModel _registerVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
-            SocialViewModel socialVM)
+            SocialViewModel socialVM, RegisterViewModel registerVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -28,10 +29,12 @@ namespace DesktopUI.ViewModels
             _portfolioStockVM = portfolioStockVM;
             _portfolioSummaryVM = portfolioSummaryVM;
             _socialVM = socialVM;
+            _registerVM = registerVM;
             _events.Subscribe(this);
 
-            ActivateItem(socialVM);
+            //ActivateItem(socialVM);
             //ActivateItem(_loginVM);
+            ActivateItem(_registerVM);
             //ActivateItem(_portfolioStockVM);
             //ActivateItem(_dashboardVM);
             //ActivateItem(_portfolioSummaryVM);
@@ -61,6 +64,16 @@ namespace DesktopUI.ViewModels
         public void Handle(OpenSocialView message)
         {
             ActivateItem(_socialVM);
+        }
+
+        public void Handle(OpenRegisterView message)
+        {
+            ActivateItem(_registerVM);
+        }
+
+        public void Handle(OpenLoginView message)
+        {
+            ActivateItem(_loginVM);
         }
     }
 }

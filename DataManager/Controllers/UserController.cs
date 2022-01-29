@@ -14,6 +14,7 @@ namespace DataManager.Controllers
     public class UserController : ApiController
     {
         [Authorize]
+        [HttpGet]
         public List<LoggedInUserModel> Get ()
         {
             string id = RequestContext.Principal.Identity.GetUserId();
@@ -30,6 +31,16 @@ namespace DataManager.Controllers
             var userData = new UserData();
 
             return userData.FriendSearch(searchInput);
+        }
+
+        [HttpPost]
+        public void Post(LoggedInUserModel user)
+        {
+            var userData = new UserData();
+
+            user.Id = RequestContext.Principal.Identity.GetUserId();
+
+            userData.PostNewUser(user);
         }
     }
 }
