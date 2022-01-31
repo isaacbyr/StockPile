@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="DesktopUI.Views.PortfolioStockView"
+﻿<UserControl
              xmlns:cal="http://www.caliburnproject.org"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,29 +6,205 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views"
+             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="DesktopUI.Views.PortfolioStockView"
              mc:Ignorable="d" 
              FontSize="16"
              Foreground="White"
              d:DesignHeight="800" d:DesignWidth="1400">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ComboBoxControlTemplate1" TargetType="{x:Type ComboBox}">
+            <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                </Grid.ColumnDefinitions>
+                <Popup x:Name="PART_Popup" AllowsTransparency="True" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                    <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
+                        <Border x:Name="DropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+                            <ScrollViewer x:Name="DropDownScrollViewer">
+                                <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
+                                    <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                        <Rectangle x:Name="OpaqueRect" Fill="{Binding Background, ElementName=DropDownBorder}" Height="{Binding ActualHeight, ElementName=DropDownBorder}" Width="{Binding ActualWidth, ElementName=DropDownBorder}"/>
+                                    </Canvas>
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </Border>
+                    </Themes:SystemDropShadowChrome>
+                </Popup>
+                <ToggleButton x:Name="toggleButton" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="#1d2d44" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                    <ToggleButton.Style>
+                        <Style TargetType="{x:Type ToggleButton}">
+                            <Setter Property="OverridesDefaultStyle" Value="True"/>
+                            <Setter Property="IsTabStop" Value="False"/>
+                            <Setter Property="Focusable" Value="False"/>
+                            <Setter Property="ClickMode" Value="Press"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Border x:Name="templateRoot" BorderBrush="white" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="#1d2d44"></SolidColorBrush>
+                                            </Border.Background>
+                                            <Border x:Name="splitBorder" BorderBrush="Transparent" BorderThickness="1" HorizontalAlignment="Right" Margin="0" SnapsToDevicePixels="True" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
+                                                <Path x:Name="Arrow" Data="F1M0,0L2.667,2.66665 5.3334,0 5.3334,-1.78168 2.6667,0.88501 0,-1.78168 0,0z" Fill="white" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="templateRoot" Value="White"/>
+                                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FFABADB3"/>
+                                                <Setter Property="Background" TargetName="splitBorder" Value="Transparent"/>
+                                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="Transparent"/>
+                                            </MultiDataTrigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Fill" TargetName="Arrow" Value="Black"/>
+                                            </Trigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="templateRoot">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                                            <GradientStop Color="#FFECF4FC" Offset="0"/>
+                                                            <GradientStop Color="#FFDCECFC" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FF7EB4EA"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="templateRoot" Value="White"/>
+                                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FF7EB4EA"/>
+                                                <Setter Property="Background" TargetName="splitBorder">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                                            <GradientStop Color="#FFEBF4FC" Offset="0"/>
+                                                            <GradientStop Color="#FFDCECFC" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="#FF7EB4EA"/>
+                                            </MultiDataTrigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter Property="Fill" TargetName="Arrow" Value="Black"/>
+                                            </Trigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="templateRoot">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                                            <GradientStop Color="#FFDAECFC" Offset="0"/>
+                                                            <GradientStop Color="#FFC4E0FC" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FF569DE5"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="templateRoot" Value="White"/>
+                                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FF569DE5"/>
+                                                <Setter Property="Background" TargetName="splitBorder">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                                            <GradientStop Color="#FFDAEBFC" Offset="0"/>
+                                                            <GradientStop Color="#FFC4E0FC" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="#FF569DE5"/>
+                                            </MultiDataTrigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Fill" TargetName="Arrow" Value="#FFBFBFBF"/>
+                                            </Trigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="templateRoot" Value="#FFF0F0F0"/>
+                                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FFD9D9D9"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="templateRoot" Value="White"/>
+                                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FFBFBFBF"/>
+                                                <Setter Property="Background" TargetName="splitBorder" Value="Transparent"/>
+                                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="Transparent"/>
+                                            </MultiDataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="False" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="True">
+                    <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
+                    <Setter Property="Color" TargetName="shadow" Value="#71000000"/>
+                </Trigger>
+                <Trigger Property="HasItems" Value="False">
+                    <Setter Property="Height" TargetName="DropDownBorder" Value="95"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsGrouping" Value="True"/>
+                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                </MultiTrigger>
+                <Trigger Property="CanContentScroll" SourceName="DropDownScrollViewer" Value="False">
+                    <Setter Property="Canvas.Top" TargetName="OpaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
+                    <Setter Property="Canvas.Left" TargetName="OpaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    
     <Border Background="#3E4C76" CornerRadius="18">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="225"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition Width="200"></ColumnDefinition>
-                <ColumnDefinition Width="220"></ColumnDefinition>
-                <ColumnDefinition Width="120"></ColumnDefinition>
-                <ColumnDefinition Width="300"></ColumnDefinition>
-                <ColumnDefinition Width="225"></ColumnDefinition>
+                <ColumnDefinition Width="225"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="225"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="0"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="280"></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="0"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="280"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <!--Header-->
@@ -36,41 +212,40 @@
                     cal:Message.Attach="ReturnHome()" >
                 <TextBlock Text="StockPile" FontSize="40"
                        HorizontalAlignment="Center" FontWeight="Bold"
-                       VerticalAlignment="Center">
-                </TextBlock>
+                       VerticalAlignment="Center"/>
             </Button>
-            
+
 
             <!--Menu-->
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="4">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <Button Background="SteelBlue" Margin="0 10 2 10"
                             Foreground="White" Grid.Column="0"
-                            Content="Account"></Button>
+                            Content="Account"/>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="1"
-                            Content="Performance"></Button>
+                            Content="Performance"/>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="2"
-                            Content=""></Button>
+                            Content=""/>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="3"
-                            Content="Logout"></Button>
+                            Content="Logout"/>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="4"
-                            Content="Exit"></Button>
+                            Content="Exit"/>
                 </Grid>
             </StackPanel>
 
@@ -79,31 +254,34 @@
                     Background="#1d2d44" Margin="15 10 15 5">
 
                 <TextBlock Foreground="White" Text="{Binding CurrentTime}" FontSize="30"
-                           VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
 
             <!--Chart Header-->
             <Border CornerRadius="18" Grid.Column="0" Grid.ColumnSpan="2"
                     Grid.Row="2" Background="#1D2D44"
                     Margin="10 5 5 5">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="{Binding ChartSymbol}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" Margin="0 0 0 8"></TextBlock>
-                        <TextBlock Grid.Column="1" Text="{Binding ChartPrice}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="32" Margin="0 0 0 8"></TextBlock>
-                    </Grid>
+                    <TextBlock Grid.Column="0" Text="{Binding ChartSymbol}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" Margin="0 0 0 8"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ChartPrice}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="32" Margin="0 0 0 8"/>
+                </Grid>
             </Border>
-            
+
             <!--Add to watchlist-->
             <Border Background="#1d2d44" Grid.Column="4" Grid.Row="2"
                     Margin="5" CornerRadius="18">
+
                 <Button Background="SteelBlue" MaxHeight="28" MinHeight="28"
-                        MaxWidth="70" MinWidth="70" Content="Add" x:Name="AddToWatchlist"
+                        MaxWidth="50" MinWidth="50" x:Name="AddToWatchlist"
                         Foreground="White" FontSize="14">
-                    
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="C:\Users\Isaac\OneDrive\Documents\C# Projects\StockPile\StockPile\DesktopUI\Images\star_icon.png"/>
+                    </StackPanel>
                 </Button>
             </Border>
 
@@ -111,37 +289,54 @@
             <Border CornerRadius="18" Grid.Column="2" Grid.ColumnSpan="2"
                     Grid.Row="2" Background="#1D2D44"
                     Margin="0,5,4.8,5" HorizontalAlignment="Right">
-                
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
 
-                        <!--Search Field-->
-                        <TextBox MinHeight="30" MaxHeight="30" Margin="18 0 3 0" x:Name="ChartSearch" 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Search Field-->
+                    <TextBox MinHeight="30" MaxHeight="30" Margin="18 0 3 0" x:Name="ChartSearch" 
                                  VerticalContentAlignment="Center" FontSize="16" Text="Ticker"
-                                 Foreground="White" Background="Transparent"></TextBox>
-                        
-                        <!--Range Combo-->
-                        <ComboBox Grid.Column="1" MinHeight="30" MaxHeight="30" Margin="3 0 3 0"
-                                  x:Name="ChartRange" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                  SelectedItem="{Binding SelectedChartRange}"></ComboBox>
-                        
-                        <!--Interval Combo-->
-                        <ComboBox Grid.Column="2" MinHeight="30" MaxHeight="30" Margin="3 0 3 0"
-                                  x:Name="ChartInterval" SelectedItem="{Binding SelectedChartInterval}"
-                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></ComboBox>
+                                 Foreground="White" Background="Transparent"/>
 
-                        <!--Search Button-->
-                        <Button Grid.Column="3" Content="Search" Background="SteelBlue" Foreground="White"
-                                Margin="3 0 18 0" MinHeight="30" MaxHeight="30" x:Name="SearchChart"></Button>
-                    </Grid>
-                
+                    <!--Range Combo-->
+                    <ComboBox Grid.Column="1" MinHeight="30" MaxHeight="30" Margin="3 0 3 0"
+                                  x:Name="ChartRange" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                  SelectedItem="{Binding SelectedChartRange}" Background="#1d2d44" Template="{DynamicResource ComboBoxControlTemplate1}" >
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ComboBoxItem}">
+                                <Setter Property="Background" Value="#1D2D44"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Style>
+
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+
+                    <!--Interval Combo-->
+                    <ComboBox Grid.Column="2" MinHeight="30" MaxHeight="30" Margin="3 0 3 0"
+                                  x:Name="ChartInterval" SelectedItem="{Binding SelectedChartInterval}"
+                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                              Template="{DynamicResource ComboBoxControlTemplate1}">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ComboBoxItem}">
+                                <Setter Property="Background" Value="#1D2D44"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Style>
+
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+
+                    <!--Search Button-->
+                    <Button Grid.Column="3" Content="Search" Background="SteelBlue" Foreground="White"
+                                Margin="3 0 18 0" MinHeight="30" MaxHeight="30" x:Name="SearchChart"/>
+                </Grid>
+
             </Border>
-            
+
             <!--Chart-->
             <Border CornerRadius="18" Background="#1D2D44" Grid.Row="3"
                     Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" Margin="10 5 5 10">
@@ -149,12 +344,12 @@
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Labels="{Binding Labels}" LabelsRotation="60">
                             <lvc:Axis.Separator>
-                                <lvc:Separator IsEnabled="False" Step="5"></lvc:Separator>
+                                <lvc:Separator IsEnabled="False" Step="5"/>
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Price"></lvc:Axis>
+                        <lvc:Axis Title="Price"/>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
             </Border>
@@ -164,188 +359,188 @@
                     Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="5 5 10 5">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
 
                     <!--Account Balance-->
                     <TextBlock Text="Account Balance:" HorizontalAlignment="Left"
                                VerticalAlignment="Center" Margin="18 0 3 0" Grid.ColumnSpan="2" 
-                               FontSize="16" Grid.Row="0" Grid.Column="0"></TextBlock>
+                               FontSize="16" Grid.Row="0" Grid.Column="0"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
-                               VerticalAlignment="Center" Text="{Binding AccountBalance}"></TextBlock>
-                    
+                               VerticalAlignment="Center" Text="{Binding AccountBalance}"/>
+
                     <!--Current Position-->
                     <TextBlock Text="Current Position" VerticalAlignment="Center" TextDecorations="Underline"
                                Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"
-                               FontSize="20"></TextBlock>
-                    
+                               FontSize="20"/>
+
                     <!--Stock Name-->
                     <TextBlock Text="Stock" HorizontalAlignment="Center" TextDecorations="Underline"
                                VerticalAlignment="Center" Margin="0 0 3 0" 
-                               FontSize="16" Grid.Row="2" Grid.Column="0"></TextBlock>
+                               FontSize="16" Grid.Row="2" Grid.Column="0"/>
                     <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center"
-                               VerticalAlignment="Center" Text="{Binding ChartSymbol}"></TextBlock>
-                
+                               VerticalAlignment="Center" Text="{Binding ChartSymbol}"/>
+
                     <!--Shares-->
                     <TextBlock Text="Shares" HorizontalAlignment="Center" TextDecorations="Underline"
                                VerticalAlignment="Center" Margin="0 0 3 0" 
-                               FontSize="16" Grid.Row="2" Grid.Column="1"></TextBlock>
+                               FontSize="16" Grid.Row="2" Grid.Column="1"/>
                     <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center"
-                               VerticalAlignment="Center" Text="{Binding CurrentPositionShares}"></TextBlock>
+                               VerticalAlignment="Center" Text="{Binding CurrentPositionShares}"/>
 
                     <!--Average Price-->
                     <TextBlock Text="Avg. Price" HorizontalAlignment="Center" TextDecorations="Underline"
                                VerticalAlignment="Center" Margin="0 0 3 0" 
-                               FontSize="16" Grid.Row="2" Grid.Column="2"></TextBlock>
+                               FontSize="16" Grid.Row="2" Grid.Column="2"/>
                     <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center"
-                               VerticalAlignment="Center" Text="{Binding CurrentPositionAveragePrice}"></TextBlock>
+                               VerticalAlignment="Center" Text="{Binding CurrentPositionAveragePrice}"/>
 
                     <!--Profit/Loss-->
                     <TextBlock Text="Profit/Loss" HorizontalAlignment="Center" TextDecorations="Underline"
                                VerticalAlignment="Center" Margin="0 0 3 0" 
-                               FontSize="16" Grid.Row="2" Grid.Column="3"></TextBlock>
+                               FontSize="16" Grid.Row="2" Grid.Column="3"/>
                     <TextBlock Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center"
-                               VerticalAlignment="Center" Text="{Binding ProfitLoss}"></TextBlock>
+                               VerticalAlignment="Center" Text="{Binding ProfitLoss}"/>
 
                     <!--New Position-->
                     <TextBlock Text="New Position" VerticalAlignment="Center" TextDecorations="Underline"
                                Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"
-                              FontSize="20"></TextBlock>
+                              FontSize="20"/>
 
-                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Stock" Grid.Column="0" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
-                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Shares" Grid.Column="1" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
-                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Price" Grid.Column="2" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
-                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Cash Amount" Grid.Column="3" VerticalAlignment="Center" TextDecorations="Underline"></TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Stock" Grid.Column="0" VerticalAlignment="Center" TextDecorations="Underline"/>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Shares" Grid.Column="1" VerticalAlignment="Center" TextDecorations="Underline"/>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Price" Grid.Column="2" VerticalAlignment="Center" TextDecorations="Underline"/>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="5" Text="Cash Amount" Grid.Column="3" VerticalAlignment="Center" TextDecorations="Underline"/>
 
-                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding ChartSymbol}" Grid.Column="0" Grid.Row="6"></TextBlock>
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding ChartSymbol}" Grid.Column="0" Grid.Row="6"/>
                     <TextBox Margin="0 0 0 5" Grid.Column="1"  MaxWidth="100" MinWidth="100" Grid.Row="6" x:Name="NewPositionShares"
                                      VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Background="Transparent"
-                                     Foreground="White"></TextBox>
-                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Text="{Binding ChartPrice}" Grid.Column="2"></TextBlock>
-                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Text="{Binding CashAmount}" Grid.Column="3"></TextBlock>
+                                     Foreground="White"/>
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Text="{Binding ChartPrice}" Grid.Column="2"/>
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Text="{Binding CashAmount}" Grid.Column="3"/>
 
 
                     <Button Content="Buy" Background="LightGreen" Foreground="White" x:Name="Buy"
-                            Grid.Column="1" Grid.Row="7" MinHeight="30" MaxHeight="30"></Button>
+                            Grid.Column="1" Grid.Row="7" MinHeight="30" MaxHeight="30"/>
 
                     <Button Content="Sell" Background="Red" Foreground="White" x:Name="Sell"
-                            Grid.Column="2" Grid.Row="7" MinHeight="30" MaxHeight="30"></Button>
+                            Grid.Column="2" Grid.Row="7" MinHeight="30" MaxHeight="30"/>
                 </Grid>
 
             </Border>
-            
+
             <!--Analyst panel-->
             <Border CornerRadius="18" Background="#1d2d44" Grid.Column="5"
                     Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5 5 10 10">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
 
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <!--Header-->
                     <TextBlock Text="Company Overview" FontSize="24" TextDecorations="Underline" Grid.Column="1"
-                               VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="18 0 0 0"></TextBlock>
+                               VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="18 0 0 0"/>
                     <!--Symbol-->
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="Symbol:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Symbol}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--Sector-->
                     <TextBlock Grid.Column="0" Grid.Row="2" Text="Sector:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Sector}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--MarketCap-->
                     <TextBlock Grid.Column="2" Grid.Row="1" Text="Market Cap:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding MarketCapitalization}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--EBITDA-->
                     <TextBlock Grid.Column="2" Grid.Row="2" Text="EBITDA:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding EBITDA}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--PERation-->
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="P/E Ratio:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding PERatio}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--PEGRatio-->
                     <TextBlock Grid.Column="0" Grid.Row="4" Text="PEG Ratio:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding PEGRatio}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--Dividend Yield-->
                     <TextBlock Grid.Column="2" Grid.Row="3" Text="Dividend Yield:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding Symbol}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--EPS-->
                     <TextBlock Grid.Column="0" Grid.Row="5" Text="EPS:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding EPS}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--Beta-->
                     <TextBlock Grid.Column="0" Grid.Row="6" Text="Beta:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding Beta}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--ForwardPE-->
                     <TextBlock Grid.Column="2" Grid.Row="4" Text="Forward PE:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding ForwardPE}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--Trailing PE-->
                     <TextBlock Grid.Column="2" Grid.Row="5" Text="Trailing PE:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="3" Grid.Row="5" Text="{Binding TrailingPE}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
 
                     <!--Shares-->
                     <TextBlock Grid.Column="2" Grid.Row="6" Text="Shares:" VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Margin="0 0 5 0"></TextBlock>
+                               HorizontalAlignment="Right" Margin="0 0 5 0"/>
                     <TextBlock Grid.Column="3" Grid.Row="6" Text="{Binding SharesOutstanding}" VerticalAlignment="Center"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
                 </Grid>
             </Border>
         </Grid>

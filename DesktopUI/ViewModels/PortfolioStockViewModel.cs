@@ -48,11 +48,11 @@ namespace DesktopUI.ViewModels
 
         protected override async void OnViewLoaded(object view)
         {
-            await LoadChart(TickerOnLoad);
-            await LoadBuyPanel(TickerOnLoad);
-            await LoadAccountBalance();
-            await LoadCompanyOverview(TickerOnLoad);
-            ChartSearch = TickerOnLoad;
+            //await LoadChart(TickerOnLoad);
+            //await LoadBuyPanel(TickerOnLoad);
+            //await LoadAccountBalance();
+            //await LoadCompanyOverview(TickerOnLoad);
+            //ChartSearch = TickerOnLoad;
             StartClock();
         }
 
@@ -448,6 +448,21 @@ namespace DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanBuy);
             }
         }
+
+        public decimal ProfitLoss
+        {
+            get
+            {
+                decimal avgprice;
+                decimal.TryParse(CurrentPositionAveragePrice, out avgprice);
+
+                decimal currprice;
+                decimal.TryParse(ChartPrice, out currprice);
+
+                return Math.Round((avgprice - currprice) * CurrentPositionShares,2);
+            }
+        }
+
 
         private string _currentTime = DateTime.Now.ToString("t");
 

@@ -643,6 +643,11 @@ namespace DesktopUI.ViewModels
             _events.PublishOnUIThread(new OpenPortfolioStockView(SelectedPortfolioStock.Ticker));
         }
 
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
         public void Article_View()
         {
             if(SelectedArticle == null)
