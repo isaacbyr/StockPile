@@ -107,11 +107,14 @@ namespace DesktopUI.Library.Api
 
                 decimal price;
                 decimal.TryParse(data.SelectToken("quoteResponse.result[0].regularMarketPrice").ToString(), out price);
+                decimal percChanged;
+                decimal.TryParse(data.SelectToken("quoteResponse.result[0].regularMarketChangePercent").ToString(), out percChanged);
+
                 var stock = new StockDashboardDataModel
                 {
                     Ticker = ticker.ToUpper(),
                     MarketPrice = price,
-                    PercentChanged = data.SelectToken("quoteResponse.result[0].regularMarketChangePercent").ToString()
+                    PercentChanged = percChanged
                 };
 
                 return stock;
@@ -122,14 +125,14 @@ namespace DesktopUI.Library.Api
             }
         }
 
-        public async Task<List<StockDashboardDataModel>> GetDailyGainers()
+        public async Task<List<StockDashboardDataModel>> GetDailyGainersOrLosers(string query)
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://yfapi.net/");
             httpClient.DefaultRequestHeaders.Add("X-API-KEY", "9l4Vorm2Kb7Z5HeFpMN8raQTY4X8z0HL9bMNChR6");
             httpClient.DefaultRequestHeaders.Add("accept", "application/json");
 
-            var response = await httpClient.GetAsync("ws/screeners/v1/finance/screener/predefined/saved?count=25&scrIds=day_gainers");
+            var response = await httpClient.GetAsync($"ws/screeners/v1/finance/screener/predefined/saved?count=15&scrIds=day_{query}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -143,11 +146,15 @@ namespace DesktopUI.Library.Api
                 {
                     decimal price;
                     decimal.TryParse(s.SelectToken("regularMarketPrice").ToString(), out price);
+
+                    decimal percChanged;
+                    decimal.TryParse(s.SelectToken("regularMarketChangePercent").ToString(), out percChanged);
+
                     var stock = new StockDashboardDataModel
                     {
                         Ticker = s.SelectToken("symbol").ToString(),
                         MarketPrice = price,
-                        PercentChanged = s.SelectToken("regularMarketChangePercent").ToString()
+                        PercentChanged = Math.Round(percChanged, 2)
                     };
                     stocks.Add(stock);
                 }
@@ -181,11 +188,14 @@ namespace DesktopUI.Library.Api
                 {
                     decimal temp;
                     decimal.TryParse(s.SelectToken("regularMarketPrice").ToString(), out temp);
+                    decimal percChanged;
+                    decimal.TryParse(s.SelectToken("regularMarketChangePercent").ToString(), out percChanged);
+
                     var stock = new StockDashboardDataModel
                     {
                         Ticker = s.SelectToken("symbol").ToString(),
                         MarketPrice = temp,
-                        PercentChanged = s.SelectToken("regularMarketChangePercent").ToString()
+                        PercentChanged = percChanged
                     };
                     stocks.Add(stock);
                 } 

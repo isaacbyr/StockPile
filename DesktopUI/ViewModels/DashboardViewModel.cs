@@ -28,6 +28,8 @@ namespace DesktopUI.ViewModels
         private readonly IUserAccountEndpoint _userAccountEndpoint;
         private readonly IEventAggregator _events;
         private readonly IApiHelper _apiHelper;
+        private readonly IFriendsEndpoint _friendsEndpoint;
+        private readonly ITransactionEndoint _transactionEndpoint;
 
         public SeriesCollection SpySeriesCollection { get; set; }
         public List<string> SpyLabels { get; set; }
@@ -44,7 +46,8 @@ namespace DesktopUI.ViewModels
 
         public DashboardViewModel(IStockDataEndpoint stockDataEndpoint, INewsEndpoint newsEndpoint, 
             IWatchListEndpoint watchListEndpoint, IPortfolioEndpoint portfolioEndpoint, 
-            IUserAccountEndpoint userAccountEndpoint, IEventAggregator events, IApiHelper apiHelper)
+            IUserAccountEndpoint userAccountEndpoint, IEventAggregator events, IApiHelper apiHelper,
+            IFriendsEndpoint friendsEndpoint, ITransactionEndoint transactionEndpoint)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _newsEndpoint = newsEndpoint;
@@ -53,6 +56,8 @@ namespace DesktopUI.ViewModels
             _userAccountEndpoint = userAccountEndpoint;
             _events = events;
             _apiHelper = apiHelper;
+            _friendsEndpoint = friendsEndpoint;
+            _transactionEndpoint = transactionEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -62,8 +67,11 @@ namespace DesktopUI.ViewModels
             await LoadWatchListData();
             await LoadPortfolioData();
             await LoadDailyGainers();
+            await LoadDailyLosers();
             await LoadMarketNews("amzn+aapl+wmt+fb");
             await LoadPortfolioOverview();
+            await LoadFriends();
+            await LoadDashboard();
             LoadTopHoldings();
             StartClock();
         }
@@ -152,12 +160,23 @@ namespace DesktopUI.ViewModels
 
         private async Task LoadDailyGainers()
         {
-            var gainers = await _stockDataEndpoint.GetDailyGainers();
+            var gainers = await _stockDataEndpoint.GetDailyGainersOrLosers("gainers");
 
             if(gainers != null)
             {
                 DailyGainers = new BindingList<StockDashboardDataModel>(gainers);
             }
+        }
+
+        private async Task LoadDailyLosers()
+        {
+            var losers = await _stockDataEndpoint.GetDailyGainersOrLosers("losers");
+
+            if(losers != null)
+            {
+                DailyLosers = new BindingList<StockDashboardDataModel>(losers);
+            }
+
         }
 
         private async Task LoadPortfolioData()
@@ -224,11 +243,8 @@ namespace DesktopUI.ViewModels
 
                 foreach(var stock in stockData)
                 {
-                    decimal temp;
-                    decimal.TryParse(stock.PercentChanged, out temp);
-                    temp = Math.Round(temp, 3);
-                    stock.PercentChanged = temp.ToString("");
-                }
+                    stock.PercentChanged = Math.Round(stock.PercentChanged, 2);
+                };
 
                 WatchlistStocks = new BindingList<StockDashboardDataModel>(stockData);
 
@@ -349,6 +365,80 @@ namespace DesktopUI.ViewModels
             return result;
         }
 
+
+
+        public async Task LoadFriends()
+        {
+            var friends = await _friendsEndpoint.LoadFriends();
+
+            if(friends.Count > 0)
+            {
+                Friends = new BindingList<FriendModel>(friends);
+            }
+        }
+
+        private async Task LoadDashboard()
+        {
+            if (Friends == null || Friends.Count == 0)
+            {
+                return;
+            }
+
+            Dashboard = new List<TransactionDisplayModel>();
+
+            foreach (var f in Friends)
+            {
+                var friendTransactions = await _transactionEndpoint.LoadTransactionsById(f.Id);
+
+                var convertedTransactions = ConvertToDashboardDisplay(friendTransactions);
+
+                Dashboard.AddRange(convertedTransactions);
+            }
+            Dashboard = Dashboard.OrderByDescending(x => x.Date).ToList();
+        }
+
+        private List<TransactionDisplayModel> ConvertToDashboardDisplay(List<SocialDashboardDataModel> friendTransactions)
+        {
+            var userTransactions = new List<TransactionDisplayModel>();
+
+            foreach (var t in friendTransactions)
+            {
+                if (t.Buy == true)
+                {
+                    var transaction = new TransactionDisplayModel
+                    {
+                        Date = t.Date,
+                        Transaction = $"{t.FullName} bought {t.Shares} shares of {t.Ticker} at {Math.Round(t.Price, 2)}"
+                    };
+
+                    userTransactions.Add(transaction);
+                }
+                else
+                {
+                    var transaction = new TransactionDisplayModel
+                    {
+                        Date = t.Date,
+                        Transaction = $"{t.FullName} sold {t.Shares} shares of {t.Ticker} at {Math.Round(t.Price, 2)}"
+                    };
+
+                    userTransactions.Add(transaction);
+                }
+            }
+            return userTransactions;
+        }
+
+        private List<TransactionDisplayModel> _dashboard;
+
+        public List<TransactionDisplayModel> Dashboard
+        {
+            get { return _dashboard; }
+            set
+            {
+                _dashboard = value;
+                NotifyOfPropertyChange(() => Dashboard);
+            }
+        }
+
         private BindingList<StockDashboardDataModel> _dailyGainers;
 
         public BindingList<StockDashboardDataModel> DailyGainers
@@ -358,6 +448,18 @@ namespace DesktopUI.ViewModels
             {
                 _dailyGainers = value;
                 NotifyOfPropertyChange(() => DailyGainers);
+            }
+        }
+
+        private BindingList<StockDashboardDataModel> _dailyLosers;
+
+        public BindingList<StockDashboardDataModel> DailyLosers
+        {
+            get { return _dailyLosers; }
+            set 
+            {
+                _dailyLosers = value;
+                NotifyOfPropertyChange(() => DailyLosers);
             }
         }
 
@@ -585,6 +687,19 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private BindingList<FriendModel> friends;
+
+        public BindingList<FriendModel> Friends
+        {
+            get { return friends; }
+            set
+            {
+                friends = value;
+                NotifyOfPropertyChange(() => Friends);
+            }
+        }
+
+
         public async Task RefreshWatchlist()
         {
             await LoadWatchListData();
@@ -616,6 +731,15 @@ namespace DesktopUI.ViewModels
             _events.PublishOnUIThread(new OpenPortfolioStockView(SelectedPortfolioStock.Ticker));
         }
 
+        public async Task RefreshDailyGainers()
+        {
+            await LoadDailyGainers();
+        }
+
+        public async Task RefreshDailyLosers()
+        {
+            await LoadDailyLosers();
+        }
 
         public void Article_View()
         {

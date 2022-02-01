@@ -9,7 +9,7 @@ namespace DesktopUI.Library.Api
         //Task<List<OhlcStockModel>> GetDashboardCharts(string ticker);
         Task<StockDashboardDataModel> GetStockDashboardData(string ticker);
         Task<List<StockDashboardDataModel>> GetMultipleStockDashboardData(string query);
-        Task<List<StockDashboardDataModel>> GetDailyGainers();
+        Task<List<StockDashboardDataModel>> GetDailyGainersOrLosers(string query);
         Task<(List<OhlcStockModel>, string, string)> GetDashboardCharts(string ticker, string range = "3mo", string interval = "1d");
         Task<CompanyOverviewModel> GetCompanyOverview(string ticker);
     }

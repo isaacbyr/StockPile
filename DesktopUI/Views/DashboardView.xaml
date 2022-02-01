@@ -333,6 +333,7 @@
                 
             </Border>-->
             
+            <!--Daily Gainers-->
             <Border Grid.Column="5" Grid.Row="6" Grid.RowSpan="3"
                     Margin="5 5 10 10" Background="#1D2D44"
                     CornerRadius="18">
@@ -343,7 +344,8 @@
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"></RowDefinition>
-                            <RowDefinition Height="270"></RowDefinition>
+                            <RowDefinition Height="260"></RowDefinition>
+                            <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <TextBlock TextDecorations="Underline" HorizontalAlignment="Center" Grid.Row="0" Text="Daily Gainers" Margin="0 5 0 0" FontSize="16"></TextBlock>
                         <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
@@ -394,6 +396,9 @@
                             </ListView.ItemContainerStyle>
 
                         </ListView>
+                        
+                        <!--Refres Button-->
+                        <Button x:Name="RefreshDailyGainers" Grid.Row="2" Margin="0 2 0 0" MaxWidth="60" MinWidth="60" Content="Refresh" Background="SteelBlue" Foreground="White"></Button>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -548,9 +553,126 @@
 
             <!--Dashboard Border-->
             <Border CornerRadius="18" Background="#1D2D44"
-                    Margin="5 5 10 5" Grid.Column="3"
-                    Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="3">
-                
+                    Margin="5 5 5 5" Grid.Column="3"
+                    Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="400"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="3" Margin="0 5 15 0" Content="View More" Foreground="White" Background="SteelBlue" FontSize="10"
+                              Padding="0 0 0 0"  VerticalContentAlignment="Center" MaxHeight="20"
+                                x:Name="ViewMoreSocial"></Button>
+                        </Grid>
+                    </StackPanel>
+                    <!--Header-->
+                    <TextBlock Text="Dashboard" VerticalAlignment="Center"
+                               HorizontalAlignment="Center" TextDecorations="Underline" FontSize="22"></TextBlock>
+
+                    <!--Dashboard Listbox-->
+                    <ListBox Margin="50 0 50 0" Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                          x:Name="Dashboard" BorderBrush="Transparent"
+                                  SelectedItem="{Binding SelectedSocialTransaction}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock 
+                            FontSize="15" Grid.Column="0" Text="{Binding Transaction}" Margin="18 0 0 0">
+                                    </TextBlock>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Foreground" Value="White"></Setter>
+
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Grid>
+            </Border>
+            
+            <!--Daily Losers-->
+            <Border CornerRadius="18" Background="#1d2d44" 
+                    Margin="5 5 10 5" Grid.Column="5" Grid.Row="3"
+                    Grid.RowSpan="3">
+                <StackPanel Orientation="Vertical" Grid.Column="0"
+                            Grid.Row="0">
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"></RowDefinition>
+                            <RowDefinition Height="150"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock TextDecorations="Underline" HorizontalAlignment="Center" Grid.Row="0" Text="Daily Losers" Margin="0 5 0 0" FontSize="16"></TextBlock>
+                        <ListView Grid.Row="1" Grid.Column="0" Background="Transparent"
+                                          x:Name="DailyLosers" BorderBrush="Transparent"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="65">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding MarketPrice}" Header="Price" Width="65">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding PercentChanged}" Header="% Changed" Width="75">
+                                        <GridViewColumn.HeaderContainerStyle>
+                                            <Style TargetType="GridViewColumnHeader">
+                                                <Setter Property="Background" Value="Transparent"></Setter>
+                                                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                            </Style>
+                                        </GridViewColumn.HeaderContainerStyle>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                            <ListView.Resources>
+                                <converters:WatchlistItemColorConverter x:Key="WatchlistItemColorConverter"></converters:WatchlistItemColorConverter>
+                            </ListView.Resources>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource WatchlistItemColorConverter}}"></Setter>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                </Style>
+
+                            </ListView.ItemContainerStyle>
+
+                        </ListView>
+                        
+                        <!--Refresh Button-->
+                        <Button x:Name="RefreshDailyLosers" Grid.Row="2" Margin="0 2 0 0" MaxWidth="60" MinWidth="60" Content="Refresh" Background="SteelBlue" Foreground="White"></Button>
+
+                    </Grid>
+                </StackPanel>
             </Border>
 
         </Grid>

@@ -15,10 +15,8 @@ namespace DesktopUI.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             StockDashboardDataModel stock = (StockDashboardDataModel)value; 
-            decimal temp = 1;
-            decimal.TryParse(stock.PercentChanged, out temp);
 
-            if (temp < 0)
+            if (stock.PercentChanged < 0)
             {
                 return "Red";
             }

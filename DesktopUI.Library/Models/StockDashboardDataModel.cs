@@ -10,6 +10,6 @@ namespace DesktopUI.Library.Models
     {
         public string Ticker { get; set; }
         public decimal MarketPrice { get; set; }
-        public string PercentChanged { get; set; }
+        public decimal PercentChanged { get; set; }
     }
 }
