@@ -53,7 +53,7 @@
 
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="0"
-                            Content="Social" x:Name="OpenSocial"></Button>
+                            Content="Home" x:Name="Home"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="1"
                             Content="Performance" x:Name="Performance"></Button>

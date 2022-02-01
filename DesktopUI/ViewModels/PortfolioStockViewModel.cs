@@ -26,6 +26,7 @@ namespace DesktopUI.ViewModels
         private readonly IWindowManager _window;
         private readonly TransactionInfoViewModel _transactionInfoVM;
         private readonly IWatchListEndpoint _watchlistEndpoint;
+        private readonly IApiHelper _apiHelper;
 
         public string TickerOnLoad { get; set; } = "AAPL";
         public SeriesCollection SeriesCollection { get; set; }
@@ -34,7 +35,7 @@ namespace DesktopUI.ViewModels
         public PortfolioStockViewModel(IStockDataEndpoint stockDataEndpoint, IEventAggregator events,
             IUserAccountEndpoint userAccountEndpoint, IPortfolioEndpoint portfolioEndpoint,
             ITransactionEndoint transactionEndpoint, IWindowManager window, TransactionInfoViewModel transactionInfoVM,
-            IWatchListEndpoint watchlistEndpoint)
+            IWatchListEndpoint watchlistEndpoint, IApiHelper apiHelper)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _events = events;
@@ -44,15 +45,16 @@ namespace DesktopUI.ViewModels
             _window = window;
             _transactionInfoVM = transactionInfoVM;
             _watchlistEndpoint = watchlistEndpoint;
+            _apiHelper = apiHelper;
         }
 
         protected override async void OnViewLoaded(object view)
         {
-            //await LoadChart(TickerOnLoad);
-            //await LoadBuyPanel(TickerOnLoad);
-            //await LoadAccountBalance();
-            //await LoadCompanyOverview(TickerOnLoad);
-            //ChartSearch = TickerOnLoad;
+            await LoadChart(TickerOnLoad);
+            await LoadBuyPanel(TickerOnLoad);
+            await LoadAccountBalance();
+            await LoadCompanyOverview(TickerOnLoad);
+            ChartSearch = TickerOnLoad;
             StartClock();
         }
 
@@ -637,6 +639,37 @@ namespace DesktopUI.ViewModels
         {
             _events.PublishOnUIThread(new ReturnHomeEvent());
         }
-        
+
+
+
+        public void Performance()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+        }
+
+
+        public void Home()
+        {
+            _events.PublishOnUIThread(new ReturnHomeEvent());
+        }
+
+
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+
+        public void Logout()
+        {
+            _apiHelper.Logout();
+            _events.PublishOnUIThread(new LogOffEvent());
+        }
+
+        public void Exit()
+        {
+            _events.PublishOnUIThread(new ExitAppEvent());
+        }
+
     }
 }

@@ -27,6 +27,7 @@ namespace DesktopUI.ViewModels
         private readonly IPortfolioEndpoint _portfolioEndpoint;
         private readonly IUserAccountEndpoint _userAccountEndpoint;
         private readonly IEventAggregator _events;
+        private readonly IApiHelper _apiHelper;
 
         public SeriesCollection SpySeriesCollection { get; set; }
         public List<string> SpyLabels { get; set; }
@@ -43,7 +44,7 @@ namespace DesktopUI.ViewModels
 
         public DashboardViewModel(IStockDataEndpoint stockDataEndpoint, INewsEndpoint newsEndpoint, 
             IWatchListEndpoint watchListEndpoint, IPortfolioEndpoint portfolioEndpoint, 
-            IUserAccountEndpoint userAccountEndpoint, IEventAggregator events)
+            IUserAccountEndpoint userAccountEndpoint, IEventAggregator events, IApiHelper apiHelper)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _newsEndpoint = newsEndpoint;
@@ -51,6 +52,7 @@ namespace DesktopUI.ViewModels
             _portfolioEndpoint = portfolioEndpoint;
             _userAccountEndpoint = userAccountEndpoint;
             _events = events;
+            _apiHelper = apiHelper;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -603,35 +605,6 @@ namespace DesktopUI.ViewModels
             await LoadRightChartData(SearchInputRightChart);
         }
 
-        public void Performance()
-        {
-            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
-        }
-
-        public void ViewMorePortfolioSummary()
-        {
-            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
-        }
-
-        public void BuyStocks()
-        {
-            _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
-        }
-
-        public void Social()
-        {
-            _events.PublishOnUIThread(new OpenSocialView());
-        }
-
-        public async Task SearchNews()
-        {
-            await LoadMarketNews(SearchInput);
-        }
-
-        public void ViewMorePortoflioSummary()
-        {
-            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
-        }
 
         public void LoadPortfolioStockView()
         {
@@ -643,20 +616,59 @@ namespace DesktopUI.ViewModels
             _events.PublishOnUIThread(new OpenPortfolioStockView(SelectedPortfolioStock.Ticker));
         }
 
-        public void OpenSocial()
-        {
-            _events.PublishOnUIThread(new OpenSocialView());
-        }
 
         public void Article_View()
         {
-            if(SelectedArticle == null)
+            if (SelectedArticle == null)
             {
                 return;
             }
             Process.Start(SelectedArticle.Url);
         }
 
+        public async Task SearchNews()
+        {
+            await LoadMarketNews(SearchInput);
+        }
+
+        public void ViewMorePortfolioSummary()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+        }
+
+        public void ViewMorePortoflioSummary()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+        }
+
+
+        public void Performance()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+        }
+
+
+        public void BuyStocks()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
+        }
+
+
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+
+        public void Logout()
+        {
+            _apiHelper.Logout();
+            _events.PublishOnUIThread(new LogOffEvent());
+        }
         
+        public void Exit()
+        {
+            _events.PublishOnUIThread(new ExitAppEvent());
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
+using DesktopUI.Library.EventModels;
 using DesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,20 @@ namespace DesktopUI.ViewModels
         private readonly IUserEndpoint _userEndpoint;
         private readonly IRealizedProfitLossEndpoint _realizedPLEndpoint;
         private readonly ITransactionEndoint _transactionEndpoint;
+        private readonly IApiHelper _apiHelper;
+        private readonly IEventAggregator _events;
 
         public SocialViewModel(IFriendsEndpoint friendEndpoint, IFriendRequestEndpoint friendRequestEndpoint,
-            IUserEndpoint userEndpoint, IRealizedProfitLossEndpoint realizedPLEndpoint, ITransactionEndoint transactionEndpoint)
+            IUserEndpoint userEndpoint, IRealizedProfitLossEndpoint realizedPLEndpoint, ITransactionEndoint transactionEndpoint,
+            IApiHelper apiHelper, IEventAggregator events)
         {
             _friendEndpoint = friendEndpoint;
             _friendRequestEndpoint = friendRequestEndpoint;
             _userEndpoint = userEndpoint;
             _realizedPLEndpoint = realizedPLEndpoint;
             _transactionEndpoint = transactionEndpoint;
+            _apiHelper = apiHelper;
+            _events = events;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -67,7 +73,7 @@ namespace DesktopUI.ViewModels
                     var transaction = new TransactionDisplayModel
                     {
                         Date = t.Date,
-                        Transaction = $"{t.FullName} Bought {t.Shares} of {t.Ticker} at {Math.Round(t.Price,2)}"
+                        Transaction = $"{t.FullName} bought {t.Shares} shares of {t.Ticker} at {Math.Round(t.Price,2)}"
                     };
 
                     userTransactions.Add(transaction);
@@ -77,7 +83,7 @@ namespace DesktopUI.ViewModels
                     var transaction = new TransactionDisplayModel
                     {
                         Date = t.Date,
-                        Transaction = $"{t.FullName} Sold {t.Shares} of {t.Ticker} at {Math.Round(t.Price, 2)}"
+                        Transaction = $"{t.FullName} sold {t.Shares} shares of {t.Ticker} at {Math.Round(t.Price, 2)}"
                     };
 
                     userTransactions.Add(transaction);
@@ -364,6 +370,8 @@ namespace DesktopUI.ViewModels
 
         public async Task SendRequest()
         {
+            // TODO: Figure out to remove yourself/exisitng friend from search results and/or remove people who are pending approval of your request
+
             if (SelectedSearchResult != null)
             {
                 var request = new FriendRequestModel
@@ -378,6 +386,35 @@ namespace DesktopUI.ViewModels
             {
                 return;
             }
+        }
+
+        public void Performance()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+        }
+
+
+        public void BuyStocks()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
+        }
+
+
+        public void Home()
+        {
+            _events.PublishOnUIThread(new ReturnHomeEvent());
+        }
+
+
+        public void Logout()
+        {
+            _apiHelper.Logout();
+            _events.PublishOnUIThread(new LogOffEvent());
+        }
+
+        public void Exit()
+        {
+            _events.PublishOnUIThread(new ExitAppEvent());
         }
     }
 }

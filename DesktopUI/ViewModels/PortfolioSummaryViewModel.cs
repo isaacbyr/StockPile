@@ -23,6 +23,7 @@ namespace DesktopUI.ViewModels
         private readonly IUserAccountEndpoint _userAccountEndpoint;
         private readonly ITransactionEndoint _transactionEndpoint;
         private readonly IEventAggregator _events;
+        private readonly IApiHelper _apiHelper;
 
         public SeriesCollection SeriesCollection { get; set; }
         public List<string> Labels { get; set; }
@@ -35,7 +36,7 @@ namespace DesktopUI.ViewModels
 
         public PortfolioSummaryViewModel(IRealizedProfitLossEndpoint realizedPLEndpoint, IPortfolioEndpoint portfolioEndpoint,
             IStockDataEndpoint stockDataEndpoint, IUserAccountEndpoint userAccountEndpoint, ITransactionEndoint transactionEndpoint,
-            IEventAggregator events)
+            IEventAggregator events, IApiHelper apiHelper)
         {
             _realizedPLEndpoint = realizedPLEndpoint;
             _portfolioEndpoint = portfolioEndpoint;
@@ -43,6 +44,7 @@ namespace DesktopUI.ViewModels
             _userAccountEndpoint = userAccountEndpoint;
             _transactionEndpoint = transactionEndpoint;
             _events = events;
+            _apiHelper = apiHelper;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -487,9 +489,32 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        public void Home()
+        {
+            _events.PublishOnUIThread(new ReturnHomeEvent());
+        }
+
         public void BuyStocks()
         {
             _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
+        }
+
+
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+
+        public void Logout()
+        {
+            _apiHelper.Logout();
+            _events.PublishOnUIThread(new LogOffEvent());
+        }
+
+        public void Exit()
+        {
+            _events.PublishOnUIThread(new ExitAppEvent());
         }
     }
 }

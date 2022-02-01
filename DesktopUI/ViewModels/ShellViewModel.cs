@@ -9,7 +9,8 @@ using DesktopUI.Library.EventModels;
 namespace DesktopUI.ViewModels
 {
     public class ShellViewModel: Conductor<object>, IHandle<LogOnEvent>, IHandle<OpenPortfolioStockView>, IHandle<ReturnHomeEvent>,
-        IHandle<OpenPortfolioSummaryView>, IHandle<OpenSocialView>, IHandle<OpenRegisterView>, IHandle<OpenLoginView>
+        IHandle<OpenPortfolioSummaryView>, IHandle<OpenSocialView>, IHandle<OpenRegisterView>, IHandle<OpenLoginView>, IHandle<LogOffEvent>,
+        IHandle<ExitAppEvent>
     {
         private readonly IEventAggregator _events;
         private LoginViewModel _loginVM;
@@ -33,9 +34,9 @@ namespace DesktopUI.ViewModels
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
-           // ActivateItem(_loginVM);
+            ActivateItem(_loginVM);
             //ActivateItem(_registerVM);
-            ActivateItem(_portfolioStockVM);
+            //ActivateItem(_portfolioStockVM);
             //ActivateItem(_dashboardVM);
             //ActivateItem(_portfolioSummaryVM);
         }
@@ -74,6 +75,16 @@ namespace DesktopUI.ViewModels
         public void Handle(OpenLoginView message)
         {
             ActivateItem(_loginVM);
+        }
+
+        public void Handle(LogOffEvent message)
+        {
+            ActivateItem(_loginVM);
+        }
+
+        public void Handle(ExitAppEvent message)
+        {
+            this.TryClose();
         }
     }
 }
