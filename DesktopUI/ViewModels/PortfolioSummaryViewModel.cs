@@ -196,7 +196,7 @@ namespace DesktopUI.ViewModels
                 Brushes.LightSteelBlue, Brushes.PaleTurquoise, Brushes.PowderBlue, Brushes.SkyBlue, Brushes.DeepSkyBlue, Brushes.PaleTurquoise,
                 Brushes.LightCyan, Brushes.AliceBlue, Brushes.LightBlue, Brushes.CadetBlue, Brushes.CornflowerBlue, Brushes.DodgerBlue, Brushes.LightSkyBlue};
 
-            //TODO: Add Account Balance
+            
             PieSeriesCollection = new SeriesCollection();
 
             var cash = new PieSeries()

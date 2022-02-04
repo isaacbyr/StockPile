@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using DesktopUI.Library.EventModels;
+using DesktopUI.ViewModels.TraderPro;
 
 namespace DesktopUI.ViewModels
 {
@@ -19,10 +20,11 @@ namespace DesktopUI.ViewModels
         private readonly PortfolioSummaryViewModel _portfolioSummaryVM;
         private readonly SocialViewModel _socialVM;
         private readonly RegisterViewModel _registerVM;
+        private readonly TraderMainViewModel _mainVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
-            SocialViewModel socialVM, RegisterViewModel registerVM)
+            SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel mainVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -31,10 +33,12 @@ namespace DesktopUI.ViewModels
             _portfolioSummaryVM = portfolioSummaryVM;
             _socialVM = socialVM;
             _registerVM = registerVM;
+            _mainVM = mainVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
-            ActivateItem(_loginVM);
+            //ActivateItem(_loginVM);
+            ActivateItem(_mainVM);
             //ActivateItem(_registerVM);
             //ActivateItem(_portfolioStockVM);
             //ActivateItem(_dashboardVM);

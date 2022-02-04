@@ -343,7 +343,7 @@
             <!--Chart-->
             <Border CornerRadius="18" Background="#1D2D44" Grid.Row="3"
                     Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" Margin="10 5 5 10">
-                <lvc:CartesianChart Foreground="Black" Grid.Row="1" Grid.Column="0" Margin="5 0 15 18" Series="{Binding SeriesCollection}">
+                <lvc:CartesianChart Foreground="Black" Grid.Row="1" Grid.Column="0" Margin="5 5 15 18" Series="{Binding SeriesCollection}">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Labels="{Binding Labels}" LabelsRotation="60">
                             <lvc:Axis.Separator>

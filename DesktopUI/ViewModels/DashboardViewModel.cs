@@ -218,7 +218,7 @@ namespace DesktopUI.ViewModels
         private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMinutes(1);
+            timer.Interval = TimeSpan.FromSeconds(30);
             timer.Tick += tickevent;
             timer.Start();
         }

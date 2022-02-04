@@ -61,6 +61,7 @@
     <Folder Include="dbo\Tables" />
     <Folder Include="dbo\Views" />
     <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Stored Procedures\TraderPro" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\StockPileData.publish.xml" />

@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace DesktopUI.ViewModels
 {
@@ -40,7 +41,22 @@ namespace DesktopUI.ViewModels
             await LoadRequests();
             await LoadLeaderboard();
             await LoadDashboard();
+            StartClock();
         }
+
+        private void StartClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Tick += tickevent;
+            timer.Start();
+        }
+
+        private void tickevent(object sender, EventArgs e)
+        {
+            CurrentTime = DateTime.Now.ToString("t");
+        }
+
 
         private async Task LoadDashboard()
         {
@@ -219,6 +235,18 @@ namespace DesktopUI.ViewModels
             else
             {
                 SearchResults = new BindingList<FriendDisplayModel>();
+            }
+        }
+
+        private string _currentTime = DateTime.Now.ToString("t");
+
+        public string CurrentTime
+        {
+            get { return _currentTime; }
+            set
+            {
+                _currentTime = value;
+                NotifyOfPropertyChange(() => CurrentTime);
             }
         }
 
