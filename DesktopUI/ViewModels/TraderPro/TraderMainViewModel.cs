@@ -56,7 +56,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 volume.Add(result.Volume);
                 Values.Add(point);
                 Labels.Add(result.Date);
-                Prices.Add( Math.Round((result.Open + result.High + result.Low + result.Close) / 4 ,2));
+                Prices.Add( Math.Round(result.Open ,2));
             }
 
             SeriesCollection.Add(
@@ -411,7 +411,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private List<CrossoverTransactionModel> _crossoverTransactions = new List<CrossoverTransactionModel>();
+        private List<CrossoverTransactionModel> _crossoverTransactions;
 
         public List<CrossoverTransactionModel> CrossoverTransactions
         {
@@ -456,6 +456,42 @@ namespace DesktopUI.ViewModels.TraderPro
             { 
                 _sells = value;
                 NotifyOfPropertyChange(() => Sells);
+            }
+        }
+
+        private int _sellShares;
+
+        public int SellShares
+        {
+            get { return _sellShares; }
+            set 
+            {
+                _sellShares = value;
+                NotifyOfPropertyChange(() => SellShares);
+            }
+        }
+
+        private int _buyShares;
+
+        public int BuyShares
+        {
+            get { return _buyShares; }
+            set 
+            {
+                _buyShares = value;
+                NotifyOfPropertyChange(() => BuyShares);
+            }
+        }
+
+        private decimal _profitLoss;
+
+        public decimal ProfitLoss
+        {
+            get { return _profitLoss; }
+            set 
+            {
+                _profitLoss = value;
+                NotifyOfPropertyChange(() => ProfitLoss);
             }
         }
 
@@ -513,13 +549,19 @@ namespace DesktopUI.ViewModels.TraderPro
 
             }
 
-            FindCrossovers();
+            await FindCrossovers();
+            await AddTransactionsToChart();
+            await GetProfitLoss();
+            AddTransactionsToView();
+            
+
         }
 
-        public void FindCrossovers()
+        public async Task FindCrossovers()
         {
             Buys = new List<ChartPointModel>(); 
             Sells = new List<ChartPointModel>();
+            CrossoverTransactions = new List<CrossoverTransactionModel>();
 
             string firstName = SeriesCollection[1].Title;
             firstName.Remove(firstName.Length -1);
@@ -549,14 +591,15 @@ namespace DesktopUI.ViewModels.TraderPro
                     {
                         var crossover = new CrossoverTransactionModel
                         {
+                            Index = i > 1 ? i - 1 : i,
                             BuyOrSell = "Sell",
-                            Price = Prices[i],
+                            Price = i > 1 ? Prices[i-1] : Prices[i],
                             Shares = 100
                         };
                         var sell = new ChartPointModel
                         {
-                            Price = Prices[i],
-                            Index = i
+                            Price = i > 1 ? Prices[i - 1] : Prices[i],
+                            Index = i > 1 ? i - 1: i
                         };
                         Sells.Add(sell);
                         CrossoverTransactions.Add(crossover);
@@ -569,14 +612,15 @@ namespace DesktopUI.ViewModels.TraderPro
                     {
                         var crossover = new CrossoverTransactionModel
                         {
+                            Index = i > 1 ? i - 1 : i,
                             BuyOrSell = "Buy",
-                            Price = Prices[i],
+                            Price = i > 1 ? Prices[i - 1] : Prices[i],
                             Shares = 100
                         };
                         var buy = new ChartPointModel
                         {
-                            Price = Prices[i],
-                            Index = i
+                            Price = i > 1 ? Prices[i - 1] : Prices[i],
+                            Index = i > 1 ? i - 1 : i
                         };
                         Buys.Add(buy);
                         CrossoverTransactions.Add(crossover);
@@ -585,10 +629,16 @@ namespace DesktopUI.ViewModels.TraderPro
                 }
                 
             }
-            AddTransactionsToChart();
+            
+
         }
 
-        private void AddTransactionsToChart()
+        private void AddTransactionsToView()
+        {
+           CrossoverTransactions = CrossoverTransactions.OrderByDescending(t => t.Index).ToList();
+        }
+
+        private async Task AddTransactionsToChart()
         {
             var buyValues = new ChartValues<double>();
             var sellValues = new ChartValues<double>();
@@ -622,16 +672,13 @@ namespace DesktopUI.ViewModels.TraderPro
                 }
             }
 
-            int test = 0;
-
             SeriesCollection.Add(
                 new LineSeries
                 {
                     Values = buyValues,
-                    Title = "Buys",
-                    //Fill = System.Windows.Media.Brushes.Transparent,
+                    Title = "Buy",
+                    Fill = System.Windows.Media.Brushes.Chartreuse,
                     Stroke = System.Windows.Media.Brushes.Chartreuse,
-                    //StrokeThickness = 4,
                     PointGeometrySize = 15,
                     PointGeometry = DefaultGeometries.Diamond
                 });
@@ -640,16 +687,52 @@ namespace DesktopUI.ViewModels.TraderPro
                 new LineSeries
                 {
                     Values = sellValues,
-                    Title = "Sells",
-                    //Fill = System.Windows.Media.Brushes.Transparent,
+                    Title = "Sell",
+                    Fill = System.Windows.Media.Brushes.Crimson,
+                    StrokeThickness = 0.5,
                     Stroke = System.Windows.Media.Brushes.Crimson,
-                    //StrokeThickness = 4,
-                    //PointGeometrySize = 30,
                     PointGeometrySize = 15,
                     PointGeometry = DefaultGeometries.Diamond,
 
                 });
 
+        }
+
+        private async Task GetProfitLoss()
+        {
+
+            if(CrossoverTransactions.Count <= 1)
+            {
+                // profitLoss = 0;
+                ProfitLoss = 0;
+                return;
+            }
+
+            decimal sum = 0;
+
+            if (CrossoverTransactions[0].BuyOrSell == "Buy")
+            {
+
+                for(int i = 0; i<CrossoverTransactions.Count; i++)
+                {
+                    if(CrossoverTransactions[i].BuyOrSell == "Sell")
+                    {
+                        sum += (CrossoverTransactions[i].Price - CrossoverTransactions[i - 1].Price) * CrossoverTransactions[i].Shares;
+                    }
+                }
+            }
+            else
+            {
+                for(int i = 0; i<CrossoverTransactions.Count; i++)
+                {
+                    if(CrossoverTransactions[i].BuyOrSell == "Buy")
+                    {
+                        sum += (CrossoverTransactions[i-1].Price - CrossoverTransactions[i].Price ) * CrossoverTransactions[i].Shares;
+                    }
+                }
+            }
+
+            ProfitLoss = sum;
         }
     }
 }

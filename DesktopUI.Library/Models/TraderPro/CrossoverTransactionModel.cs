@@ -8,6 +8,7 @@ namespace DesktopUI.Library.Models.TraderPro
 {
     public class CrossoverTransactionModel
     {
+        public int Index { get; set; }
         public string BuyOrSell { get; set; }
         public decimal Price { get; set; }
         public int Shares { get; set; }
