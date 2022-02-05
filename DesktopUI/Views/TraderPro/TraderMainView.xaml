@@ -5,8 +5,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views.TraderPro"
+             xmlns:converters="clr-namespace:DesktopUI.Converters"
              mc:Ignorable="d"  Foreground="White"
              d:DesignHeight="800" d:DesignWidth="1400">
+    <UserControl.Resources>
+        <converters:TraderProPLColorConverter x:Key="PLColorConverter"></converters:TraderProPLColorConverter>
+        <converters:TraderProIndicatorColorConverter x:Key="IndicatorColorConverter"></converters:TraderProIndicatorColorConverter>
+    </UserControl.Resources>
+    
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -195,9 +201,9 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="75"></ColumnDefinition>
-                                        <ColumnDefinition Width="75"></ColumnDefinition>
-                                        <ColumnDefinition Width="75"></ColumnDefinition>
+                                        <ColumnDefinition Width="85"></ColumnDefinition>
+                                        <ColumnDefinition Width="105"></ColumnDefinition>
+                                        <!--<ColumnDefinition Width="85"></ColumnDefinition>-->
                                     </Grid.ColumnDefinitions>
                                     <TextBlock 
                             FontSize="15" Grid.Column="0" Text="{Binding Interval}" Margin="18 0 0 0">
@@ -205,17 +211,18 @@
                                     <TextBlock 
                             FontSize="15" Grid.Column="1" Text="{Binding Indicator}" Margin="18 0 0 0">
                                     </TextBlock>
-                                    <TextBlock 
+                                    <!--<TextBlock 
                             FontSize="15" Grid.Column="2" Text="{Binding Color}" Margin="18 0 0 0">
-                                    </TextBlock>
+                                    </TextBlock>-->
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="Foreground" Value="{Binding Converter={StaticResource IndicatorColorConverter}}"></Setter>
                                 <Setter Property="HorizontalAlignment" Value="Center"></Setter>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
@@ -265,7 +272,8 @@
             <Border CornerRadius="18" Background="#1d2d44" Grid.Column="0" Grid.Row="4"
                     Grid.RowSpan="2" Grid.ColumnSpan="5" Margin="10 5 5 10">
 
-                <lvc:CartesianChart Foreground="black" Grid.Row="1" Grid.Column="0" Margin="25 25 25 20" Series="{Binding SeriesCollection}" 
+                <lvc:CartesianChart Foreground="black" Grid.Row="1" Grid.Column="0" Margin="25 25 25 20" 
+                                    Series="{Binding SeriesCollection}" 
                                     >
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Labels="{Binding Labels}" LabelsRotation="60">
@@ -286,9 +294,15 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="325"></RowDefinition>
+                        <RowDefinition Height="220"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="15"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="15"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     
                     <!--Header-->
@@ -296,10 +310,11 @@
                     
                     <!--List View-->
                     <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                          x:Name="CrossoverTransactions" BorderBrush="Transparent">
+                                          x:Name="CrossoverTransactions" BorderBrush="Transparent"
+                              SelectedItem="{Binding SelectedTransaction}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding BuyOrSell}" Header="Buy/Sell" Width="65">
+                                <GridViewColumn DisplayMemberBinding="{Binding Date}" Header="Date" Width="65">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="GridViewColumnHeader">
                                             <Setter Property="Background" Value="Transparent"></Setter>
@@ -329,10 +344,11 @@
                             </GridView>
                         </ListView.View>
                         <ListView.Resources>
+                            <converters:TraderProTransactionItemColorConverter x:Key="TransactionItemColorConverter"></converters:TraderProTransactionItemColorConverter>
                         </ListView.Resources>
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
-                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="Foreground" Value="{Binding Converter={StaticResource TransactionItemColorConverter}}"></Setter>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                 <Setter Property="HorizontalAlignment" Value="Center"></Setter>
                                 
@@ -342,8 +358,18 @@
 
                     </ListView>
                     
+                    <!--Delete Button-->
+                    <!--Remove-->
+                    <Button Content="Delete" Background="Red" Foreground="White"
+                            VerticalAlignment="Center"
+                            Grid.Row="2" MaxWidth="110" MinWidth="110" Grid.Column="1"
+                            MaxHeight="25" MinHeight="25" FontSize="14"
+                           x:Name="DeleteTransaction" Margin="0 0 0 0">
+                    </Button>
+
+
                     <!--Realized Profit Loss-->
-                    <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <StackPanel Grid.Row="3" HorizontalAlignment="Center" Orientation="Horizontal">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
@@ -354,11 +380,35 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Center"
                                        FontSize="18" Margin="5 0 0 0"></TextBlock>
                             <TextBlock Grid.Column="1" Text="{Binding ProfitLoss}"
+                                       Foreground="{Binding Converter={StaticResource PLColorConverter}}"
                                        VerticalAlignment="Center" HorizontalAlignment="Center"
                                        FontSize="18" Margin="5 0 0 0"></TextBlock>
                         </Grid>
                     </StackPanel>
-                    
+
+                    <!--Seperator-->
+                    <Border Background="White" Grid.Column="0" Grid.ColumnSpan="4"
+                            Grid.Row="4" MinHeight="2" MaxHeight="2"></Border>
+
+                    <!--Add To Exisiting Button-->
+                    <Button Content="Add To Exisiting" Background="SteelBlue" Foreground="White"
+                            Grid.Row="5" MaxWidth="140" MinWidth="140"
+                            MaxHeight="35" MinHeight="35" FontSize="16"
+                           x:Name="AddToExisitng" ></Button>
+
+                    <!--Seperator-->
+                    <Border Background="White" Grid.Column="0" Grid.ColumnSpan="4"
+                            Grid.Row="6" MinHeight="2" MaxHeight="2"></Border>
+
+
+                    <!--Create New-->
+                    <TextBox x:Name="NewStrategy" Grid.Column="0" Grid.Row="7" MinHeight="30" MaxHeight="30"
+                             VerticalContentAlignment="Center" Background="Transparent" MinWidth="160" MaxWidth="160"
+                             Foreground="White" HorizontalContentAlignment="Center"></TextBox>
+                    <Button Content="Create New" Background="SteelBlue" Foreground="White"
+                            Grid.Row="8" MaxWidth="140" MinWidth="140"
+                            MaxHeight="35" MinHeight="35" FontSize="16"
+                           x:Name="CreateNew" ></Button>
                 </Grid>
             </Border>
         </Grid>

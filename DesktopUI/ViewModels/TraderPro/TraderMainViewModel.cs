@@ -73,6 +73,80 @@ namespace DesktopUI.ViewModels.TraderPro
             NotifyOfPropertyChange(() => ChartLength);
         }
 
+
+        public async Task LoadEMA(string emaInterval, string color)
+        {
+            //convert color form string to SolidColorBrush
+            Color newColor = (Color)ColorConverter.ConvertFromString(color);
+            SolidColorBrush brush = new SolidColorBrush(newColor);
+
+            int emaRange;
+            int.TryParse(emaInterval, out emaRange);
+
+            var Values = new ChartValues<decimal>();
+
+            var maList = new List<decimal>();
+
+            if(ChartSearch != null && SelectedChartInterval != null && SelectedChartRange != null)
+            {
+                var (range, lastResults) = AddAndConvertDays(SelectedChartRange, SelectedChartInterval, emaRange);
+
+                var (results, symbol, marketPrice) = await _stockDataEndpoint.GetSMAChartData(ChartSearch, range, SelectedChartInterval, lastResults);
+                ChartPrice = marketPrice;
+                ChartSymbol = symbol;
+
+                decimal k = (decimal)2 / (emaRange + 1);
+                decimal sum = 0;
+                //get sma
+                for(int i = 0; i < emaRange; i++)
+                {
+                    sum += results[i].Close;
+                }
+                decimal sma = sum / emaRange;
+                Values.Add(sma);
+                maList.Add(sma);
+
+                int index = 0;
+                for(int i = emaRange; i < results.Count; i++)
+                {
+                    decimal ema = (results[i].Close * k) + (maList[index] * (1 - k));
+                    Values.Add(ema);
+                    maList.Add(ema);
+
+                    index += 1;
+                }
+
+                var removeValues = Values.Count - ChartLength;
+                int idx = 0;
+                while (idx < removeValues)
+                {
+                    Values.RemoveAt(0);
+                    maList.RemoveAt(0);
+                    idx++;
+                }
+
+                SeriesCollection.Add(
+                    new LineSeries
+                    {
+                        Values = Values,
+                        Title = $"{emaRange}d SMA",
+                        Fill = System.Windows.Media.Brushes.Transparent,
+                        Stroke = brush,
+                        StrokeThickness = 2,
+                        PointGeometry = null,
+
+                    });
+
+                IndicatorList.Add(maList);
+            }
+            else
+            {
+                return;
+            }
+            NotifyOfPropertyChange(() => SeriesCollection);
+            NotifyOfPropertyChange(() => Labels);
+        }
+
         public async Task LoadSMA(string smaInterval,string color)
         {
             //convert color form string to SolidColorBrush
@@ -84,7 +158,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
             var Values = new ChartValues<decimal>();
 
-            var maList = new List<decimal>();
+           var maList = new List<decimal>();
 
             if (ChartSearch != null && SelectedChartInterval != null && SelectedChartRange != null)
             {
@@ -189,6 +263,7 @@ namespace DesktopUI.ViewModels.TraderPro
             return ("", 0);
         }
 
+        
 
         private List<string> _indicatorInterval = new List<string> { "4", "9", "13", "21", "50" };
 
@@ -214,7 +289,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private List<string> _colors = new List<string> { "CadetBlue", "Turquoise" , "Gold", "Fuchsia", "Violet", "Aqua",
+        private List<string> _colors = new List<string> { "Turquoise" , "Gold", "Fuchsia", "Violet", "Aqua",
                                   "Magenta", "Purple", "Orange", "Orchid"  , "Teal" };
 
         public List<string> Colors
@@ -411,6 +486,18 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private CrossoverTransactionModel _selectedTransaction;
+
+        public CrossoverTransactionModel SelectedTransaction
+        {
+            get { return _selectedTransaction; }
+            set 
+            {
+                _selectedTransaction = value;
+                NotifyOfPropertyChange(() => SelectedTransaction);
+            }
+        }
+
         private List<CrossoverTransactionModel> _crossoverTransactions;
 
         public List<CrossoverTransactionModel> CrossoverTransactions
@@ -459,7 +546,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private int _sellShares;
+        private int _sellShares = 0;
 
         public int SellShares
         {
@@ -471,7 +558,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private int _buyShares;
+        private int _buyShares = 0;
 
         public int BuyShares
         {
@@ -483,9 +570,9 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private decimal _profitLoss;
+        private string _profitLoss;
 
-        public decimal ProfitLoss
+        public string ProfitLoss
         {
             get { return _profitLoss; }
             set 
@@ -535,6 +622,11 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
 
+            if(AddedIndicators.Count == 0)
+            {
+                return;
+            }
+
             if (SelectedIndicator == "SMA")
             {
                 
@@ -546,14 +638,20 @@ namespace DesktopUI.ViewModels.TraderPro
             }
             else if (SelectedIndicator == "EMA")
             {
-
+                foreach(var indicator in AddedIndicators)
+                {
+                    await LoadEMA(indicator.Interval, indicator.Color);
+                }
             }
 
-            await FindCrossovers();
-            await AddTransactionsToChart();
-            await GetProfitLoss();
-            AddTransactionsToView();
-            
+            if(BuyShares > 0 && SellShares > 0)
+            {
+                await FindCrossovers();
+                await AddTransactionsToChart();
+                await GetProfitLoss();
+                //AddTransactionsToView();
+
+            }
 
         }
 
@@ -574,12 +672,10 @@ namespace DesktopUI.ViewModels.TraderPro
             // figure out what ema is on top vs bottom
             if(IndicatorList[0][0] > IndicatorList[1][0])
             {
-                ema1.Name = firstName;
                 ema1.IsTop = true;     
             }
             else 
             {
-                ema1.Name = firstName;
                 ema1.IsTop = false;
             }
 
@@ -592,9 +688,10 @@ namespace DesktopUI.ViewModels.TraderPro
                         var crossover = new CrossoverTransactionModel
                         {
                             Index = i > 1 ? i - 1 : i,
+                            Date = i > 1 ? Labels[i - 1] : Labels[i],
                             BuyOrSell = "Sell",
                             Price = i > 1 ? Prices[i-1] : Prices[i],
-                            Shares = 100
+                            Shares = SellShares
                         };
                         var sell = new ChartPointModel
                         {
@@ -613,9 +710,10 @@ namespace DesktopUI.ViewModels.TraderPro
                         var crossover = new CrossoverTransactionModel
                         {
                             Index = i > 1 ? i - 1 : i,
+                            Date = i > 1 ? Labels[i-1] : Labels[i],
                             BuyOrSell = "Buy",
                             Price = i > 1 ? Prices[i - 1] : Prices[i],
-                            Shares = 100
+                            Shares = BuyShares
                         };
                         var buy = new ChartPointModel
                         {
@@ -635,7 +733,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private void AddTransactionsToView()
         {
-           CrossoverTransactions = CrossoverTransactions.OrderByDescending(t => t.Index).ToList();
+          // CrossoverTransactions = CrossoverTransactions.OrderByDescending(t => t.Index).ToList();
         }
 
         private async Task AddTransactionsToChart()
@@ -689,7 +787,6 @@ namespace DesktopUI.ViewModels.TraderPro
                     Values = sellValues,
                     Title = "Sell",
                     Fill = System.Windows.Media.Brushes.Crimson,
-                    StrokeThickness = 0.5,
                     Stroke = System.Windows.Media.Brushes.Crimson,
                     PointGeometrySize = 15,
                     PointGeometry = DefaultGeometries.Diamond,
@@ -703,8 +800,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
             if(CrossoverTransactions.Count <= 1)
             {
-                // profitLoss = 0;
-                ProfitLoss = 0;
+                ProfitLoss = "$0";
                 return;
             }
 
@@ -732,7 +828,68 @@ namespace DesktopUI.ViewModels.TraderPro
                 }
             }
 
-            ProfitLoss = sum;
+            ProfitLoss = "$" + sum.ToString();
+        }
+
+        public async Task DeleteTransaction()
+        {
+            if(SelectedTransaction == null)
+            {
+                return;
+            }
+            
+            //remove from Buys Or Sells List And replot chart
+            if(SelectedTransaction.BuyOrSell == "Buy")
+            {
+                //Buys.RemoveAt(SelectedTransaction.Index);
+                foreach(var b in Buys)
+                {
+                    if(b.Index == SelectedTransaction.Index)
+                    {
+                        Buys.Remove(b);
+                    }
+                }
+
+            }
+            else
+            {
+                foreach(var s in Sells)
+                {
+                    if(s.Index == SelectedTransaction.Index)
+                    {
+                        Sells.Remove(s);
+                        break;
+                    }
+                }
+            }
+
+            //TODO FIGURE OUT NOT UPDATING
+            if (SelectedTransaction != null)
+            {
+                CrossoverTransactions.Remove(SelectedTransaction);
+                NotifyOfPropertyChange(() => CrossoverTransactions);
+            }
+
+            await UpdateAfterChange();
+        }
+
+        private async Task UpdateAfterChange()
+        {
+            await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
+
+            if (SelectedIndicator == "SMA")
+            {
+
+                foreach (var indicator in AddedIndicators)
+                {
+                    await LoadSMA(indicator.Interval, indicator.Color);
+                }
+
+            }
+            await AddTransactionsToChart();
+            await GetProfitLoss();
+
+            NotifyOfPropertyChange(() => ProfitLoss);
         }
     }
 }

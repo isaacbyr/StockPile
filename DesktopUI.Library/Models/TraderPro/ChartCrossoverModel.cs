@@ -8,7 +8,6 @@ namespace DesktopUI.Library.Models.TraderPro
 {
     public class ChartCrossoverModel
     {
-        public string Name { get; set; }
         public bool IsTop { get; set; }
     }
 }

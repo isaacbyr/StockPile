@@ -48,7 +48,19 @@ namespace DesktopUI.Library.Api
                 {
                     var ts = (int)time;
                     DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(ts).ToLocalTime();
-                    string formattedDate = dt.ToString("dd-MMM");
+                    string formattedDate;
+                    if (range == "1d" || range == "5d")
+                    {
+                        formattedDate = dt.ToString("t");
+                    }
+                    else if (range == "1mo" || range == "3mo" || range == "6mo" || range == "1yr")
+                    {
+                        formattedDate = dt.ToString("dd-MM");
+                    }
+                    else
+                    {
+                        formattedDate = dt.ToString("MM-yy");
+                    }
                     dates.Add(formattedDate);
                 }
 
@@ -129,7 +141,19 @@ namespace DesktopUI.Library.Api
                 {
                     var ts = (int)time;
                     DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(ts).ToLocalTime();
-                    string formattedDate = dt.ToString("dd-MMM");
+                    string formattedDate;
+                    if(range == "1d" || range == "5d")
+                    {
+                        formattedDate = dt.ToString("t");
+                    }
+                    else if (range == "1mo" || range == "3mo" || range == "6mo" || range == "1yr")
+                    {
+                        formattedDate = dt.ToString("dd-MM");
+                    }
+                    else
+                    {
+                        formattedDate = dt.ToString("MM-yy");
+                    }
                     dates.Add(formattedDate);
                 }
 
