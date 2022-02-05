@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[Strategies]
+(
+	[UserId] NVARCHAR(128) NOT NULL,
+	[Name] NVARCHAR(100) NOT NULL,
+	[Ticker] NVARCHAR(10) NOT NULL,
+	[ProfitLoss] MONEY NOT NULL
+)

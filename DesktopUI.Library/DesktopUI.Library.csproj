@@ -107,6 +107,8 @@
     <Compile Include="Api\Jtoken.cs" />
     <Compile Include="Api\NewsEndpoint.cs" />
     <Compile Include="Api\PortfolioEndpoint.cs" />
+    <Compile Include="Api\TraderPro\IStrategyEndpoint.cs" />
+    <Compile Include="Api\TraderPro\StrategyEndpoint.cs" />
     <Compile Include="Api\UserEndpoint.cs" />
     <Compile Include="EventModels\ExitAppEvent.cs" />
     <Compile Include="EventModels\LogOffEvent.cs" />
@@ -146,6 +148,7 @@
     <Compile Include="Models\TraderPro\ChartPointModel.cs" />
     <Compile Include="Models\TraderPro\CrossoverTransactionModel.cs" />
     <Compile Include="Models\TraderPro\IndicatorDisplayModel.cs" />
+    <Compile Include="Models\TraderPro\StrategyModel.cs" />
     <Compile Include="Models\TransactionChartData.cs" />
     <Compile Include="Models\TransactionDisplayModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />
@@ -162,7 +165,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Api\TraderPro\" />
     <Folder Include="EventModels\TraderPro\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

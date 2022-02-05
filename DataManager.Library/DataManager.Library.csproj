@@ -50,6 +50,7 @@
     <Compile Include="DataAccess\InternalAccess\SqlDataAccess.cs" />
     <Compile Include="DataAccess\PortfolioData.cs" />
     <Compile Include="DataAccess\RealizedPLData.cs" />
+    <Compile Include="DataAccess\TraderPro\StrategyData.cs" />
     <Compile Include="DataAccess\TransactionData.cs" />
     <Compile Include="DataAccess\UserAccountData.cs" />
     <Compile Include="DataAccess\UserData.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Models\RealizedPLChartModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\SocialDashboardDataModel.cs" />
+    <Compile Include="Models\TraderPro\StrategyModel.cs" />
     <Compile Include="Models\TransactionChartData.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\UpdateRealizedPLModel.cs" />
@@ -76,9 +78,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataAccess\TraderPro\" />
-    <Folder Include="Models\TraderPro\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -62,6 +62,7 @@
     <Folder Include="dbo\Views" />
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="dbo\Stored Procedures\TraderPro" />
+    <Folder Include="dbo\Tables\TraderPro" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\StockPileData.publish.xml" />
@@ -102,6 +103,8 @@
     <Build Include="dbo\Stored Procedures\spTransaction_LoadDashboardById.sql" />
     <Build Include="dbo\Stored Procedures\spUser_InsertNewUser.sql" />
     <Build Include="dbo\Stored Procedures\spUserAccount_AddNewUserAccount.sql" />
+    <Build Include="dbo\Tables\TraderPro\Strategies.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_PostStrategy.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

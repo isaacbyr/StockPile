@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
+using DesktopUI.Library.Api.TraderPro;
 using DesktopUI.Library.Models;
 using DesktopUI.Library.Models.TraderPro;
 using LiveCharts;
@@ -8,9 +9,12 @@ using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace DesktopUI.ViewModels.TraderPro
@@ -18,6 +22,9 @@ namespace DesktopUI.ViewModels.TraderPro
     public class TraderMainViewModel: Screen
     {
         private readonly IStockDataEndpoint _stockDataEndpoint;
+        private readonly IStrategyEndpoint _strategyEndpoint;
+        private readonly IWindowManager _window;
+        private readonly TransactionInfoViewModel _transactionInfoVM;
 
         public SeriesCollection SeriesCollection { get; set; }
         public List<string> Labels { get; set; } = new List<string>();
@@ -25,9 +32,13 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public List<List<decimal>> IndicatorList { get; set; } = new List<List<decimal>>();
 
-        public TraderMainViewModel(IStockDataEndpoint stockDataEndpoint)
+        public TraderMainViewModel(IStockDataEndpoint stockDataEndpoint, IStrategyEndpoint strategyEndpoint,
+            IWindowManager window, TransactionInfoViewModel transactionInfoVM)
         {
             _stockDataEndpoint = stockDataEndpoint;
+            _strategyEndpoint = strategyEndpoint;
+            _window = window;
+            _transactionInfoVM = transactionInfoVM;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -260,6 +271,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 return ($"{temp}d", ChartLength + smaRange);
 
             }
+            //TODO SET THIS UP PROPERLY FOR 1YR AND 5YR
             return ("", 0);
         }
 
@@ -498,9 +510,9 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private List<CrossoverTransactionModel> _crossoverTransactions;
+        private BindingList<CrossoverTransactionModel> _crossoverTransactions;
 
-        public List<CrossoverTransactionModel> CrossoverTransactions
+        public BindingList<CrossoverTransactionModel> CrossoverTransactions
         {
             get { return _crossoverTransactions; }
             set 
@@ -583,6 +595,19 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
 
+        private string _newStrategy;
+
+        public string NewStrategy
+        {
+            get { return _newStrategy; }
+            set 
+            {
+                _newStrategy = value;
+                NotifyOfPropertyChange(() => NewStrategy);
+            }
+        }
+
+
         public void Clear ()
         {
             AddedIndicators.Clear();
@@ -659,7 +684,7 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             Buys = new List<ChartPointModel>(); 
             Sells = new List<ChartPointModel>();
-            CrossoverTransactions = new List<CrossoverTransactionModel>();
+            CrossoverTransactions = new BindingList<CrossoverTransactionModel>();
 
             string firstName = SeriesCollection[1].Title;
             firstName.Remove(firstName.Length -1);
@@ -733,7 +758,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private void AddTransactionsToView()
         {
-          // CrossoverTransactions = CrossoverTransactions.OrderByDescending(t => t.Index).ToList();
+            CrossoverTransactions.OrderBy(t => t.Index);
         }
 
         private async Task AddTransactionsToChart()
@@ -828,7 +853,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 }
             }
 
-            ProfitLoss = "$" + sum.ToString();
+            ProfitLoss = sum.ToString("C");
         }
 
         public async Task DeleteTransaction()
@@ -875,7 +900,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private async Task UpdateAfterChange()
         {
-            await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
+           // await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
 
             if (SelectedIndicator == "SMA")
             {
@@ -886,10 +911,42 @@ namespace DesktopUI.ViewModels.TraderPro
                 }
 
             }
+        
             await AddTransactionsToChart();
             await GetProfitLoss();
+           // AddTransactionsToView();
+
 
             NotifyOfPropertyChange(() => ProfitLoss);
         }
+
+        public async Task CreateNew()
+        {
+            decimal profitLoss;
+            decimal.TryParse(ProfitLoss, NumberStyles.Currency,
+            CultureInfo.CurrentCulture.NumberFormat, out profitLoss);
+            var strategy = new StrategyModel
+            {
+                Name = NewStrategy,
+                Ticker = ChartSymbol,
+                ProfitLoss = profitLoss,
+            };
+
+            var response = await _strategyEndpoint.PostStrategy(strategy);
+            DisplayTransactionResponse(response.Header, response.Header);
+        }
+
+        public void DisplayTransactionResponse(string header, string message)
+        {
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            settings.ResizeMode = ResizeMode.NoResize;
+            settings.WindowStyle = WindowStyle.None;
+            //settings.Title = "Transaction Status";
+
+
+            _transactionInfoVM.UpdateMessage(header, message);
+            _window.ShowDialog(_transactionInfoVM, null, settings);
+        } 
     }
 }

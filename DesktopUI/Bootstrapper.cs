@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
+using DesktopUI.Library.Api.TraderPro;
 using DesktopUI.Library.Models;
 using DesktopUI.ViewModels;
 using System;
@@ -28,6 +29,7 @@ namespace DesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IApiHelper, ApiHelper>()
+                .Singleton<IStrategyEndpoint, StrategyEndpoint>()
                 .Singleton<IFriendRequestEndpoint, FriendRequestEndpoint>()
                 .Singleton<IFriendsEndpoint, FriendsEndpoint>()
                 .Singleton<IUserAccountEndpoint, UserAccountEndpoint>()
