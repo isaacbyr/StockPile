@@ -11,20 +11,48 @@ namespace DataManager.Library.DataAccess.TraderPro
 {
     public class StrategyData
     {
-        public ResponseModel PostStrategy(StrategyModel strategy)
+        public int PostStrategy(StrategyModel strategy)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { };
+            try
+            {
+                sql.StartTransaction("StockPileData");
+                sql.SaveDataInTransaction("dbo.spStrategy_PostStrategy", strategy);
+                sql.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                sql.RollbackTransaction();
+                throw new Exception(e.Message);
+            }
+
+            try
+            {
+                var output = sql.LoadData<int, dynamic>("dbo.spStrategy_GetStrategyId", p, "StockPileData").FirstOrDefault();
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ResponseModel PostStrategyStock(StrategyStockModel strategyStock)
         {
             var sql = new SqlDataAccess();
 
             try
             {
                 sql.StartTransaction("StockPileData");
-                sql.SaveDataInTransaction("dbo.spStrategy_PostStrategy", strategy);
+                sql.SaveDataInTransaction("dbo.spStrategy_PostStrategyStock", strategyStock);
                 sql.CommitTransaction();
 
                 var response = new ResponseModel
                 {
                     Header = "Success!",
-                    Message = $"Successfully added new strategy {strategy.Name}"
+                    Message = $"Successfully added New strategy"
                 };
                 return response;
             }

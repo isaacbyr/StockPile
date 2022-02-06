@@ -15,13 +15,25 @@ namespace DataManager.Controllers.TraderPro
     public class StrategyController : ApiController
     {
         [HttpPost]
-        public ResponseModel Post(StrategyModel strategy)
+        [Route("new")]
+        public int Post(StrategyModel strategy)
         {
-            strategy.UserId = RequestContext.Principal.Identity.GetUserId();
+            // TODO CHANGE THIS SHIT
+            //strategy.UserId = RequestContext.Principal.Identity.GetUserId();
+            strategy.UserId = "123";
 
             var strategyData = new StrategyData();
 
             return strategyData.PostStrategy(strategy);
+        }
+
+        [HttpPost]
+        [Route("stock")]
+        public ResponseModel PostStrategyStock(StrategyStockModel strategyStock)
+        {
+            var strategyData = new StrategyData();
+
+            return strategyData.PostStrategyStock(strategyStock);
         }
     }
 }
