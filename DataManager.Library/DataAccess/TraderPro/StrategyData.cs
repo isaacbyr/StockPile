@@ -46,7 +46,7 @@ namespace DataManager.Library.DataAccess.TraderPro
             try
             {
                 sql.StartTransaction("StockPileData");
-                sql.SaveDataInTransaction("dbo.spStrategy_PostStrategyStock", strategyStock);
+                sql.SaveDataInTransaction("dbo.spStrategyItem_Post", strategyStock);
                 sql.CommitTransaction();
 
                 var response = new ResponseModel
@@ -65,8 +65,23 @@ namespace DataManager.Library.DataAccess.TraderPro
                 };
                 return response;
             }
+        }
 
+        public List<StrategyModel> LoadStrategies(string id)
+        {
+            var sql = new SqlDataAccess();
 
+            var p = new { UserId = id };
+
+            try
+            {
+                var output = sql.LoadData<StrategyModel, dynamic>("dbo.spStrategy_GetAllStrategies", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
       }
 }

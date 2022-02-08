@@ -54,5 +54,21 @@ namespace DesktopUI.Library.Api.TraderPro
                 }
             }
         }
+
+        public async Task<List<StrategyModel>> LoadStrategies()
+        {
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/strategy/all"))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<StrategyModel>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

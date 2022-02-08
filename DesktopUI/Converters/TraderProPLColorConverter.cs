@@ -12,20 +12,8 @@ namespace DesktopUI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var pl = value.ToString();
-            pl = pl.Substring(1);
 
-            decimal convPL;
-            decimal.TryParse(pl, out convPL);
-
-            if(convPL > 0)
-            {
-                return "#03AC13";
-            }
-            else
-            {
-                return "Red";
-            }
+            return "White";
             
         }
 

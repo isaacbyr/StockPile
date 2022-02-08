@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spStrategy_PostStrategyStock]
+﻿CREATE PROCEDURE [dbo].[spStrategyItem_Post]
 	@Id INT,
 	@Ticker NVARCHAR(10),
 	@BuyShares INT,
@@ -7,6 +7,6 @@
 AS
 BEGIN
 	SET NOCOUNT ON;
-	INSERT INTO [dbo].[StrategyStock] (Id, Ticker, BuyShares, SellShares, ProfitLoss)
+	INSERT INTO [dbo].[StrategyItem] (Id, Ticker, BuyShares, SellShares, ProfitLoss)
 	VALUES (@Id, @Ticker, @BuyShares, @SellShares, @ProfitLoss)
 END

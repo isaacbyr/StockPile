@@ -96,28 +96,31 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 // y = a + bx
                 int n = result.Count;
-                decimal xy = 0;
+                List<decimal> xy = new List<decimal>();
                 List<decimal> x = new List<decimal>();
                 List<decimal> x2 = new List<decimal>();
                 List<decimal> y = new List<decimal>();
                 decimal sumx2 = 0;
                 for (int i = 0; i < n; i++)
                 {
-                    xy += result[i].Close * (i + 1);
+                    xy.Add(result[i].Close * (i + 1));
                     x.Add(i + 1);
                     y.Add(result[i].Close);
-                    x2.Add((i + 1) ^ 2);
+                    x2.Add((i + 1) * (i + 1));
                 }
                 decimal xbar = x.Sum() / n;
                 decimal ybar = y.Sum() / n;
 
+                decimal sumxy = xy.Sum();
                 sumx2 = x2.Sum();
+                decimal sumx = x.Sum();
+                decimal sumy = y.Sum();
 
                 decimal b = 0;
                 decimal a = 0;
 
-                b = (xy - (n * xbar * ybar)) / (sumx2 - (n * (xbar * xbar)));
-                a = ybar + b * xbar;
+                b =  (n * (sumxy - sumx * sumy) ) / (n*(sumx2 -  sumx * sumx));
+                a = ybar - b * xbar;
 
                 var Values = new ChartValues<decimal>();
 
@@ -493,7 +496,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private List<string> _indicators = new List<string> { "EMA", "SMA", "Regression", "SVM" };
+        private List<string> _indicators = new List<string> { "EMA", "SMA","MACD" , "Regression" };
 
         public List<string> Indicators
         {
@@ -700,15 +703,37 @@ namespace DesktopUI.ViewModels.TraderPro
                 return;
             }
 
-            var indicator = new IndicatorDisplayModel
+            if(SelectedIndicator == "MACD")
             {
-                Indicator = SelectedIndicator,
-                Interval =  SelectedIndicator == "Regression" ? "" : SelectedIndicatorInterval,
-                Color = SelectedColor
-            };
+                var indicator = new IndicatorDisplayModel
+                {
+                    Indicator = "EMA",
+                    Interval = "12",
+                    Color = "Firebrick"
+                };
 
-            AddedIndicators.Add(indicator);
+                AddedIndicators.Add(indicator);
 
+                var indicator2 = new IndicatorDisplayModel
+                {
+                    Indicator = "EMA",
+                    Interval = "26",
+                    Color = "Aqua"
+                };
+
+                AddedIndicators.Add(indicator2);
+            }
+            else
+            {
+                var indicator = new IndicatorDisplayModel
+                {
+                    Indicator = SelectedIndicator,
+                    Interval = SelectedIndicator == "Regression" ? "" : SelectedIndicatorInterval,
+                    Color = SelectedColor
+                };
+                AddedIndicators.Add(indicator);
+            }
+            
             NotifyOfPropertyChange(() => AddedIndicators);
         }
 
@@ -731,7 +756,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 }
 
             }
-            else if (SelectedIndicator == "EMA")
+            else if (SelectedIndicator == "EMA" || SelectedIndicator == "MACD")
             {
                 foreach(var indicator in AddedIndicators)
                 {
@@ -749,8 +774,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 await FindCrossovers();
                 await AddTransactionsToChart();
                 await GetProfitLoss();
-                //AddTransactionsToView();
-
             }
 
         }
