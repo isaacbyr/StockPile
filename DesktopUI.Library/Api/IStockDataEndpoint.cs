@@ -1,4 +1,5 @@
 ﻿using DesktopUI.Library.Models;
+using DesktopUI.Library.Models.TraderPro;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace DesktopUI.Library.Api
         Task<List<StockDashboardDataModel>> GetDailyGainersOrLosers(string query);
         Task<(List<OhlcStockModel>, string, string)> GetDashboardCharts(string ticker, string range = "3mo", string interval = "1d");
         Task<CompanyOverviewModel> GetCompanyOverview(string ticker);
-        Task<(List<OhlcStockModel>, string, string)> GetSMAChartData(string ticker, string range, string interval, int lastResult);
+        Task<(List<OhlcStockModel>, string, string)> GetMAChartData(string ticker, string range, string interval, int lastResult);
+        Task<List<RegressionModel>> WriteDataToTxt(string ticker, string range, string interval);
     }
 }
