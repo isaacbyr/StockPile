@@ -26,7 +26,6 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly IWindowManager _window;
         private readonly TransactionInfoViewModel _transactionInfoVM;
 
-
         public SeriesCollection SeriesCollection { get; set; }
         public List<string> Labels { get; set; } = new List<string>();
         public int ChartLength { get; set; }
@@ -40,7 +39,6 @@ namespace DesktopUI.ViewModels.TraderPro
             _strategyEndpoint = strategyEndpoint;
             _window = window;
             _transactionInfoVM = transactionInfoVM;
-            
         }
 
         protected override async void OnViewLoaded(object view)
@@ -104,7 +102,7 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 var (range, lastResults) = AddAndConvertDays(SelectedChartRange, SelectedChartInterval, emaRange);
 
-                var (results, symbol, marketPrice) = await _stockDataEndpoint.GetMAChartData(ChartSearch, range, SelectedChartInterval, lastResults);
+                var (results, symbol, marketPrice) = await _stockDataEndpoint.GetSMAChartData(ChartSearch, range, SelectedChartInterval, lastResults);
                 ChartPrice = marketPrice;
                 ChartSymbol = symbol;
 
@@ -178,7 +176,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
                 var (range, lastResults) = AddAndConvertDays(SelectedChartRange, SelectedChartInterval, smaRange);
 
-                var (results, symbol, marketPrice) = await _stockDataEndpoint.GetMAChartData(ChartSearch, range, SelectedChartInterval, lastResults);
+                var (results, symbol, marketPrice) = await _stockDataEndpoint.GetSMAChartData(ChartSearch, range, SelectedChartInterval, lastResults);
                 ChartPrice = marketPrice;
                 ChartSymbol = symbol;
 
@@ -277,24 +275,13 @@ namespace DesktopUI.ViewModels.TraderPro
             return ("", 0);
         }
 
+        
 
-
-        private List<string> _indicatorInterval;
+        private List<string> _indicatorInterval = new List<string> { "4", "9", "13", "21", "50" };
 
         public List<string> IndicatorInterval
         {
-            get 
-            { 
-                if (SelectedIndicator == "EMA" || SelectedIndicator == "SMA" )
-                {
-                    return _indicatorInterval = new List<string> { "4", "9", "13", "21", "50" };
-                }
-                else
-                {
-                    return _indicatorInterval = new List<string>();
-                }
-
-            }
+            get { return _indicatorInterval; }
             set 
             {
                 _indicatorInterval = value;
@@ -638,16 +625,15 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public void AddIndicator()
         {
-            if(SelectedIndicatorInterval == null && SelectedIndicator == null)
+            if(SelectedIndicatorInterval == null || SelectedIndicator == null)
             {
                 return;
             }
 
-         
             var indicator = new IndicatorDisplayModel
             {
-                Indicator =  SelectedIndicator,
-                Interval = SelectedIndicator == "Regression" ? "" : SelectedIndicatorInterval,
+                Indicator = SelectedIndicator,
+                Interval = SelectedIndicatorInterval,
                 Color = SelectedColor
             };
 
@@ -660,6 +646,11 @@ namespace DesktopUI.ViewModels.TraderPro
         public async Task RunIndicators()
         {
             await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
+
+            if(AddedIndicators.Count == 0)
+            {
+                return;
+            }
 
             if (SelectedIndicator == "SMA")
             {
@@ -677,10 +668,6 @@ namespace DesktopUI.ViewModels.TraderPro
                     await LoadEMA(indicator.Interval, indicator.Color);
                 }
             }
-            else if (SelectedIndicator == "Regression")
-            {
-                await LoadRegressionData(AddedIndicators[0].Color);
-            }
 
             if(BuyShares > 0 && SellShares > 0)
             {
@@ -691,67 +678,6 @@ namespace DesktopUI.ViewModels.TraderPro
 
             }
 
-        }
-
-        private async Task LoadRegressionData(String color)
-        {
-            //convert color form string to SolidColorBrush
-            Color newColor = (Color)ColorConverter.ConvertFromString(color);
-            SolidColorBrush brush = new SolidColorBrush(newColor);
-
-            var result = await _stockDataEndpoint.WriteDataToTxt(ChartSearch, SelectedChartRange, SelectedChartInterval);
-
-            if(result.Count > 0)
-            {
-                // y = a + bx
-                int n = result.Count;
-                decimal xy = 0;
-                List<decimal> x = new List<decimal>();
-                List<decimal> x2 = new List<decimal>();
-                List<decimal> y = new List<decimal>();
-                decimal sumx2 = 0;
-                for (int i = 0; i < n; i++)
-                {
-                    xy += result[i].Close * (i + 1);
-                    x.Add(i + 1);
-                    y.Add(result[i].Close);
-                    x2.Add((i + 1) ^ 2);
-                }
-                decimal xbar = x.Sum() / n;
-                decimal ybar = y.Sum() / n;
-
-                sumx2 = x2.Sum();
-
-                decimal b = 0;
-                decimal a = 0;
-
-                b = (xy - (n * xbar * ybar)) / (sumx2 - (n * (xbar * xbar)));
-                a = ybar - b * xbar;
-
-                var Values = new ChartValues<decimal>();
-
-                for (int i = 0; i < n; i++)
-                {
-                    var value = a + b * x[i];
-                    Values.Add(value);
-                }
-
-                var lastValue = x[n - 1];
-                Values.Add(a + b * (lastValue + 1));
-                Values.Add(a + b * (lastValue + 2));
-                Values.Add(a + b * (lastValue + 3));
-
-
-                SeriesCollection.Add(
-                    new LineSeries
-                    {
-                        Values = Values,
-                        Title = "Regression",
-                        Fill = System.Windows.Media.Brushes.Transparent,
-                        Stroke = brush,
-                    });
-            }
-            
         }
 
         public async Task FindCrossovers()
