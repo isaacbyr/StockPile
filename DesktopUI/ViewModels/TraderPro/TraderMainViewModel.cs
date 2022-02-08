@@ -1006,16 +1006,35 @@ namespace DesktopUI.ViewModels.TraderPro
             decimal profitLoss;
             decimal.TryParse(ProfitLoss, NumberStyles.Currency,
             CultureInfo.CurrentCulture.NumberFormat, out profitLoss);
-            var strategy = new StrategyModel
+            if (AddedIndicators.Count == 2)
             {
-                Name = NewStrategy,
-                Ticker = ChartSymbol,
-                ProfitLoss = profitLoss,
-            };
+                var strategy = new StrategyModel
+                {
+                    Name = NewStrategy,
+                    MA1 = AddedIndicators[0].Interval,
+                    MA2 = AddedIndicators[1].Interval,
+                    Indicator = AddedIndicators[0].Indicator,
+                    Interval = SelectedChartInterval,
+                    Range = SelectedChartRange
+                };
 
-            var response = await _strategyEndpoint.PostStrategy(strategy);
-            DisplayTransactionResponse(response.Header, response.Header);
-        }
+                var result = await _strategyEndpoint.PostStrategy(strategy);
+
+                var strategyStock = new StrategyItemModel
+                {
+                    Id = result,
+                    Ticker = ChartSymbol,
+                    BuyShares = BuyShares,
+                    SellShares = SellShares,
+                    ProfitLoss = profitLoss
+                };
+
+                var response = await _strategyEndpoint.PostStrategyStock(strategyStock);
+
+                DisplayTransactionResponse(response.Header, response.Message);
+
+            }
+            }
 
         public void DisplayTransactionResponse(string header, string message)
         {

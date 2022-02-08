@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\StockPileData.publish.xml" />
+    <None Include="dbo\Stored Procedures\TraderPro\spStrategy_PostStragyItem.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
@@ -105,6 +106,8 @@
     <Build Include="dbo\Stored Procedures\spUserAccount_AddNewUserAccount.sql" />
     <Build Include="dbo\Tables\TraderPro\Strategies.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_PostStrategy.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_GetStrategyId.sql" />
+    <Build Include="dbo\Tables\TraderPro\StrategyItem.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

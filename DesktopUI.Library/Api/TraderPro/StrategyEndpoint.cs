@@ -18,9 +18,25 @@ namespace DesktopUI.Library.Api.TraderPro
             _apiHelper = apiHelper;
         }
 
-        public async Task<ResponseModel> PostStrategy(StrategyModel strategy)
+        public async Task<int> PostStrategy(StrategyModel strategy)
         {
-            using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/strategy", strategy))
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/strategy/new", strategy))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<int>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task<ResponseModel> PostStrategyStock(StrategyItemModel strategyItem)
+        {
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/strategy/item", strategyItem))
             {
                 if(response.IsSuccessStatusCode)
                 {
@@ -29,12 +45,12 @@ namespace DesktopUI.Library.Api.TraderPro
                 }
                 else
                 {
-                    var result = new ResponseModel
+                    var res = new ResponseModel
                     {
                         Header = "Error",
-                        Message = response.ReasonPhrase
+                        Message = $"{response.ReasonPhrase}"
                     };
-                    return result;
+                    return res;
                 }
             }
         }
