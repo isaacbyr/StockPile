@@ -999,38 +999,15 @@ namespace DesktopUI.ViewModels.TraderPro
             decimal profitLoss;
             decimal.TryParse(ProfitLoss, NumberStyles.Currency,
             CultureInfo.CurrentCulture.NumberFormat, out profitLoss);
-            if(AddedIndicators.Count == 2)
+            var strategy = new StrategyModel
             {
-                var strategy = new StrategyModel
-                {
-                    Name = NewStrategy,
-                    MA1 = AddedIndicators[0].Interval,
-                    MA2 = AddedIndicators[1].Interval,
-                    Indicator = AddedIndicators[0].Indicator,
-                    Interval = SelectedChartInterval,
-                    Range = SelectedChartRange
-                };
+                Name = NewStrategy,
+                Ticker = ChartSymbol,
+                ProfitLoss = profitLoss,
+            };
 
-                var result = await _strategyEndpoint.PostStrategy(strategy);
-
-                var strategyStock = new StrategyStockModel
-                {
-                    Id = result,
-                    Ticker = ChartSymbol,
-                    BuyShares = BuyShares,
-                    SellShares = SellShares,
-                    ProfitLoss = profitLoss
-                };
-
-                var response = await _strategyEndpoint.PostStrategyStock(strategyStock);
-
-                DisplayTransactionResponse(response.Header, response.Message);
-            } 
-            else
-            {
-                DisplayTransactionResponse("Error", "Only a strategy with two MA's can be saved :(");
-            }
-
+            var response = await _strategyEndpoint.PostStrategy(strategy);
+            DisplayTransactionResponse(response.Header, response.Header);
         }
 
         public void DisplayTransactionResponse(string header, string message)

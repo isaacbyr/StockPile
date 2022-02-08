@@ -18,25 +18,9 @@ namespace DesktopUI.Library.Api.TraderPro
             _apiHelper = apiHelper;
         }
 
-        public async Task<int> PostStrategy(StrategyModel strategy)
+        public async Task<ResponseModel> PostStrategy(StrategyModel strategy)
         {
-            using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/strategy/new", strategy))
-            {
-                if(response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsAsync<int>();
-                    return result;
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
-            }
-        }
-
-        public async Task<ResponseModel> PostStrategyStock(StrategyStockModel strategyStock)
-        {
-            using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/strategy/stock", strategyStock))
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/strategy", strategy))
             {
                 if(response.IsSuccessStatusCode)
                 {

@@ -10,11 +10,7 @@ namespace DataManager.Library.Models.TraderPro
     {
         public string UserId { get; set; }
         public string Name { get; set; }
-        public string MA1 { get; set; }
-        public string MA2 { get; set; }
-        public string Indicator { get; set; }
-        public string Interval { get; set; }
-        public string Range { get; set; }
-
+        public string Ticker { get; set; }
+        public decimal ProfitLoss { get; set; }
     }
 }

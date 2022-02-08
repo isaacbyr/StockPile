@@ -233,7 +233,6 @@
     <Compile Include="Models\TraderPro\IndicatorDisplayModel.cs" />
     <Compile Include="Models\TraderPro\RegressionModel.cs" />
     <Compile Include="Models\TraderPro\StrategyModel.cs" />
-    <Compile Include="Models\TraderPro\StrategyStockModel.cs" />
     <Compile Include="Models\TransactionChartData.cs" />
     <Compile Include="Models\TransactionDisplayModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />

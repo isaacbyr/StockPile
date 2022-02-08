@@ -9,11 +9,7 @@ namespace DesktopUI.Library.Models.TraderPro
     public class StrategyModel
     {
         public string Name { get; set; }
-        public string MA1 { get; set; }
-        public string MA2 { get; set; }
-        public string Indicator { get; set; }
-        public string Interval { get; set; }
-        public string Range { get; set; }
-
+        public string Ticker { get; set; }
+        public decimal ProfitLoss { get; set; }
     }
 }

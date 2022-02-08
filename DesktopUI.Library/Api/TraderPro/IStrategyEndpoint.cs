@@ -6,7 +6,6 @@ namespace DesktopUI.Library.Api.TraderPro
 {
     public interface IStrategyEndpoint
     {
-        Task<int> PostStrategy(StrategyModel strategy);
-        Task<ResponseModel> PostStrategyStock(StrategyStockModel strategyStock);
+        Task<ResponseModel> PostStrategy(StrategyModel strategy);
     }
 }
