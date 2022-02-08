@@ -148,6 +148,7 @@
     <Compile Include="Models\TraderPro\ChartPointModel.cs" />
     <Compile Include="Models\TraderPro\CrossoverTransactionModel.cs" />
     <Compile Include="Models\TraderPro\IndicatorDisplayModel.cs" />
+    <Compile Include="Models\TraderPro\RegressionCloseModel.cs" />
     <Compile Include="Models\TraderPro\StrategyModel.cs" />
     <Compile Include="Models\TransactionChartData.cs" />
     <Compile Include="Models\TransactionDisplayModel.cs" />

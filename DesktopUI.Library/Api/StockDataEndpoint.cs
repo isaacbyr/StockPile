@@ -1,4 +1,5 @@
 ﻿using DesktopUI.Library.Models;
+using DesktopUI.Library.Models.TraderPro;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -116,7 +117,7 @@ namespace DesktopUI.Library.Api
         }
 
 
-        public async Task<(List<OhlcStockModel>, string, string)> GetSMAChartData(string ticker, string range, string interval, int lastResult)
+        public async Task<(List<OhlcStockModel>, string, string)> GetMAChartData(string ticker, string range, string interval, int lastResult)
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://yfapi.net/");
@@ -371,6 +372,44 @@ namespace DesktopUI.Library.Api
             }
         }
 
+        public async Task<List<RegressionCloseModel>> GetRegressionData(string ticker, string range, string interval)
+        {
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://yfapi.net/");
+            httpClient.DefaultRequestHeaders.Add("X-API-KEY", "9l4Vorm2Kb7Z5HeFpMN8raQTY4X8z0HL9bMNChR6");
+            httpClient.DefaultRequestHeaders.Add("accept", "application/json");
+
+            var response = await httpClient.GetAsync($"v8/finance/chart/{ticker}?range={range}&region=US&interval={interval}&lang=en");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                var data = (JObject)JsonConvert.DeserializeObject(responseBody, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
+
+                var close = data.SelectToken("chart.result[0].indicators.quote[0].close").ToList();
+
+                List<RegressionCloseModel> stocks = new List<RegressionCloseModel>();
+
+                int index = 0;
+
+                for (int i = 0; i < close.Count; i++)
+                {
+                    stocks.Add(new RegressionCloseModel
+                    {
+                        Close = close[i].Type != JTokenType.Null ? close[i].ToObject<decimal>() : close[i > 1 ? i - 1 : i + 1].ToObject<decimal>(),
+                    });
+
+                    index++;
+                }
+
+                return stocks;
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
 
     }
 }
