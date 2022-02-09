@@ -90,7 +90,7 @@ namespace DesktopUI.ViewModels.TraderPro
             Color newColor = (Color)ColorConverter.ConvertFromString(color);
             SolidColorBrush brush = new SolidColorBrush(newColor);
 
-            var result = await _stockDataEndpoint.GetRegressionData(ChartSearch, SelectedChartRange, SelectedChartInterval);
+            var result = await _stockDataEndpoint.GetCloseData(ChartSearch, SelectedChartRange, SelectedChartInterval);
 
             if (result.Count > 0)
             {

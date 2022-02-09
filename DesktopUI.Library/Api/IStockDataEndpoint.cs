@@ -13,7 +13,7 @@ namespace DesktopUI.Library.Api
         Task<(List<OhlcStockModel>, string, string)> GetDashboardCharts(string ticker, string range = "3mo", string interval = "1d");
         Task<CompanyOverviewModel> GetCompanyOverview(string ticker);
         Task<(List<OhlcStockModel>, string, string)> GetMAChartData(string ticker, string range, string interval, int lastResult);
-        Task<List<RegressionCloseModel>> GetRegressionData(string ticker, string range, string interval);
+        Task<List<StockCloseModel>> GetCloseData(string ticker, string range, string interval);
 
     }
 }

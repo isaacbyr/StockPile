@@ -192,7 +192,7 @@ namespace DesktopUI.Library.Api
                             Low = low[i].Type != JTokenType.Null ? low[i].ToObject<decimal>() : low[i > 1 ? i - 1 : i + 1].ToObject<decimal>(),
                             Volume = volume[i].Type != JTokenType.Null ? volume[i].ToObject<long>() : volume[i > 1 ? i - 1 : i + 1].ToObject<long>(),
                             Date = dates[i]
-                        }); ;
+                        }); 
 
                         index++;
                     }
@@ -372,7 +372,7 @@ namespace DesktopUI.Library.Api
             }
         }
 
-        public async Task<List<RegressionCloseModel>> GetRegressionData(string ticker, string range, string interval)
+        public async Task<List<StockCloseModel>> GetCloseData(string ticker, string range, string interval)
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://yfapi.net/");
@@ -389,13 +389,13 @@ namespace DesktopUI.Library.Api
 
                 var close = data.SelectToken("chart.result[0].indicators.quote[0].close").ToList();
 
-                List<RegressionCloseModel> stocks = new List<RegressionCloseModel>();
+                List<StockCloseModel> stocks = new List<StockCloseModel>();
 
                 int index = 0;
 
                 for (int i = 0; i < close.Count; i++)
                 {
-                    stocks.Add(new RegressionCloseModel
+                    stocks.Add(new StockCloseModel
                     {
                         Close = close[i].Type != JTokenType.Null ? close[i].ToObject<decimal>() : close[i > 1 ? i - 1 : i + 1].ToObject<decimal>(),
                     });

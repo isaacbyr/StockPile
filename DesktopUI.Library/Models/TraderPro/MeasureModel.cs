@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace DesktopUI.Library.Models.TraderPro
 {
-    public class RegressionCloseModel
+    public class MeasureModel
     {
-        public decimal Close { get; set; }
+        public DateTime Session { get; set; }
+        public double Value { get; set; }
     }
 }
