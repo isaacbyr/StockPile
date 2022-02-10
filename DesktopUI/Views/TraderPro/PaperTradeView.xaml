@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views.TraderPro"
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" xmlns:traderpro="clr-namespace:DesktopUI.ViewModels.TraderPro" d:DataContext="{d:DesignInstance Type=traderpro:PaperTradeViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1400">
     <Border CornerRadius="18" Background="#3E4C76">
@@ -31,11 +31,25 @@
             
             <Border Background="#1d2d44" CornerRadius="18" Grid.Row="2"
                     Grid.ColumnSpan="6" Grid.RowSpan="4">
-                <lvc:CartesianChart>
+                <lvc:CartesianChart   Zoom="Xy">
                     <lvc:CartesianChart.Series>
-                        <lvc:CandleSeries Values="{Binding Values}" />
+                        <lvc:CandleSeries Values="{Binding Values}" Fill="Transparent" Stroke="Transparent"/>
                     </lvc:CartesianChart.Series>
-                 
+                    <lvc:CartesianChart.AxisY>
+
+                        <lvc:Axis  MaxValue="{Binding MaxAxisValue}" MinValue="{Binding MinAxisValue}" >
+                            <lvc:Axis.Separator>
+                                <lvc:Separator StrokeThickness="0.2"></lvc:Separator>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis MinValue="0" MaxValue="100">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
                 </lvc:CartesianChart>
                 <!--<lvc:CartesianChart Foreground="black" Grid.Row="1" Grid.Column="0" Margin="25 25 25 20" 
                                     Series="{Binding SeriesCollection}" 

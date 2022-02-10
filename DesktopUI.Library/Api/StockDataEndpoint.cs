@@ -18,6 +18,7 @@ namespace DesktopUI.Library.Api
     {
         private readonly IApiHelper _apiHelper;
 
+
         public StockDataEndpoint(IApiHelper apiHelper)
         {
            _apiHelper = apiHelper;

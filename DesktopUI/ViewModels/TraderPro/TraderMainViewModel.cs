@@ -340,19 +340,19 @@ namespace DesktopUI.ViewModels.TraderPro
 
         
 
-        private List<string> _indicatorInterval = new List<string> { "4", "9", "13", "21", "50" };
+        private BindingList<string> _indicatorInterval = new BindingList<string> { "4", "9", "13", "21", "50" };
 
-        public List<string> IndicatorInterval
+        public BindingList<string> IndicatorInterval
         {
             get
             {
                 if (SelectedIndicator == "EMA" || SelectedIndicator == "SMA")
                 {
-                    return _indicatorInterval = new List<string> { "4", "9", "13", "21", "50" };
+                    return _indicatorInterval = new BindingList<string> { "4", "9", "13", "21", "50" };
                 }
                 else
                 {
-                    return _indicatorInterval = new List<string>();
+                    return _indicatorInterval = new BindingList<string>();
                 }
             }
             set 
@@ -436,9 +436,9 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private List<string> _chartRange = new List<string> { "1d", "5d", "1mo", "3mo", "6mo", "1y", "5y" };
+        private BindingList<string> _chartRange = new BindingList<string> { "1d", "5d", "1mo", "3mo", "6mo", "1y", "5y" };
 
-        public List<string> ChartRange
+        public BindingList<string> ChartRange
         {
             get { return _chartRange; }
             set
@@ -496,9 +496,9 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private List<string> _indicators = new List<string> { "EMA", "SMA","MACD" , "Regression" };
+        private BindingList<string> _indicators = new BindingList<string> { "EMA", "SMA","MACD" , "Regression" };
 
-        public List<string> Indicators
+        public BindingList<string> Indicators
         {
             get { return _indicators; }
             set 
@@ -568,6 +568,7 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 _selectedIndicator = value;
                 NotifyOfPropertyChange(() => SelectedIndicator);
+                NotifyOfPropertyChange(() => IndicatorInterval);
             }
         }
 
