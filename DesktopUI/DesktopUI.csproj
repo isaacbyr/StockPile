@@ -227,5 +227,20 @@
   <ItemGroup>
     <Resource Include="Images\star_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\play_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pause_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\rewind_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\forward_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\refresh_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

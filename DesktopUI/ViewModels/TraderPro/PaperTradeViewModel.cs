@@ -164,6 +164,114 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
 
+        private string _ticker;
+
+        public string Ticker
+        {
+            get { return _ticker; }
+            set 
+            {
+                _ticker = value;
+                NotifyOfPropertyChange(() => Ticker);
+            }
+        }
+
+        private List<int> _chartInterval = new List<int> { 5, 10, 15 };
+
+        public List<int> ChartInterval
+        {
+            get { return _chartInterval; }
+            set { _chartInterval = value; }
+        }
+
+        private int _selectedChertInterval;
+
+        public int SelectedChartInterval
+        {
+            get { return _selectedChertInterval; }
+            set 
+            {
+                _selectedChertInterval = value;
+                NotifyOfPropertyChange(() => SelectedChartInterval);
+            }
+        }
+
+
+        private DateTime _selectedDate = DateTime.Now;
+
+        public DateTime SelectedDate
+        {
+            get { return _selectedDate; }
+            set 
+            { 
+                _selectedDate = value;
+                NotifyOfPropertyChange(() => SelectedDate);
+            }
+        }
+
+
+        //private long _totalCount;
+
+        //public long TotalCount
+        //{
+        //    get { return _totalCount; }
+        //    set 
+        //    {
+        //        _totalCount = value;
+        //        NotifyOfPropertyChange(() => TotalCount);
+        //    }
+        //}
+
+        //private int _x1;
+
+        //public int X1
+        //{
+        //    get { return _x1; }
+        //    set
+        //    {
+        //        _x1 = value;
+        //        NotifyOfPropertyChange(() => X1);
+        //    }
+        //}
+
+        //private int _y1;
+
+        //public int Y1
+        //{
+        //    get { return _y1; }
+        //    set
+        //    {
+        //        _y1 = value;
+        //        NotifyOfPropertyChange(() => Y1);
+        //    }
+        //}
+
+
+        //private int _x2;
+
+        //public int X2
+        //{
+        //    get { return _x2; }
+        //    set 
+        //    {
+        //        _x2 = value;
+        //        NotifyOfPropertyChange(() => X2);
+        //    }
+        //}
+
+        //private int _y2;
+
+        //public int Y2
+        //{
+        //    get { return _y2; }
+        //    set 
+        //    {
+        //        _y2 = value;
+        //        NotifyOfPropertyChange(() => Y2);
+        //    }
+        //}
+
+
 
         private double _axisStep;
 

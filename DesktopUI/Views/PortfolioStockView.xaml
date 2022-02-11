@@ -279,8 +279,8 @@
             <Border Background="#1d2d44" Grid.Column="4" Grid.Row="2"
                     Margin="5" CornerRadius="18">
 
-                <Button Background="SteelBlue" MaxHeight="28" MinHeight="28"
-                        MaxWidth="50" MinWidth="50" x:Name="AddToWatchlist"
+                <Button Background="Transparent" MaxHeight="28" MinHeight="28"
+                        MaxWidth="50" MinWidth="50" x:Name="AddToWatchlist" BorderThickness="0"
                         Foreground="White" FontSize="14">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="C:\Users\Isaac\OneDrive\Documents\C# Projects\StockPile\StockPile\DesktopUI\Images\star_icon.png"/>
