@@ -42,12 +42,12 @@ namespace DesktopUI.ViewModels
 
             //ActivateItem(socialVM);
             //ActivateItem(_loginVM);
-            ActivateItem(_mainVM);
+           // ActivateItem(_mainVM);
             //ActivateItem(_registerVM);
             //ActivateItem(_portfolioStockVM);
             //ActivateItem(_dashboardVM);
             //ActivateItem(_portfolioSummaryVM);
-            //ActivateItem(_paperTradeVM);
+            ActivateItem(_paperTradeVM);
         }
 
         public void Handle(LogOnEvent message)

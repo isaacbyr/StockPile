@@ -26,7 +26,16 @@
             </Grid.RowDefinitions>
 
             <Border Background="#1d2d44" Grid.Row="1">
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Content="Search" Grid.Column="0" Grid.Row="1"
+                            Background="SteelBlue" MaxHeight="40" Foreground="White"
+                            MaxWidth="100" x:Name="SearchForTrades"></Button>
+                </Grid>
             </Border>
             
             <Border Background="#1d2d44" CornerRadius="18" Grid.Row="2"

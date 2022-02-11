@@ -107,7 +107,9 @@
     <Compile Include="Api\Jtoken.cs" />
     <Compile Include="Api\NewsEndpoint.cs" />
     <Compile Include="Api\PortfolioEndpoint.cs" />
+    <Compile Include="Api\TraderPro\IPolygonDataEndpoint.cs" />
     <Compile Include="Api\TraderPro\IStrategyEndpoint.cs" />
+    <Compile Include="Api\TraderPro\PolygonDataEndpoint.cs" />
     <Compile Include="Api\TraderPro\StrategyEndpoint.cs" />
     <Compile Include="Api\UserEndpoint.cs" />
     <Compile Include="EventModels\ExitAppEvent.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Models\TraderPro\CrossoverTransactionModel.cs" />
     <Compile Include="Models\TraderPro\IndicatorDisplayModel.cs" />
     <Compile Include="Models\TraderPro\MeasureModel.cs" />
+    <Compile Include="Models\TraderPro\PaperTradeModel.cs" />
     <Compile Include="Models\TraderPro\StockCloseModel.cs" />
     <Compile Include="Models\TraderPro\StrategyItemModel.cs" />
     <Compile Include="Models\TraderPro\StrategyModel.cs" />

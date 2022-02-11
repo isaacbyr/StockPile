@@ -30,6 +30,7 @@ namespace DesktopUI
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IApiHelper, ApiHelper>()
                 .Singleton<IStrategyEndpoint, StrategyEndpoint>()
+                .Singleton<IPolygonDataEndpoint, PolygonDataEndpoint>()
                 .Singleton<IFriendRequestEndpoint, FriendRequestEndpoint>()
                 .Singleton<IFriendsEndpoint, FriendsEndpoint>()
                 .Singleton<IUserAccountEndpoint, UserAccountEndpoint>()
