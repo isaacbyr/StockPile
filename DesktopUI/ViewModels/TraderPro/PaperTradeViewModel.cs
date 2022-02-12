@@ -6,6 +6,7 @@ using DesktopUI.Library.Models.TraderPro;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -22,6 +27,10 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly IStockDataEndpoint _stockDataEndpoint;
         private readonly IPolygonDataEndpoint _polygonDataEndpoint;
 
+        ManualResetEvent manualResetEvent = new ManualResetEvent(false);
+
+        public ChartValues<double> Buys { get; set; }
+        public ChartValues<double> Sells { get; set; }
         public ChartValues<OhlcPoint> Values { get; set; }
 
         public PaperTradeViewModel(IStockDataEndpoint stockDataEndpoint, IPolygonDataEndpoint polygonDataEndpoint)
@@ -32,9 +41,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         protected override async void OnViewLoaded(object view)
         {
-            //await LoadData();
-            //List<List<double>> temp = new List<List<double>>();
-           //await LoadTest(temp);
+            
         }
 
 
@@ -42,18 +49,7 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             int index = 0;
             int count = 0;
-
-            var temp = new List<OhlcPoint>();
-            //used to generate random values
-            //List<List<double>> testValues = new List<List<double>>();
-            //testValues.Add(new List<double> { 170, 171, 173, 169, 171 });
-            //testValues.Add(new List<double> { 171, 172, 170, 171, 173 });
-            //testValues.Add(new List<double> { 172, 173, 173, 173, 174 });
-            //testValues.Add(new List<double> { 174, 173, 172, 171, 170, 171 });
-            //testValues.Add(new List<double> { 171, 172, 174, 174, 175, 177 });
-            //testValues.Add(new List<double> { 177, 177, 176, 176, 176, 175 });
-            //testValues.Add(new List<double> { 175, 175, 176, 174, 175, 178 });
-
+         
             double minValue = testValues[0].Min();
             double maxValue = testValues[0].Max();
 
@@ -77,9 +73,6 @@ namespace DesktopUI.ViewModels.TraderPro
             MaxAxisValue = maxValue + 1;
             AxisStep = 1;
 
-            //AxisUnit = TimeSpan.TicksPerSecond;
-            //AxisStep = TimeSpan.FromMilliseconds(1000).Ticks;
-
             //lets instead plot elapsed milliseconds and value
             var mapper = Mappers.Xy<MeasureModel>()
                 .X(x => x.ElapsedMilliseconds)
@@ -88,22 +81,24 @@ namespace DesktopUI.ViewModels.TraderPro
 
             //save the mapper globally         
             Charting.For<MeasureModel>(mapper);
-
             Values = new ChartValues<OhlcPoint>();
-
+            Buys = new ChartValues<double>();
+            Sells = new ChartValues<double>();
 
             var sw = new Stopwatch();
             sw.Start();
             var numCandle = 0;
 
+            IsRunning = true;
+            manualResetEvent.Set();
 
             await Task.Run(() =>
             {
 
                 while (numCandle < testValues.Count)
                 {
-
-                    Thread.Sleep(500);
+                    //manualResetEvent.Set();
+                    Thread.Sleep(SpeedOuter);
 
                     if (count % 2 != 0)
                     {
@@ -116,7 +111,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
                         for (int j = 1; j < testValues[index - 1].Count; j++)
                         {
-                            Thread.Sleep(50);
+                            Thread.Sleep(SpeedInner);
                             if (testValues[index - 1][j] >= testValues[index - 1][j - 1])
                             {
                                 if (testValues[index - 1][j] > high)
@@ -134,9 +129,38 @@ namespace DesktopUI.ViewModels.TraderPro
                                 point = new OhlcPoint(open, high, low, testValues[index - 1][j]);
                             }
 
+
+                            if (BuyShares == true)
+                            {
+                                Buys[index - 1] = open;
+                                BuyShares = false;
+                            }
+                            else
+                            {
+                                if (double.IsNaN(Buys[index-1]) && double.IsInfinity(Buys[index-1]))
+                                {
+                                    Buys[index - 1] = double.NaN;
+                                }
+                            }
+
+                            if(SellShares == true)
+                            {
+                                Sells[index - 1] = open;
+                                SellShares = false;
+                            }
+                            else
+                            {
+                                if(double.IsNaN(Sells[index-1]) && double.IsInfinity(Sells[index-1]))
+                                {
+                                    Sells[index - 1] = double.NaN;
+                                }
+                            }
+
                             Values[index - 1] = point;
-                            temp[index - 1] = point;
+
                             NotifyOfPropertyChange(() => Values);
+                            NotifyOfPropertyChange(() => Buys);
+                            NotifyOfPropertyChange(() => Sells);
 
                         }
                         count++;
@@ -144,13 +168,36 @@ namespace DesktopUI.ViewModels.TraderPro
                     }
                     else
                     {
+
                         //we add the lecture based on our StopWatch instance
                         var point = new OhlcPoint(testValues[index][0], testValues[index][0], testValues[index][0], testValues[index][0]);
                         Values.Insert(index, point);
-                        temp.Insert(index, point);
+
+                        if (BuyShares == true)
+                        {
+                            Buys.Insert(index, testValues[index][0]);
+                            BuyShares = false;
+                        }
+                        else
+                        {
+                            Buys.Insert(index, double.NaN);
+                        }
+
+                        if(SellShares == true)
+                        {
+                            Sells.Insert(index, testValues[index][0]);
+                            SellShares = false;
+                        }
+                        else
+                        {
+                            Sells.Insert(index, double.NaN);
+                        }
+
                         index++;
                         count++;
                         NotifyOfPropertyChange(() => Values);
+                        NotifyOfPropertyChange(() => Buys);
+                        NotifyOfPropertyChange(() => Sells);
                     }
 
 
@@ -161,6 +208,8 @@ namespace DesktopUI.ViewModels.TraderPro
                     }
                 }
             });
+
+            IsRunning = false;
         }
 
 
@@ -208,70 +257,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => SelectedDate);
             }
         }
-
-
-        //private long _totalCount;
-
-        //public long TotalCount
-        //{
-        //    get { return _totalCount; }
-        //    set 
-        //    {
-        //        _totalCount = value;
-        //        NotifyOfPropertyChange(() => TotalCount);
-        //    }
-        //}
-
-        //private int _x1;
-
-        //public int X1
-        //{
-        //    get { return _x1; }
-        //    set
-        //    {
-        //        _x1 = value;
-        //        NotifyOfPropertyChange(() => X1);
-        //    }
-        //}
-
-        //private int _y1;
-
-        //public int Y1
-        //{
-        //    get { return _y1; }
-        //    set
-        //    {
-        //        _y1 = value;
-        //        NotifyOfPropertyChange(() => Y1);
-        //    }
-        //}
-
-
-        //private int _x2;
-
-        //public int X2
-        //{
-        //    get { return _x2; }
-        //    set 
-        //    {
-        //        _x2 = value;
-        //        NotifyOfPropertyChange(() => X2);
-        //    }
-        //}
-
-        //private int _y2;
-
-        //public int Y2
-        //{
-        //    get { return _y2; }
-        //    set 
-        //    {
-        //        _y2 = value;
-        //        NotifyOfPropertyChange(() => Y2);
-        //    }
-        //}
-
-
 
         private double _axisStep;
 
@@ -365,11 +350,72 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private bool _isRunning = false;
+
+        public bool IsRunning
+        {
+            get { return _isRunning; }
+            set 
+            { 
+                _isRunning = value;
+                NotifyOfPropertyChange(() => IsRunning);
+            }
+        }
+
+        private int _speedOuter = 1000;
+
+        public int SpeedOuter
+        {
+            get { return _speedOuter; }
+            set 
+            {
+                _speedOuter = value;
+                NotifyOfPropertyChange(() => SpeedOuter);
+            }
+        }
+
+        private int _speedInner = 100;
+
+        public int SpeedInner
+        {
+            get { return _speedInner; }
+            set
+            {
+                _speedInner = value;
+                NotifyOfPropertyChange(() => SpeedInner);
+            }
+        }
+
+        private bool _buyShares;
+
+        public bool BuyShares
+        {
+            get { return _buyShares; }
+            set 
+            {
+                _buyShares = value;
+                NotifyOfPropertyChange(() => BuyShares);
+            }
+        }
+
+        private bool _sellShares = false;
+
+        public bool SellShares
+        {
+            get { return _sellShares; }
+            set 
+            {
+                _sellShares = value;
+                NotifyOfPropertyChange(() => SellShares);
+            }
+        }
+
+
         public async Task SearchForTrades()
         {
-            var (open, high, low, close) = await _polygonDataEndpoint.LoadTradeData("AAPL", "2022-02-09");
+            var (open, high, low, close) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedDate.ToString("yyyy-MM-dd"));
 
-            var trades =  await GroupStockResults(open, high, low, close, 5);
+            var trades =  await GroupStockResults(open, high, low, close, SelectedChartInterval);
             await LoadTest(trades);
         }
 
@@ -396,6 +442,86 @@ namespace DesktopUI.ViewModels.TraderPro
 
             return Trades;
         }
+
+        public void Start()
+        {
+            if(IsRunning == true)
+            {
+                return;
+            }
+            else
+            {
+                IsRunning = true;
+                manualResetEvent.Set();
+            }
+        }
+
+        public void Pause()
+        {
+            if(IsRunning == true)
+            {
+                IsRunning = false;
+                manualResetEvent.Reset();
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public void SpeedUp()
+        {
+            if(IsRunning == true)
+            {
+                if (SpeedOuter > 250 && SpeedInner > 25)
+                {
+                    SpeedOuter -= 250;
+                    SpeedInner -= 25;
+                }
+                else
+                {
+                    return;
+                }
+                
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public void SlowDown()
+        {
+            if (IsRunning == true)
+            {
+                if(SpeedOuter < 2500 & SpeedInner < 250 )
+                {
+                    SpeedOuter += 250;
+                    SpeedInner += 25;
+                    
+                }
+                else
+                {
+                    return;
+                }
+                
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public void Buy()
+        {
+            BuyShares = true;
+        }
+
+        public void Sell()
+        {
+            SellShares = true;
+        }
+
     }
 
     

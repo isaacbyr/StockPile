@@ -20,9 +20,38 @@ namespace DesktopUI.Views.TraderPro
     /// </summary>
     public partial class PaperTradeView : UserControl
     {
+
+        //Point currentPoint = new Point();
+
         public PaperTradeView()
         {
             InitializeComponent();
         }
+
+        //public void MouseDown_Chart(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (e.ButtonState == MouseButtonState.Pressed)
+        //    {
+        //        currentPoint = e.GetPosition(this);
+        //    }
+        //}
+
+        //public void MouseMove_Chart(object sender, MouseEventArgs e)
+        //{
+        //    if (e.LeftButton == MouseButtonState.Pressed)
+        //    {
+        //        Line line = new Line();
+
+        //        line.Stroke = Brushes.Aqua;
+        //        line.X1 = currentPoint.X;
+        //        line.Y1 = currentPoint.Y-200;
+        //        line.X2 = e.GetPosition(this).X;
+        //        line.Y2 = e.GetPosition(this).Y-200;
+
+        //        currentPoint = e.GetPosition(this);
+
+        //        canvas.Children.Add(line);
+        //    }
+        //}
     }
 }

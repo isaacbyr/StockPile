@@ -21,7 +21,7 @@ namespace DesktopUI.Library.Api.TraderPro
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://api.polygon.io/");
 
-            var response = await httpClient.GetAsync($"v2/aggs/ticker/{ticker}/range/1/minute/2022-02-09/2022-02-09?adjusted=true&sort=asc&limit=50000&apiKey={API_KEY}");
+            var response = await httpClient.GetAsync($"v2/aggs/ticker/{ticker}/range/1/minute/{timestamp}/{timestamp}?adjusted=true&sort=asc&limit=50000&apiKey={API_KEY}");
 
             if(response.IsSuccessStatusCode)
             {
