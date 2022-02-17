@@ -19,6 +19,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -41,33 +42,29 @@ namespace DesktopUI.ViewModels.TraderPro
 
         protected override async void OnViewLoaded(object view)
         {
-            
+            StartClock();
         }
 
+        private void StartClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Tick += Tickevent;
+            timer.Start();
+        }
 
-        private async Task LoadTest(List<List<double>> testValues)
+        private void Tickevent(object sender, EventArgs e)
+        {
+            CurrentTime = DateTime.Now.ToString("t");
+        }
+
+        private async Task DisplayChart(List<List<double>> testValues)
         {
             int index = 0;
             int count = 0;
          
             double minValue = testValues[0].Min();
             double maxValue = testValues[0].Max();
-
-
-            foreach (var l in testValues)
-            {
-                var tempMin = l.Min();
-                if (tempMin < minValue)
-                {
-                    minValue = tempMin;
-                }
-                var tempMax = l.Max();
-                if (tempMax > maxValue)
-                {
-                    maxValue = tempMax;
-                }
-
-            }
 
             MinAxisValue = minValue - 1;
             MaxAxisValue = maxValue + 1;
@@ -85,6 +82,8 @@ namespace DesktopUI.ViewModels.TraderPro
             Buys = new ChartValues<double>();
             Sells = new ChartValues<double>();
 
+            var transactions = new List<PaperTradeModel>();
+
             var sw = new Stopwatch();
             sw.Start();
             var numCandle = 0;
@@ -95,7 +94,7 @@ namespace DesktopUI.ViewModels.TraderPro
             await Task.Run(() =>
             {
 
-                while (numCandle < testValues.Count)
+                while (numCandle < testValues.Count && IsRunning)
                 {
                     //manualResetEvent.Set();
                     Thread.Sleep(SpeedOuter);
@@ -134,6 +133,13 @@ namespace DesktopUI.ViewModels.TraderPro
                             {
                                 Buys[index - 1] = open;
                                 BuyShares = false;
+                                var transaction = new PaperTradeModel
+                                {
+                                    BuyOrSell = "Buy",
+                                    Price = open,
+                                    Shares = Shares
+                                };
+                                transactions.Add(transaction);
                             }
                             else
                             {
@@ -147,6 +153,13 @@ namespace DesktopUI.ViewModels.TraderPro
                             {
                                 Sells[index - 1] = open;
                                 SellShares = false;
+                                var transaction = new PaperTradeModel
+                                {
+                                    BuyOrSell = "Sell",
+                                    Price = open,
+                                    Shares = Shares
+                                };
+                                transactions.Add(transaction);
                             }
                             else
                             {
@@ -177,6 +190,13 @@ namespace DesktopUI.ViewModels.TraderPro
                         {
                             Buys.Insert(index, testValues[index][0]);
                             BuyShares = false;
+                            var transaction = new PaperTradeModel
+                            {
+                                BuyOrSell = "Buy",
+                                Price = testValues[index][0],
+                                Shares = Shares
+                            };
+                            transactions.Add(transaction);
                         }
                         else
                         {
@@ -187,6 +207,13 @@ namespace DesktopUI.ViewModels.TraderPro
                         {
                             Sells.Insert(index, testValues[index][0]);
                             SellShares = false;
+                            var transaction = new PaperTradeModel
+                            {
+                                BuyOrSell = "Sell",
+                                Price = testValues[index][0],
+                                Shares = Shares
+                            };
+                            transactions.Add(transaction);
                         }
                         else
                         {
@@ -210,6 +237,21 @@ namespace DesktopUI.ViewModels.TraderPro
             });
 
             IsRunning = false;
+
+            Transactions = new BindingList<PaperTradeModel>(transactions);
+            NotifyOfPropertyChange(() => Transactions);
+        }
+
+        private string _currentTime = DateTime.Now.ToString("t");
+
+        public string CurrentTime
+        {
+            get { return _currentTime; }
+            set
+            {
+                _currentTime = value;
+                NotifyOfPropertyChange(() => CurrentTime);
+            }
         }
 
 
@@ -282,6 +324,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => AxisUnit);
             }
         }
+
 
         public void SetAxisLimits(DateTime now)
         {
@@ -410,13 +453,52 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private int _shares;
+
+        public int Shares
+        {
+            get { return _shares; }
+            set 
+            { 
+                _shares = value;
+                NotifyOfPropertyChange(() => Shares);
+            }
+        }
+
+
+        private BindingList<PaperTradeModel> _transactions;
+
+        public BindingList<PaperTradeModel> Transactions
+        {
+            get { return _transactions; }
+            set 
+            {
+                _transactions = value;
+                NotifyOfPropertyChange(() => Transactions);
+            }
+        }
+
+        private double _profitLoss;
+
+        public double ProfitLoss
+        {
+            get { return _profitLoss; }
+            set 
+            {
+                _profitLoss = value;
+                NotifyOfPropertyChange(() => ProfitLoss);
+            }
+        }
+
 
         public async Task SearchForTrades()
         {
             var (open, high, low, close) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedDate.ToString("yyyy-MM-dd"));
 
             var trades =  await GroupStockResults(open, high, low, close, SelectedChartInterval);
-            await LoadTest(trades);
+            await DisplayChart(trades);
+
+            await GetProfitLoss();
         }
 
         private async Task<List<List<double>>> GroupStockResults(List<double> open, List<double> high, List<double> low, List<double> close, int interval)
@@ -473,10 +555,10 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             if(IsRunning == true)
             {
-                if (SpeedOuter > 250 && SpeedInner > 25)
+                if (SpeedOuter > 1 && SpeedInner > 1)
                 {
-                    SpeedOuter -= 250;
-                    SpeedInner -= 25;
+                    SpeedOuter /= 2;
+                    SpeedInner /= 2;
                 }
                 else
                 {
@@ -494,10 +576,10 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             if (IsRunning == true)
             {
-                if(SpeedOuter < 2500 & SpeedInner < 250 )
+                if(SpeedOuter < 5000 & SpeedInner < 500 )
                 {
-                    SpeedOuter += 250;
-                    SpeedInner += 25;
+                    SpeedOuter += 500;
+                    SpeedInner += 50;
                     
                 }
                 else
@@ -520,6 +602,61 @@ namespace DesktopUI.ViewModels.TraderPro
         public void Sell()
         {
             SellShares = true;
+        }
+
+        private async Task GetProfitLoss()
+        {
+
+            if (Transactions.Count <= 1)
+            {
+                ProfitLoss = 0;
+                return;
+            }
+
+            double sum = 0;
+            double avgPrice = 0;
+            int shares = 0;
+
+            if (Transactions[0].BuyOrSell == "Buy")
+            {
+                avgPrice = Transactions[0].Price;
+                shares = Transactions[0].Shares;
+
+                for (int i = 1; i < Transactions.Count; i++)
+                {
+                    if(Transactions[i].BuyOrSell == "Buy")
+                    {
+                        avgPrice = ((avgPrice * shares) + (Transactions[i].Price * Transactions[i].Shares)) / (shares + Transactions[i].Shares);
+                        shares = shares + Transactions[i].Shares;
+                    }
+                    else
+                    {
+                        sum += (Transactions[i].Price - avgPrice) * Transactions[i].Shares;
+                        shares -= Transactions[i].Shares;
+                    }
+                }
+            }
+            else
+            {
+                avgPrice = Transactions[0].Price;
+                shares = Transactions[0].Shares;
+
+                for (int i = 1; i < Transactions.Count; i++)
+                {
+                    if (Transactions[i].BuyOrSell == "Sell")
+                    {
+                        avgPrice = ((avgPrice * shares) + (Transactions[i].Price * Transactions[i].Shares)) / (shares + Transactions[i].Shares);
+                        shares = shares + Transactions[i].Shares;
+                    }
+                    else
+                    {
+                        sum += (Transactions[i].Price - avgPrice) * Transactions[i].Shares;
+                        shares -= Transactions[i].Shares;
+                    }
+                }
+            }
+
+            ProfitLoss = Math.Round(sum, 2);
         }
 
     }

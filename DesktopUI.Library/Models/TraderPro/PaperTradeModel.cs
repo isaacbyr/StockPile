@@ -8,7 +8,8 @@ namespace DesktopUI.Library.Models.TraderPro
 {
     public class PaperTradeModel
     {
-        public DateTime Date { get; set; }
+        public string BuyOrSell { get; set; }
         public double Price { get; set; }
+        public int Shares { get; set; }
     }
 }

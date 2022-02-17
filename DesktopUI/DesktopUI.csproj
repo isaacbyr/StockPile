@@ -94,6 +94,7 @@
     <Compile Include="Converters\PortfolioItemColorConverter.cs" />
     <Compile Include="Converters\TraderProIndicatorColorConverter.cs" />
     <Compile Include="Converters\TraderProPLColorConverter.cs" />
+    <Compile Include="Converters\TraderProTransactionColorConverter.cs" />
     <Compile Include="Converters\TraderProTransactionItemColorConverter.cs" />
     <Compile Include="Converters\WatchlistItemColorConverter.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />

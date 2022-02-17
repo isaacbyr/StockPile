@@ -5,13 +5,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views.TraderPro"
+             xmlns:converters="clr-namespace:DesktopUI.Converters"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" xmlns:traderpro="clr-namespace:DesktopUI.ViewModels.TraderPro" d:DataContext="{d:DesignInstance Type=traderpro:PaperTradeViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1400">
+    <UserControl.Resources>
+        <converters:TraderProTransactionColorConverter x:Key="TransactionColorConverter"></converters:TraderProTransactionColorConverter>
+    </UserControl.Resources>
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="225"></ColumnDefinition>
+                <ColumnDefinition Width="175"></ColumnDefinition>
+                <ColumnDefinition Width="49.8"/>
                 <ColumnDefinition Width="225"></ColumnDefinition>
                 <ColumnDefinition Width="275"></ColumnDefinition>
                 <ColumnDefinition Width="275"></ColumnDefinition>
@@ -28,7 +33,54 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Border Background="#1d2d44" CornerRadius="18" Grid.Row="2" Grid.ColumnSpan="2" Margin="10 5 5 5">
+            <!--Header-->
+            <TextBlock Text="TraderPro" FontSize="40" Foreground="White"
+                       HorizontalAlignment="Center" FontWeight="Bold"
+                       VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="20,3,19.8,3"></TextBlock>
+
+            <!--Menu-->
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" Margin="70.4,0,120,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="0"
+                            Content="Main Menu" x:Name="Menu"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="1"
+                            Content="Paper Trade" x:Name="PaperTrade"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="2" x:Name="Trades"
+                            Content="Trade Visuals"></Button>
+                    <!--<Button Background="SteelBlue" Margin="0 10 2 10"
+                            Foreground="White" Grid.Column="3"
+                            Content="Account"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="4"
+                            Content="Logout"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="5"
+                            Content="Exit"></Button>-->
+                </Grid>
+            </StackPanel>
+
+            <!--Time-->
+            <Border CornerRadius="18" Grid.Column="6" Grid.Row="0"
+                    Background="#1d2d44" Margin="14.8,10,15,5">
+
+                <TextBlock Foreground="White" Text="{Binding CurrentTime}" FontSize="30"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </Border>
+
+            <Border Background="#1d2d44" CornerRadius="18" Grid.Row="2" Grid.ColumnSpan="3" Margin="10,5,4.6,5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"></ColumnDefinition>
@@ -71,8 +123,8 @@
 
 
             <!--Chart Controls-->
-            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="3" Grid.Row="2"
-                    Grid.ColumnSpan="1" Margin="5">
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="4" Grid.Row="2"
+                    Grid.ColumnSpan="1" Margin="5.2,5,5,5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -131,8 +183,8 @@
                 </Grid>
             </Border>
 
-            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="2"
-                    Grid.Row="2" Margin="5">
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="3"
+                    Grid.Row="2" Margin="5.4,5,4.8,5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="115"></ColumnDefinition>
@@ -161,30 +213,30 @@
 
             <!--Chart-->
             <Border Background="#1d2d44" CornerRadius="18" Grid.Row="3"
-                    Grid.ColumnSpan="5" Grid.RowSpan="4" Margin="10 5 10 10">
+                    Grid.ColumnSpan="6" Grid.RowSpan="4" Margin="10,5,10.2,10">
                 <!--<Canvas x:Name="canvas" MouseDown="MouseDown_Chart" MouseMove="MouseMove_Chart">-->
-                    <lvc:CartesianChart  Zoom="Xy" x:Name="MainChart" Margin="15">
-                        <lvc:CartesianChart.Series>
-                            <lvc:CandleSeries Values="{Binding Values}" Fill="Transparent" Stroke="Transparent"/>
+                <lvc:CartesianChart  Zoom="Xy" x:Name="MainChart" Margin="15">
+                    <lvc:CartesianChart.Series>
+                        <lvc:CandleSeries Values="{Binding Values}" Fill="Transparent" Stroke="Transparent"/>
                         <lvc:LineSeries Values="{Binding Buys}" Stroke="LightSeaGreen" PointGeometrySize="12" PointForeground="Black"></lvc:LineSeries>
                         <lvc:LineSeries Values="{Binding Sells}" Stroke="Crimson"  PointGeometrySize="12" PointForeground="Black"></lvc:LineSeries>
-                        </lvc:CartesianChart.Series>
-                        <lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart.Series>
+                    <lvc:CartesianChart.AxisY>
 
-                            <lvc:Axis  MaxValue="{Binding MaxAxisValue}" MinValue="{Binding MinAxisValue}">
-                                <lvc:Axis.Separator>
-                                    <lvc:Separator StrokeThickness="0.2"></lvc:Separator>
-                                </lvc:Axis.Separator>
-                            </lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis MinValue="0" MaxValue="100">
-                                <lvc:Axis.Separator>
-                                    <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
-                                </lvc:Axis.Separator>
-                            </lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-                    </lvc:CartesianChart>
+                        <lvc:Axis  MaxValue="{Binding MaxAxisValue}" MinValue="{Binding MinAxisValue}">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator StrokeThickness="0.2"></lvc:Separator>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis MinValue="0" MaxValue="100">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
                 <!--</Canvas>-->
 
                 <!--<lvc:CartesianChart Foreground="black" Grid.Row="1" Grid.Column="0" Margin="25 25 25 20" 
@@ -203,8 +255,84 @@
                 </lvc:CartesianChart>-->
             </Border>
 
-            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="5"
-                    Grid.Row="3" Grid.RowSpan="4" Margin="5 5 10 10"></Border>
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="6"
+                    Grid.Row="3" Grid.RowSpan="4" Margin="4.8,80,10,80">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="280"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--List View-->
+                    <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                          x:Name="Transactions" BorderBrush="Transparent" 
+                              SelectedItem="{Binding SelectedTransaction}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding BuyOrSell}" Header="Buy/Sell" Width="75">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="65">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="65">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.Resources>
+                            <converters:TraderProTransactionItemColorConverter x:Key="TransactionItemColorConverter"></converters:TraderProTransactionItemColorConverter>
+                        </ListView.Resources>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+
+                                <Setter Property="Foreground" Value="{Binding Converter={StaticResource TransactionColorConverter}}"></Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+
+                            </Style>
+
+                        </ListView.ItemContainerStyle>
+
+                    </ListView>
+
+                    <!--Realized Profit Loss-->
+                    <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Profit/Loss" Foreground="White"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
+                            <TextBlock Grid.Column="1" Text="{Binding ProfitLoss}" Foreground="White"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
     </Border>
 </UserControl>

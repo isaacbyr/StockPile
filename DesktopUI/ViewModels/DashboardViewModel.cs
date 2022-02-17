@@ -219,11 +219,11 @@ namespace DesktopUI.ViewModels
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(30);
-            timer.Tick += tickevent;
+            timer.Tick += Tickevent;
             timer.Start();
         }
 
-        private void tickevent(object sender, EventArgs e)
+        private void Tickevent(object sender, EventArgs e)
         {
             CurrentTime = DateTime.Now.ToString("t");
         }

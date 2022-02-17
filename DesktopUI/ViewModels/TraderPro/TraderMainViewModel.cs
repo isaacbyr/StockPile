@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -44,7 +45,22 @@ namespace DesktopUI.ViewModels.TraderPro
         protected override async void OnViewLoaded(object view)
         {
             await LoadChart("AAPL");
+            StartClock();
         }
+
+        private void StartClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Tick += Tickevent;
+            timer.Start();
+        }
+
+        private void Tickevent(object sender, EventArgs e)
+        {
+            CurrentTime = DateTime.Now.ToString("t");
+        }
+
 
         private async Task LoadChart(string ticker, string range = "3mo", string interval = "1d")
         {
@@ -338,7 +354,19 @@ namespace DesktopUI.ViewModels.TraderPro
             return ("", 0);
         }
 
-        
+        private string _currentTime = DateTime.Now.ToString("t");
+
+        public string CurrentTime
+        {
+            get { return _currentTime; }
+            set
+            {
+                _currentTime = value;
+                NotifyOfPropertyChange(() => CurrentTime);
+            }
+        }
+
+
 
         private BindingList<string> _indicatorInterval = new BindingList<string> { "4", "9", "13", "21", "50" };
 
