@@ -22,10 +22,12 @@ namespace DesktopUI.ViewModels
         private readonly RegisterViewModel _registerVM;
         private readonly TraderMainViewModel _mainVM;
         private readonly PaperTradeViewModel _paperTradeVM;
+        private readonly RecentTradesViewModel _recentTradesVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
-            SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel mainVM, PaperTradeViewModel paperTradeVM)
+            SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel mainVM, 
+            PaperTradeViewModel paperTradeVM, RecentTradesViewModel recentTradesVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -36,18 +38,18 @@ namespace DesktopUI.ViewModels
             _registerVM = registerVM;
             _mainVM = mainVM;
             _paperTradeVM = paperTradeVM;
-
-
+            _recentTradesVM = recentTradesVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
             //ActivateItem(_loginVM);
-           // ActivateItem(_mainVM);
+            // ActivateItem(_mainVM);
             //ActivateItem(_registerVM);
             //ActivateItem(_portfolioStockVM);
             //ActivateItem(_dashboardVM);
             //ActivateItem(_portfolioSummaryVM);
-            ActivateItem(_paperTradeVM);
+            //ActivateItem(_paperTradeVM);
+            ActivateItem(_recentTradesVM); 
         }
 
         public void Handle(LogOnEvent message)

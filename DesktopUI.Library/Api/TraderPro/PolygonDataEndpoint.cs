@@ -45,7 +45,7 @@ namespace DesktopUI.Library.Api.TraderPro
                     var close = (double)r.SelectToken("c");
                     var stringTs = (string)r.SelectToken("t");
 
-                    var dt = ConvertTimestampToDate(stringTs, 1);
+                    var dt = ConvertTimestampToDate(stringTs);
 
                     if(dt.Hour == 6 && dt.Minute == 30)
                     {
@@ -85,7 +85,7 @@ namespace DesktopUI.Library.Api.TraderPro
             }
         }
 
-        private DateTime ConvertTimestampToDate(string stringTs, int interval)
+        private DateTime ConvertTimestampToDate(string stringTs)
         {
 
             int ts;
@@ -96,63 +96,46 @@ namespace DesktopUI.Library.Api.TraderPro
 
         }
 
-        //public async Task LoadTradeData(string ticker, string timestamp)
-        //{
-        //    // 630 timestamp
-        //    //1644417004917261811
+        public async Task<List<RecentTradeModel>> LoadRecentTrades(string ticker, double timestamp)
+        {
+            string convTimestamp = timestamp.ToString(".################################################");
+            string API_KEY = "g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1";
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://api.polygon.io/");
 
-        //    string API_KEY = "g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1";
+            var response = await httpClient.GetAsync($"vX/trades/{ticker}?timestamp.lt={convTimestamp}&order=desc&sort=timestamp&limit=10000&apiKey={API_KEY}");
+            
+            if(response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
 
-        //    var httpClient = new HttpClient();
-        //    httpClient.BaseAddress = new Uri("https://api.polygon.io/");
+                var data = (JObject)JsonConvert.DeserializeObject(responseBody);
 
-        //    var response = await httpClient.GetAsync($"vX/trades/AAPL?timestamp.gt=1644417004917261811&order=asc&limit=30000&sort=timestamp&apiKey={API_KEY}");
+                var trades = new List<RecentTradeModel>();
 
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var responseBody = await response.Content.ReadAsStringAsync();
+                foreach(var s in data.SelectToken("results"))
+                {
+                    var price = (double)s.SelectToken("price");
+                    var shares = (int)s.SelectToken("size");
 
-        //        var data = (JObject)JsonConvert.DeserializeObject(responseBody);
+                    var ts = (double)s.SelectToken("sip_timestamp");
 
-        //        var trades = new List<PaperTradeModel>();
+                    var trade = new RecentTradeModel
+                    {
+                        Price = price,
+                        Shares = shares,
+                        Timestamp = ts
+                    };
 
-        //        foreach(var r in data.SelectToken("results"))
-        //        {
-        //            var price = (double)r.SelectToken("price");
-        //            var stringTs = (string)r.SelectToken("participant_timestamp");
+                    trades.Add(trade);
+                }
 
-        //            var dt = ConvertTimestampToDateAndRound(stringTs, 1);
-
-        //            var trade = new PaperTradeModel
-        //            {
-        //                Date = dt,
-        //                Price = price
-        //            };
-
-        //            trades.Add(trade);
-        //        }
-
-        //        var groupedTrades = new List<List<double>>();
-        //        var tempTrades = new List<double>();
-        //        var index = 0;
-
-        //        var testDate = trades[0].Date;
-        //        foreach(var t in trades)
-        //        {
-        //            if(t.Date == testDate)
-        //            {
-        //                tempTrades.Add(t.Price);
-        //            }
-        //            else
-        //            {
-        //                testDate = trades[index - 1].Date;
-        //                groupedTrades.Add(tempTrades);
-        //                tempTrades.Clear();
-        //            }
-        //            index++;
-        //        }
-
-        //    }
-
+                return trades;
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
     }
 }
