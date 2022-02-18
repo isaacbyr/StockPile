@@ -10,5 +10,16 @@ namespace DesktopUI.Library.Models
     {
         public string Id { get; set; }
         public string FullName { get; set; }
+
+        public FriendDisplayModel()
+        {
+
+        }
+
+        public FriendDisplayModel(string id, string fullName)
+        {
+            Id = id;
+            FullName = fullName;
+        }
     }
 }

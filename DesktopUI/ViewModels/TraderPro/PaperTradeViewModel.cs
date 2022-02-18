@@ -493,7 +493,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public async Task SearchForTrades()
         {
-            var (open, high, low, close) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedDate.ToString("yyyy-MM-dd"));
+            var (open, high, low, close, dates) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedDate.ToString("yyyy-MM-dd"));
 
             var trades =  await GroupStockResults(open, high, low, close, SelectedChartInterval);
             await DisplayChart(trades);
