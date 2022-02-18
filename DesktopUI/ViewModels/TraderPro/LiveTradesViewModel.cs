@@ -120,6 +120,9 @@ namespace DesktopUI.ViewModels.TraderPro
                 Index++;
             }
 
+            IntervalHigh = Values[Index - 1].Close;
+            IntervalLow = Values[Index - 1].Close;
+
             NotifyOfPropertyChange(() => Values);
             NotifyOfPropertyChange(() => Labels);
             NotifyOfPropertyChange(() => XAxisMax);
@@ -131,8 +134,8 @@ namespace DesktopUI.ViewModels.TraderPro
             //YMinAxis = 166.50;
             XAxisMax = Values.Count + 10;
             double open = Values[Index - 1].Close;
-            double high = Values[Index - 1].Close;
-            double low = Values[Index - 1].Close;
+            double high;
+            double low;
             double close = Values[Index - 1].Close;
             DateTime dt = DateTime.Now;
 
@@ -149,18 +152,18 @@ namespace DesktopUI.ViewModels.TraderPro
                     }
                     else if (propertyName.Equals("h"))
                     {
-                        var temp = (double)parsedProperty.Value;
-                        if(temp > high)
+                        high = (double)parsedProperty.Value;
+                        if(high > IntervalHigh)
                         {
-                            high = temp;
+                            IntervalHigh = high;
                         }
                     }
                     else if (propertyName.Equals("l"))
                     {
-                        var temp = (double)parsedProperty.Value ;
-                        if(temp < low)
+                        low = (double)parsedProperty.Value ;
+                        if(low < IntervalLow)
                         {
-                            low = temp;
+                            IntervalLow = low;
                         }
                     }
                     else if (propertyName.Equals("c"))
@@ -180,16 +183,19 @@ namespace DesktopUI.ViewModels.TraderPro
             //Labels.Add(dt.ToString("T"));
             if (dt.Minute % 5 == 0 && dt.Second == 0)
             {
-                var ohlc = new OhlcPoint(open, high, low, close);
+                var ohlc = new OhlcPoint(open, IntervalHigh, IntervalLow, close);
 
                 Values.Add(ohlc);
                 test.Add(ohlc);
                 Labels.Add(dt.ToString("t"));
+
+                IntervalHigh = close;
+                IntervalLow = close;
                 Index++;
             }
             else
             {
-                var ohlc = new OhlcPoint(Values[Index-2].Close, high, low, close);
+                var ohlc = new OhlcPoint(Values[Index-2].Close, IntervalHigh, IntervalLow, close);
 
                 Values[Index-1] = ohlc;
                 test[Index-1] = ohlc;
@@ -393,6 +399,32 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => SelectedChartInterval);
             }
         }
+
+        private double _intervalHigh;
+
+        public double IntervalHigh
+        {
+            get { return _intervalHigh; }
+            set 
+            {
+                _intervalHigh = value;
+                NotifyOfPropertyChange(() => IntervalHigh);
+            }
+        }
+
+        private double _intervalLow;
+
+        public double IntervalLow
+        {
+            get { return _intervalLow; }
+            set 
+            {
+                _intervalLow = value;
+                NotifyOfPropertyChange(() => IntervalLow);
+            }
+        }
+
+
 
         public async Task SearchForTrades()
         {
