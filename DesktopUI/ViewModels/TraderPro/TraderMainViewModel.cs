@@ -927,10 +927,9 @@ namespace DesktopUI.ViewModels.TraderPro
                 {
                     Values = buyValues,
                     Title = "Buy",
-                    Fill = System.Windows.Media.Brushes.Chartreuse,
-                    Stroke = System.Windows.Media.Brushes.Chartreuse,
-                    PointGeometrySize = 15,
-                    PointGeometry = DefaultGeometries.Diamond
+                    Stroke = System.Windows.Media.Brushes.LightSeaGreen,
+                    PointGeometrySize = 12,
+                    Foreground = Brushes.Black
                 });
 
             SeriesCollection.Add(
@@ -938,11 +937,9 @@ namespace DesktopUI.ViewModels.TraderPro
                 {
                     Values = sellValues,
                     Title = "Sell",
-                    Fill = System.Windows.Media.Brushes.Crimson,
                     Stroke = System.Windows.Media.Brushes.Crimson,
-                    PointGeometrySize = 15,
-                    PointGeometry = DefaultGeometries.Diamond,
-
+                    PointGeometrySize = 12,
+                    Foreground = Brushes.Black
                 });
 
         }

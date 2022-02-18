@@ -48,7 +48,7 @@ namespace DesktopUI.ViewModels.TraderPro
         private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Interval = TimeSpan.FromSeconds(15);
             timer.Tick += Tickevent;
             timer.Start();
         }
@@ -493,7 +493,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public async Task SearchForTrades()
         {
-            var (open, high, low, close, dates) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedDate.ToString("yyyy-MM-dd"));
+            var (open, high, low, close, dates) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedChartInterval, SelectedDate.ToString("yyyy-MM-dd"));
 
             var trades =  await GroupStockResults(open, high, low, close, SelectedChartInterval);
             await DisplayChart(trades);

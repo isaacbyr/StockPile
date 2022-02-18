@@ -13,15 +13,14 @@ namespace DesktopUI.Library.Api.TraderPro
 {
     public class PolygonDataEndpoint: IPolygonDataEndpoint
     {
-        public async Task<(List<double>, List<double>, List<double>, List<double>, List<DateTime>)> LoadTradeData(string ticker, string timestamp)
+        public async Task<(List<double>, List<double>, List<double>, List<double>, List<DateTime>)> LoadTradeData(string ticker,int interval, string timestamp)
         {
             string API_KEY = "g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1";
-
 
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://api.polygon.io/");
 
-            var response = await httpClient.GetAsync($"v2/aggs/ticker/{ticker}/range/5/minute/{timestamp}/{timestamp}?adjusted=true&sort=asc&limit=50000&apiKey={API_KEY}");
+            var response = await httpClient.GetAsync($"v2/aggs/ticker/{ticker}/range/{interval}/minute/{timestamp}/{timestamp}?adjusted=true&sort=asc&limit=50000&apiKey={API_KEY}");
 
             if(response.IsSuccessStatusCode)
             {
@@ -37,7 +36,7 @@ namespace DesktopUI.Library.Api.TraderPro
 
                 int index = 0;
                 int startIndex = 0;
-                int endIndex = data.Count;
+                int endIndex = (int)data.SelectToken("resultsCount");
                 foreach (var r in data.SelectToken("results"))
                 {
                     var open = (double)r.SelectToken("o");

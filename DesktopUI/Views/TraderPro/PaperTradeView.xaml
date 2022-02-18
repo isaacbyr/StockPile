@@ -255,6 +255,7 @@
                 </lvc:CartesianChart>-->
             </Border>
 
+            <!--`Transactions-->
             <Border CornerRadius="18" Background="#1d2d44" Grid.Column="6"
                     Grid.Row="3" Grid.RowSpan="4" Margin="4.8,80,10,80">
                 <Grid>
