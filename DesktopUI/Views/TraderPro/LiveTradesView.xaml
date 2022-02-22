@@ -17,7 +17,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="255"></ColumnDefinition>
                 <ColumnDefinition Width="230"></ColumnDefinition>
-                <ColumnDefinition Width="230"></ColumnDefinition>
+                <ColumnDefinition Width="115"></ColumnDefinition>
+                <ColumnDefinition Width="115"></ColumnDefinition>
                 <ColumnDefinition Width="230"></ColumnDefinition>
                 <ColumnDefinition Width="230"></ColumnDefinition>
                 <ColumnDefinition Width="225"></ColumnDefinition>
@@ -44,6 +45,7 @@
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -56,6 +58,9 @@
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="1"
                             Content="Paper Trade" x:Name="PaperTrade"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="2" x:Name="PaperTradeLive"
+                            Content="Paper Trade (Live)"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="2" x:Name="TradeCrossovers"
                             Content="Trade Crossovers"></Button>
@@ -97,7 +102,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
@@ -157,7 +162,7 @@
 
             <!--Chart-->
             <Border Background="#1D2D44" Grid.Row="3" Grid.RowSpan="4"
-                    Grid.Column="0" Grid.ColumnSpan="5" Margin="10 5 5 10">
+                    Grid.Column="0" Grid.ColumnSpan="6" Margin="10 5 5 10">
                 <lvc:CartesianChart  Zoom="Xy" x:Name="MainChart" Margin="15">
                     <lvc:CartesianChart.Series>
                         <lvc:CandleSeries Values="{Binding Values}" />

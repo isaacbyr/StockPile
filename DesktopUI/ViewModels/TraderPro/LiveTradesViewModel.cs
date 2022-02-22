@@ -368,7 +368,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private double _xAxisMax = 100;
+        private double _xAxisMax = 50;
 
         public double XAxisMax
         {
