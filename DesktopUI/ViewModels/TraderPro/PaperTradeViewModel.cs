@@ -182,7 +182,6 @@ namespace DesktopUI.ViewModels.TraderPro
                     else
                     {
 
-                        //we add the lecture based on our StopWatch instance
                         var point = new OhlcPoint(testValues[index][0], testValues[index][0], testValues[index][0], testValues[index][0]);
                         Values.Insert(index, point);
 

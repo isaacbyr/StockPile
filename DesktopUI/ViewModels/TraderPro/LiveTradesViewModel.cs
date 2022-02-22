@@ -16,6 +16,7 @@ using DesktopUI.Library.Api.TraderPro;
 using System.ComponentModel;
 using DesktopUI.Library.Models.TraderPro;
 using System.Windows.Threading;
+using System.Collections.ObjectModel;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -26,6 +27,8 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public List<string> Labels { get; set; }
         public ChartValues<OhlcPoint> Values { get; set; }
+        public ChartValues<double> Buys { get; set; }
+        public ChartValues<double> Sells { get; set; }
         public int Index { get; set; }
         List<OhlcPoint> test = new List<OhlcPoint>();
 
@@ -33,10 +36,6 @@ namespace DesktopUI.ViewModels.TraderPro
         public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint)
         {
            _polygonDataEndpoint = polygonDataEndpoint;
-
-            Labels = new List<string>();
-            Values = new ChartValues<OhlcPoint>();
-            Index = 0;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -77,7 +76,6 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private void ws_MessageRecieved(object sender, MessageReceivedEventArgs e)
         {
-            Console.WriteLine(e.Message);
 
             var data = JArray.Parse(e.Message);
 
@@ -107,6 +105,13 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private async Task LoadPreviousData(List<double> opens, List<double> highs, List<double> lows, List<double> closes, List<DateTime> dates)
         {
+            Buys = new ChartValues<double>();
+            Sells = new ChartValues<double>();
+            Transactions = new AsyncObservableCollection<PaperTradeModel>();
+            Labels = new List<string>();
+            Values = new ChartValues<OhlcPoint>();
+            Index = 0;
+
             YMaxAxis = highs.Max() + 1;
             YMinAxis = lows.Min() - 1;
             XAxisMax = opens.Count + 10;
@@ -117,22 +122,28 @@ namespace DesktopUI.ViewModels.TraderPro
                 Values.Add(ohlc);
                 test.Add(ohlc);
                 Labels.Add(dates[i].ToString("t"));
+
+                Sells.Add(double.NaN);
+                Buys.Add(double.NaN);
+
                 Index++;
             }
 
             IntervalHigh = Values[Index - 1].Close;
             IntervalLow = Values[Index - 1].Close;
+            Price = Values[Index - 1].Close;
 
             NotifyOfPropertyChange(() => Values);
             NotifyOfPropertyChange(() => Labels);
+            NotifyOfPropertyChange(() => Buys);
+            NotifyOfPropertyChange(() => Sells);
             NotifyOfPropertyChange(() => XAxisMax);
         }
 
         private void ConvertAndChart(JArray data)
         {
-            //YMaxAxis = 168.50;
-            //YMinAxis = 166.50;
             XAxisMax = Values.Count + 10;
+
             double open = Values[Index - 1].Close;
             double high;
             double low;
@@ -169,6 +180,7 @@ namespace DesktopUI.ViewModels.TraderPro
                     else if (propertyName.Equals("c"))
                     {
                         close = (double)parsedProperty.Value;
+                        Price = Math.Round(close, 2);
                     }
                     else if (propertyName.Equals("s"))
                     {
@@ -178,10 +190,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 }
             }
 
-            //Values.Add(ohlc);
-            //test.Add(ohlc);
-            //Labels.Add(dt.ToString("T"));
-            if (dt.Minute % 5 == 0 && dt.Second == 0)
+            if (dt.Minute % SelectedChartInterval == 0 && dt.Second == 0)
             {
                 var ohlc = new OhlcPoint(open, IntervalHigh, IntervalLow, close);
 
@@ -191,6 +200,41 @@ namespace DesktopUI.ViewModels.TraderPro
 
                 IntervalHigh = close;
                 IntervalLow = close;
+
+                if (BuyShares == true)
+                {
+                    Buys.Insert(Index, open);
+                    BuyShares = false;
+                    var transaction = new PaperTradeModel
+                    {
+                        BuyOrSell = "Buy",
+                        Price = close,
+                        Shares = Shares
+                    };
+                    Transactions.Add(transaction);
+                }
+                else
+                {
+                    Buys.Insert(Index, double.NaN);
+                }
+
+                if (SellShares == true)
+                {
+                    Sells.Insert(Index, open);
+                    SellShares = false;
+                    var transaction = new PaperTradeModel
+                    {
+                        BuyOrSell = "Sell",
+                        Price = open,
+                        Shares = Shares
+                    };
+                    Transactions.Add(transaction);
+                }
+                else
+                {
+                    Sells.Insert(Index, double.NaN);
+                }
+
                 Index++;
             }
             else
@@ -199,10 +243,53 @@ namespace DesktopUI.ViewModels.TraderPro
 
                 Values[Index-1] = ohlc;
                 test[Index-1] = ohlc;
+
+                if (BuyShares == true)
+                {
+                    Buys[Index - 1] = open;
+                    BuyShares = false;
+                    var transaction = new PaperTradeModel
+                    {
+                        BuyOrSell = "Buy",
+                        Price = open,
+                        Shares = Shares
+                    };
+                    Transactions.Add(transaction);
+                }
+                else
+                {
+                    if (double.IsNaN(Buys[Index - 1]) && double.IsInfinity(Buys[Index - 1]))
+                    {
+                        Buys[Index - 1] = double.NaN;
+                    }
+                }
+
+                if (SellShares == true)
+                {
+                    Sells[Index - 1] = open;
+                    SellShares = false;
+                    var transaction = new PaperTradeModel
+                    {
+                        BuyOrSell = "Sell",
+                        Price = open,
+                        Shares = Shares
+                    };
+                    Transactions.Add(transaction);
+                }
+                else
+                {
+                    if (double.IsNaN(Sells[Index - 1]) && double.IsInfinity(Sells[Index - 1]))
+                    {
+                        Sells[Index - 1] = double.NaN;
+                    }
+                }
             }
 
             NotifyOfPropertyChange(() => Values);
             NotifyOfPropertyChange(() => Labels);
+            NotifyOfPropertyChange(() => Buys);
+            NotifyOfPropertyChange(() => Sells);
+            NotifyOfPropertyChange(() => Transactions);
         }
 
         private string _currentTime = DateTime.Now.ToString("t");
@@ -344,9 +431,9 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private BindingList<PaperTradeModel> _transactions;
+        private ObservableCollection<PaperTradeModel> _transactions;
 
-        public BindingList<PaperTradeModel> Transactions
+        public ObservableCollection<PaperTradeModel> Transactions
         {
             get { return _transactions; }
             set
@@ -424,11 +511,37 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private string _chartSymbol;
+
+        public string ChartSymbol
+        {
+            get { return _chartSymbol; }
+            set 
+            {
+                _chartSymbol = value;
+                NotifyOfPropertyChange(() => ChartSymbol);
+            }
+        }
+
+        private double _price;
+
+        public double Price
+        {
+            get { return _price; }
+            set 
+            {
+                _price = value;
+                NotifyOfPropertyChange(() => Price);
+            }
+        }
+
 
 
         public async Task SearchForTrades()
         {
             var (opens, highs, lows, closes, dates) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedChartInterval, DateTime.Now.ToString("yyyy-MM-dd"));
+
+            ChartSymbol = Ticker;
 
             await LoadPreviousData(opens, highs, lows, closes, dates);
 

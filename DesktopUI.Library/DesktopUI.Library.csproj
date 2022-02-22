@@ -146,6 +146,7 @@
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\SocialDashboardDataModel.cs" />
     <Compile Include="Models\StockDashboardDataModel.cs" />
+    <Compile Include="Models\TraderPro\AsyncObservableCollection.cs" />
     <Compile Include="Models\TraderPro\ChartCrossoverModel.cs" />
     <Compile Include="Models\TraderPro\ChartPointModel.cs" />
     <Compile Include="Models\TraderPro\CrossoverTransactionModel.cs" />
