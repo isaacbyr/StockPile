@@ -1,0 +1,143 @@
+﻿<UserControl x:Class="DesktopUI.Views.TraderPro.IBView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DesktopUI.Views.TraderPro"
+             xmlns:traderpro="clr-namespace:DesktopUI.ViewModels.TraderPro" d:DataContext="{d:DesignInstance Type=traderpro:IBViewModel}"
+             mc:Ignorable="d" 
+             Foreground="White"
+             FontSize="18"
+             d:DesignHeight="800" d:DesignWidth="1400">
+    <Border CornerRadius="18" Background="#3E4C76">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="255"></ColumnDefinition>
+                <ColumnDefinition Width="230"></ColumnDefinition>
+                <ColumnDefinition Width="230"></ColumnDefinition>
+                <ColumnDefinition Width="230"></ColumnDefinition>
+                <ColumnDefinition Width="230"></ColumnDefinition>
+                <ColumnDefinition Width="225"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <!--Connect-->
+            <Button Grid.Column="0" Grid.Row="1" Content="Connect" Background="LimeGreen" Foreground="White"
+                    Width="150"></Button>
+
+            <!--Disconnect-->
+            <Button Grid.Column="2" Grid.Row="1" Content="Disconnect" Background="Crimson" Foreground="White"
+                    Width="150"></Button>
+
+            <Border Margin="10 5 5 5" Grid.RowSpan="5" Background="#1d2d44" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" CornerRadius="18">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="55"></RowDefinition>
+                        <RowDefinition Height="5"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <!--Order Id-->
+                    <StackPanel Margin="18 0 0 0" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
+                        <TextBlock Text="Order Id"></TextBlock>
+                        <TextBlock Margin="5 0 0 0" Text="{Binding OrderId}"></TextBlock>
+                    </StackPanel>                    
+
+                    <!--Symbol-->
+                    <TextBlock Text="Symbol" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="2" Grid.Column="0" Width="110" Height="30" x:Name="Ticker"></TextBox>
+                    
+                    <!--Quanity-->
+                    <TextBlock Text="Quantity" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="2" Grid.Column="1" Width="110" Height="30" x:Name="Quantity"></TextBox>
+
+                    <!--Limit Price-->
+                    <TextBlock Text="Limit Price" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="2" Grid.Column="2" Width="110" Height="30" x:Name="LMTPrice"></TextBox>
+
+                    <!--Market -->
+                    <TextBlock Text="Market" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <ComboBox Grid.Row="2" Grid.Column="3" Width="110" Height="30" x:Name="Markets" SelectedItem="{Binding SelectedMarket}"></ComboBox>
+
+                    <!--Type-->
+                    <TextBlock Text="Type" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <ComboBox Grid.Row="4" Grid.Column="0" Width="110" Height="30" x:Name="Types" SelectedItem="{Binding SelectedType}"></ComboBox>
+
+                    <!--Visible-->
+                    <TextBlock Text="Visible" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="4" Grid.Column="1" Width="110" Height="30" x:Name="Visible"></TextBox>
+
+                    <!--Primary Exchange-->
+                    <TextBlock Text="Primary Ex" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="4" Grid.Column="2" Width="110" Height="30" x:Name="PrimaryExchange"></TextBox>
+
+                    <!--TIF-->
+                    <TextBlock Text="TIF" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <ComboBox Grid.Row="4" Grid.Column="3" Width="110" Height="30" x:Name="TIFS" SelectedItem="{Binding SelectedTIF}"></ComboBox>
+
+                    <!--Buy/Ask/Last-->
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.ColumnSpan="4" Grid.Row="5" Grid.RowSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <!--Bid-->
+                            <TextBlock Text="Bid" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="0" Width="110" Height="30" x:Name="Bid"></TextBox>
+
+                            <!--Ask-->
+                            <TextBlock Text="Ask" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="1" Width="110" Height="30" x:Name="Ask"></TextBox>
+                        
+                            <!--Last-->
+                            <TextBlock Text="Last" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="2" Width="110" Height="30" x:Name="Last"></TextBox>
+
+                        </Grid>
+                    </StackPanel>
+                    
+                   
+
+                    <!--Buy-->
+                    <Button Grid.Column="1" Grid.Row="7" Content="BUY" Background="LimeGreen" Foreground="White" x:Name="Buy"
+                    Width="125" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Center"></Button>
+                    
+                    <!--Sell-->
+                    <Button Grid.Column="2" Grid.Row="7" Content="SELL" Background="Crimson" Foreground="White" x:Name="Sell"
+                    Width="125" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Center"></Button>
+                    
+                    
+                    <!--Market Hours Checkbox--><!--
+                    <CheckBox VerticalContentAlignment="Center" Margin="18 0 0 0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="White"  Content="Outside Market Hours" IsChecked="False" Grid.Row="7"></CheckBox>-->
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

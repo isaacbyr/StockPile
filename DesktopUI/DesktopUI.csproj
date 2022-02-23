@@ -44,6 +44,9 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CSharpAPI">
+      <HintPath>..\..\..\..\..\..\..\..\TWS API\source\CSharpClient\client\bin\Debug\CSharpAPI.dll</HintPath>
+    </Reference>
     <Reference Include="CsvHelper, Version=7.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.7.1.1\lib\net45\CsvHelper.dll</HintPath>
     </Reference>
@@ -174,6 +177,7 @@
     <Compile Include="Converters\TraderProTransactionColorConverter.cs" />
     <Compile Include="Converters\TraderProTransactionItemColorConverter.cs" />
     <Compile Include="Converters\WatchlistItemColorConverter.cs" />
+    <Compile Include="EWrapperImpl.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\PortfolioStockViewModel.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SocialViewModel.cs" />
+    <Compile Include="ViewModels\TraderPro\IBViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\LiveTradesViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\PaperTradeViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\RecentTradesViewModel.cs" />
@@ -211,6 +216,9 @@
     </Compile>
     <Compile Include="Views\SocialView.xaml.cs">
       <DependentUpon>SocialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TraderPro\IBView.xaml.cs">
+      <DependentUpon>IBView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TraderPro\LiveTradesView.xaml.cs">
       <DependentUpon>LiveTradesView.xaml</DependentUpon>
@@ -255,6 +263,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SocialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TraderPro\IBView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
