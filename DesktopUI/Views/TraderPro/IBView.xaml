@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views.TraderPro"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:traderpro="clr-namespace:DesktopUI.ViewModels.TraderPro" d:DataContext="{d:DesignInstance Type=traderpro:IBViewModel}"
              mc:Ignorable="d" 
              Foreground="White"
-             FontSize="18"
+             FontSize="16"
              d:DesignHeight="800" d:DesignWidth="1400">
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
@@ -31,14 +32,17 @@
             </Grid.RowDefinitions>
             
             <!--Connect-->
-            <Button Grid.Column="0" Grid.Row="1" Content="Connect" Background="LimeGreen" Foreground="White"
+            <Button Grid.Column="0" Grid.Row="1" Content="Connect" Background="LimeGreen" Foreground="White" x:Name="Connect"
                     Width="150"></Button>
 
+            <!--Status-->
+            <TextBlock Text="{Binding Status}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1"></TextBlock>
+            
             <!--Disconnect-->
-            <Button Grid.Column="2" Grid.Row="1" Content="Disconnect" Background="Crimson" Foreground="White"
+            <Button Grid.Column="2" Grid.Row="1" Content="Disconnect" Background="Crimson" Foreground="White" x:Name="Disconnect"
                     Width="150"></Button>
 
-            <Border Margin="10 5 5 5" Grid.RowSpan="5" Background="#1d2d44" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" CornerRadius="18">
+            <Border Margin="50 5 40 5" Grid.RowSpan="5" Background="#1d2d44" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" CornerRadius="18">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -66,15 +70,15 @@
 
                     <!--Symbol-->
                     <TextBlock Text="Symbol" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="0" Width="110" Height="30" x:Name="Ticker"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="0" Width="110" Height="30" x:Name="Ticker" HorizontalContentAlignment="Center"></TextBox>
                     
                     <!--Quanity-->
                     <TextBlock Text="Quantity" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="1" Width="110" Height="30" x:Name="Quantity"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="1" Width="110" Height="30" x:Name="Quantity" HorizontalContentAlignment="Center"></TextBox>
 
                     <!--Limit Price-->
                     <TextBlock Text="Limit Price" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="2" Width="110" Height="30" x:Name="LMTPrice"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="2" Width="110" Height="30" x:Name="LMTPrice" HorizontalContentAlignment="Center"></TextBox>
 
                     <!--Market -->
                     <TextBlock Text="Market" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
@@ -86,11 +90,11 @@
 
                     <!--Visible-->
                     <TextBlock Text="Visible" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="4" Grid.Column="1" Width="110" Height="30" x:Name="Visible"></TextBox>
+                    <TextBox Grid.Row="4" Grid.Column="1" Width="110" Height="30" x:Name="Visible" HorizontalContentAlignment="Center"></TextBox>
 
                     <!--Primary Exchange-->
                     <TextBlock Text="Primary Ex" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="4" Grid.Column="2" Width="110" Height="30" x:Name="PrimaryExchange"></TextBox>
+                    <TextBox Grid.Row="4" Grid.Column="2" Width="110" Height="30" x:Name="PrimaryExchange" HorizontalContentAlignment="Center"></TextBox>
 
                     <!--TIF-->
                     <TextBlock Text="TIF" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
@@ -110,15 +114,15 @@
                             </Grid.RowDefinitions>
                             <!--Bid-->
                             <TextBlock Text="Bid" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                            <TextBox Grid.Row="1" Grid.Column="0" Width="110" Height="30" x:Name="Bid"></TextBox>
+                            <Button Grid.Row="1" cal:Message.Attach="UpdateLimit($eventArgs)" Grid.Column="0" Content="{Binding Bid}" Foreground="White" Width="75" Background="Transparent" BorderThickness="0" BorderBrush="Transparent"></Button>
 
                             <!--Ask-->
                             <TextBlock Text="Ask" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                            <TextBox Grid.Row="1" Grid.Column="1" Width="110" Height="30" x:Name="Ask"></TextBox>
-                        
+                            <Button Grid.Row="1" cal:Message.Attach="UpdateLimit($eventArgs)" Grid.Column="1" Content="{Binding Ask}" Foreground="White" Width="75" Background="Transparent" BorderThickness="0" BorderBrush="Transparent"></Button> 
+                            
                             <!--Last-->
                             <TextBlock Text="Last" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                            <TextBox Grid.Row="1" Grid.Column="2" Width="110" Height="30" x:Name="Last"></TextBox>
+                            <Button Grid.Row="1" cal:Message.Attach="UpdateLimit($eventArgs)" Grid.Column="2" Content="{Binding Last}" Foreground="White" Width="75" Background="Transparent" BorderThickness="0" BorderBrush="Transparent"></Button>
 
                         </Grid>
                     </StackPanel>

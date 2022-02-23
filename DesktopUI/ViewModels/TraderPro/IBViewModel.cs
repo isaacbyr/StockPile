@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using IBApi;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -23,31 +26,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         protected override async void OnViewLoaded(object view)
         {
-            // Parameters to connect to TWS
-            // host - IP address or host name of the host running TWS
-            // port - listening to port 7497
-            // clientID - client application identifier - can be any number
-            ibClient.ClientSocket.eConnect("", 7497, 0);
-
-            var reader = new EReader(ibClient.ClientSocket, ibClient.Signal);
-            reader.Start();
-            new Thread(() => {
-                while (ibClient.ClientSocket.IsConnected())
-                {
-                    ibClient.Signal.waitForSignal();
-                    reader.processMsgs();
-                }
-            })
-            { IsBackground = true }.Start();
-
-            while(ibClient.NextOrderId <= 0) { }
-
-            ibClient.ibVM = this;
-
-            // load in order id 
-            OrderId = ibClient.NextOrderId;
-
-            getData();
+            
         }
 
         private void getData()
@@ -61,7 +40,7 @@ namespace DesktopUI.ViewModels.TraderPro
             List<TagValue> mktDataOptions = new List<TagValue>();
 
             // Set the stock ticker to get data for
-            contract.Symbol = "AAPL";
+            contract.Symbol = Ticker;
             // Set the security type to stk for a stock
             contract.SecType = "STK";
             // Use "SMART" as the general exchange;
@@ -85,20 +64,23 @@ namespace DesktopUI.ViewModels.TraderPro
 
             if (Convert.ToInt32(tickerPrice[0]) == 1)
             {
-                if (Convert.ToInt32(tickerPrice[1]) == 68)
+                if (Convert.ToInt32(tickerPrice[1]) == 4) // 68
                 {
                     // LAST QUOTE FOR DELAYED DATA
                     Console.WriteLine("DELAYED QUOTE: ", tickerPrice[2]);
+                    Last = Convert.ToDouble(tickerPrice[2]);
                 }
-                else if (Convert.ToInt32(tickerPrice[1]) == 67)
+                else if (Convert.ToInt32(tickerPrice[1]) == 2) //  67
                 {
                     // DELAYED ASK QUOTE
                     Console.WriteLine("DELAYED ASK QUOTE: ", tickerPrice[2]);
+                    Ask = Convert.ToDouble(tickerPrice[2]);
                 }
-                else if (Convert.ToInt32(tickerPrice[1]) == 66)
+                else if (Convert.ToInt32(tickerPrice[1]) == 1) // 66
                 {
                     // DELAYED BIG QUOTE
                     Console.WriteLine("DELAYED BID QUOTE", tickerPrice[2]);
+                    Bid = Convert.ToDouble(tickerPrice[2]);
                 }
             }
 
@@ -107,12 +89,39 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public void Connect()
         {
+            // Parameters to connect to TWS
+            // host - IP address or host name of the host running TWS
+            // port - listening to port 7497
+            // clientID - client application identifier - can be any number
+            ibClient.ClientSocket.eConnect("", 7497, 0);
 
+            var reader = new EReader(ibClient.ClientSocket, ibClient.Signal);
+            reader.Start();
+            new Thread(() => {
+                while (ibClient.ClientSocket.IsConnected())
+                {
+                    ibClient.Signal.waitForSignal();
+                    reader.processMsgs();
+                }
+            })
+            { IsBackground = true }.Start();
+
+            while (ibClient.NextOrderId <= 0) { }
+
+            ibClient.ibVM = this;
+
+            // load in order id 
+            OrderId = ibClient.NextOrderId;
+
+            Status = "Connected :)";
+            getData();
+            StartTimer();
         }
 
         public void Disconnect()
         {
             ibClient.ClientSocket.eDisconnect();
+            Status = "Disconnected :(";
         }
 
         public void Buy()
@@ -132,11 +141,11 @@ namespace DesktopUI.ViewModels.TraderPro
             // create a new contract to specify the security we are looking for
             var contract = new Contract();
 
-            contract.Symbol = "MSFT";
+            contract.Symbol = Ticker;
             contract.SecType = "STK";
-            contract.Exchange = "SMART";
+            contract.Exchange = SelectedMarket;
             contract.PrimaryExch = "ISLAND";
-            contract.Currency = "UDS";
+            contract.Currency = "USD";
 
             var order = new Order();
             // gets the next order id from the text box
@@ -158,7 +167,7 @@ namespace DesktopUI.ViewModels.TraderPro
             // visible shares to the market
             order.DisplaySize = Visible;
             // is outside trading hours
-            order.OutsideRth = false;
+            order.OutsideRth = true;
 
             //place the order
             ibClient.ClientSocket.placeOrder(OrderId, contract, order);
@@ -168,9 +177,20 @@ namespace DesktopUI.ViewModels.TraderPro
 
         }
 
-        private double _ask;
+        private string _status = "Disconnected :(";
 
-        private double _last;
+        public string Status
+        {
+            get { return _status; }
+            set 
+            {
+                _status = value;
+                NotifyOfPropertyChange(() => Status);
+            }
+        }
+
+
+        private double _last = 0.0;
 
         public double Last
         {
@@ -182,6 +202,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private double _ask = 0.0;
 
         public double Ask
         {
@@ -194,7 +215,7 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
 
-        private double _bid;
+        private double _bid = 0.0;
 
         public double Bid
         {
@@ -206,7 +227,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private string _selectedTIF;
+        private string _selectedTIF = "DAY";
 
         public string SelectedTIF
         {
@@ -253,7 +274,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private string _selectedType;
+        private string _selectedType = "LMT";
 
         public string SelectedType
         {
@@ -267,7 +288,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
 
 
-        private List<string> _types = new List<string> { "LMT", "MKT" };
+        private List<string> _types = new List<string> { "LMT", "MKT", "STP" };
 
         public List<string> Types
         {
@@ -280,7 +301,7 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
 
-        private string _selectedMarket;
+        private string _selectedMarket = "SMART";
 
         public string SelectedMarket
         {
@@ -328,7 +349,7 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
 
-        private string _ticker;
+        private string _ticker = "AAPL";
 
         public string Ticker
         {
@@ -365,6 +386,25 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        //TODO: ADD IN TIMER FUNCTION TO CHANGE LIMIT PRICE
+        public void UpdateLimit(RoutedEventArgs e)
+        {
+            var content = (double)(e.Source as Button).Content;
+            LMTPrice = content;
+        }
+
+
+        private void StartTimer()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Tick += Tickevent;
+            timer.Start();
+        }
+
+        private void Tickevent(object sender, EventArgs e)
+        {
+            LMTPrice = Bid;
+        }
+
     }
 }
