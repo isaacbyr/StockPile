@@ -16,7 +16,6 @@ namespace DesktopUI.ViewModels
         private readonly IUserEndpoint _userEndpoint;
         private readonly IEventAggregator _events;
         private readonly IUserAccountEndpoint _userAccountEndpoint;
-        private readonly IPortfolioEndpoint _portfolioEndpoint;
 
         public RegisterViewModel(IApiHelper apiHelper, IUserEndpoint userEndpoint, IEventAggregator events,
             IUserAccountEndpoint userAccountEndpoint)

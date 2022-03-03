@@ -22,7 +22,8 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="180"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
                 <RowDefinition Height="60"></RowDefinition>
                 <RowDefinition Height="60"></RowDefinition>
                 <RowDefinition Height="60"></RowDefinition>
@@ -31,18 +32,9 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             
-            <!--Connect-->
-            <Button Grid.Column="0" Grid.Row="1" Content="Connect" Background="LimeGreen" Foreground="White" x:Name="Connect"
-                    Width="150"></Button>
-
-            <!--Status-->
-            <TextBlock Text="{Binding Status}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1"></TextBlock>
             
-            <!--Disconnect-->
-            <Button Grid.Column="2" Grid.Row="1" Content="Disconnect" Background="Crimson" Foreground="White" x:Name="Disconnect"
-                    Width="150"></Button>
 
-            <Border Margin="50 5 40 5" Grid.RowSpan="5" Background="#1d2d44" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" CornerRadius="18">
+            <Border Margin="10 5 5 5" Grid.RowSpan="6" Background="#1d2d44" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" CornerRadius="18">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -51,6 +43,7 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="60"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
@@ -59,49 +52,69 @@
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="55"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
                     </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Connect-->
+                            <Button Grid.Column="0" Grid.Row="1" Content="Connect" Background="LimeGreen" Foreground="White" x:Name="Connect" Margin="0 0 60 0"
+                    Width="100" Height="35"></Button>
+
+                            <!--Status-->
+                            <TextBlock Text="{Binding Status}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1"></TextBlock>
+
+                            <!--Disconnect-->
+                            <Button Grid.Column="2" Grid.Row="1" Content="Disconnect" Background="Crimson" Foreground="White" x:Name="Disconnect" Margin="60 0 0 0"
+                    Width="100" Height="35" ></Button>
+                        </Grid>
+                    </StackPanel>
                     
                     <!--Order Id-->
-                    <StackPanel Margin="18 0 0 0" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
+                    <StackPanel Margin="18 0 0 0" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Grid.ColumnSpan="2">
                         <TextBlock Text="Order Id"></TextBlock>
                         <TextBlock Margin="5 0 0 0" Text="{Binding OrderId}"></TextBlock>
                     </StackPanel>                    
 
                     <!--Symbol-->
-                    <TextBlock Text="Symbol" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="0" Width="110" Height="30" x:Name="Ticker" HorizontalContentAlignment="Center"></TextBox>
+                    <TextBlock Text="Symbol" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox cal:Message.Attach="[Event KeyDown] = [Action SymboleyDown($source, $eventArgs)]" Grid.Row="3" Grid.Column="0" Width="90" Height="30" x:Name="Ticker" HorizontalContentAlignment="Center"></TextBox>
                     
                     <!--Quanity-->
-                    <TextBlock Text="Quantity" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="1" Width="110" Height="30" x:Name="Quantity" HorizontalContentAlignment="Center"></TextBox>
+                    <TextBlock Text="Quantity" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="3" Grid.Column="1" Width="90" Height="30" x:Name="Quantity" HorizontalContentAlignment="Center"></TextBox>
 
                     <!--Limit Price-->
-                    <TextBlock Text="Limit Price" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="2" Width="110" Height="30" x:Name="LMTPrice" HorizontalContentAlignment="Center"></TextBox>
+                    <TextBlock Text="Limit Price" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="3" Grid.Column="2" Width="90" Height="30" x:Name="LMTPrice" HorizontalContentAlignment="Center"></TextBox>
 
                     <!--Market -->
-                    <TextBlock Text="Market" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <ComboBox Grid.Row="2" Grid.Column="3" Width="110" Height="30" x:Name="Markets" SelectedItem="{Binding SelectedMarket}"></ComboBox>
+                    <TextBlock Text="Market" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <ComboBox Grid.Row="3" Grid.Column="3" Width="90" Height="30" x:Name="Markets" SelectedItem="{Binding SelectedMarket}"></ComboBox>
 
                     <!--Type-->
-                    <TextBlock Text="Type" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <ComboBox Grid.Row="4" Grid.Column="0" Width="110" Height="30" x:Name="Types" SelectedItem="{Binding SelectedType}"></ComboBox>
+                    <TextBlock Text="Type" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <ComboBox Grid.Row="5" Grid.Column="0" Width="90" Height="30" x:Name="Types" SelectedItem="{Binding SelectedType}"></ComboBox>
 
                     <!--Visible-->
-                    <TextBlock Text="Visible" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="4" Grid.Column="1" Width="110" Height="30" x:Name="Visible" HorizontalContentAlignment="Center"></TextBox>
+                    <TextBlock Text="Visible" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="5" Grid.Column="1" Width="90" Height="30" x:Name="Visible" HorizontalContentAlignment="Center"></TextBox>
 
                     <!--Primary Exchange-->
-                    <TextBlock Text="Primary Ex" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox Grid.Row="4" Grid.Column="2" Width="110" Height="30" x:Name="PrimaryExchange" HorizontalContentAlignment="Center"></TextBox>
+                    <TextBlock Text="Primary Ex" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="5" Grid.Column="2" Width="90" Height="30" x:Name="PrimaryExchange" HorizontalContentAlignment="Center"></TextBox>
 
                     <!--TIF-->
-                    <TextBlock Text="TIF" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <ComboBox Grid.Row="4" Grid.Column="3" Width="110" Height="30" x:Name="TIFS" SelectedItem="{Binding SelectedTIF}"></ComboBox>
+                    <TextBlock Text="TIF" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <ComboBox Grid.Row="5" Grid.Column="3" Width="90" Height="30" x:Name="TIFS" SelectedItem="{Binding SelectedTIF}"></ComboBox>
 
                     <!--Buy/Ask/Last-->
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.ColumnSpan="4" Grid.Row="5" Grid.RowSpan="2">
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.ColumnSpan="4" Grid.Row="6" Grid.RowSpan="2">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="150"></ColumnDefinition>
@@ -130,16 +143,69 @@
                    
 
                     <!--Buy-->
-                    <Button Grid.Column="1" Grid.Row="7" Content="BUY" Background="LimeGreen" Foreground="White" x:Name="Buy"
+                    <Button Grid.Column="1" Grid.Row="8" Content="BUY" Background="LimeGreen" Foreground="White" x:Name="Buy"
                     Width="125" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Center"></Button>
                     
                     <!--Sell-->
-                    <Button Grid.Column="2" Grid.Row="7" Content="SELL" Background="Crimson" Foreground="White" x:Name="Sell"
+                    <Button Grid.Column="2" Grid.Row="8" Content="SELL" Background="Crimson" Foreground="White" x:Name="Sell"
                     Width="125" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Center"></Button>
                     
                     
                     <!--Market Hours Checkbox--><!--
                     <CheckBox VerticalContentAlignment="Center" Margin="18 0 0 0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="White"  Content="Outside Market Hours" IsChecked="False" Grid.Row="7"></CheckBox>-->
+                </Grid>
+            </Border>
+
+            <Border Background="#1d2d44" CornerRadius="18" Grid.Column="3" Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ListView Margin="35 10 35 30" Background="Black" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                          x:Name="TimeAndSales" BorderBrush="Transparent" Grid.Row="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="125">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#3E4C76"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="125">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#3E4C76"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Time}" Header="Time" Width="125">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#3E4C76"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+
+                            </Style>
+
+                        </ListView.ItemContainerStyle>
+
+                    </ListView>
                 </Grid>
             </Border>
         </Grid>

@@ -38,10 +38,8 @@ namespace DesktopUI.ViewModels.TraderPro
            _polygonDataEndpoint = polygonDataEndpoint;
         }
 
-        protected override async void OnViewLoaded(object view)
+        protected override void OnViewLoaded(object view)
         {
-            //await LoadPreviousData();
-            //StartConnection();
             StartClock();
         }
 

@@ -113,6 +113,9 @@
     <Compile Include="Api\TraderPro\StrategyEndpoint.cs" />
     <Compile Include="Api\UserEndpoint.cs" />
     <Compile Include="EventModels\ExitAppEvent.cs" />
+    <Compile Include="EventModels\LaunchPortoflioProEvent.cs" />
+    <Compile Include="EventModels\LaunchTraderProEvent.cs" />
+    <Compile Include="EventModels\LaunchTWSTradingEvent.cs" />
     <Compile Include="EventModels\LogOffEvent.cs" />
     <Compile Include="EventModels\OpenLoginView.cs" />
     <Compile Include="EventModels\OpenRegisterView.cs" />
@@ -157,6 +160,7 @@
     <Compile Include="Models\TraderPro\StockCloseModel.cs" />
     <Compile Include="Models\TraderPro\StrategyItemModel.cs" />
     <Compile Include="Models\TraderPro\StrategyModel.cs" />
+    <Compile Include="Models\TraderPro\TimeAndSalesModel.cs" />
     <Compile Include="Models\TransactionChartData.cs" />
     <Compile Include="Models\TransactionDisplayModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />

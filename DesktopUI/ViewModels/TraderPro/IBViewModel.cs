@@ -9,6 +9,9 @@ using IBApi;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Windows.Input;
+using System.ComponentModel;
+using DesktopUI.Library.Models.TraderPro;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -31,6 +34,8 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private void getData()
         {
+           TimeAndSales = new AsyncObservableCollection<TimeAndSalesModel>();
+
             ibClient.ClientSocket.cancelMktData(1); // cancel market data
 
             // create a new contract to specuft the security we are searching for
@@ -51,9 +56,9 @@ namespace DesktopUI.ViewModels.TraderPro
             contract.Currency = "USD";
 
             // request to use delayed data
-            ibClient.ClientSocket.reqMarketDataType(3);
+            ibClient.ClientSocket.reqMarketDataType(3); // 3
 
-            ibClient.ClientSocket.reqMktData(1, contract, "", false, false, mktDataOptions);
+            ibClient.ClientSocket.reqMktData(1, contract, "233", false, false, mktDataOptions);
 
         }
 
@@ -64,19 +69,19 @@ namespace DesktopUI.ViewModels.TraderPro
 
             if (Convert.ToInt32(tickerPrice[0]) == 1)
             {
-                if (Convert.ToInt32(tickerPrice[1]) == 4) // 68
+                if (Convert.ToInt32(tickerPrice[1]) == 68) // 68
                 {
                     // LAST QUOTE FOR DELAYED DATA
                     Console.WriteLine("DELAYED QUOTE: ", tickerPrice[2]);
                     Last = Convert.ToDouble(tickerPrice[2]);
                 }
-                else if (Convert.ToInt32(tickerPrice[1]) == 2) //  67
+                else if (Convert.ToInt32(tickerPrice[1]) == 67) //  67
                 {
                     // DELAYED ASK QUOTE
                     Console.WriteLine("DELAYED ASK QUOTE: ", tickerPrice[2]);
                     Ask = Convert.ToDouble(tickerPrice[2]);
                 }
-                else if (Convert.ToInt32(tickerPrice[1]) == 1) // 66
+                else if (Convert.ToInt32(tickerPrice[1]) == 66) // 66
                 {
                     // DELAYED BIG QUOTE
                     Console.WriteLine("DELAYED BID QUOTE", tickerPrice[2]);
@@ -116,6 +121,75 @@ namespace DesktopUI.ViewModels.TraderPro
             Status = "Connected :)";
             getData();
             StartTimer();
+        }
+
+        public void AddTickString(string _tickString)
+        {
+            try
+            {
+                // extract each value from string and store in a string array
+                string[] listTimeSales = _tickString.Split(';');
+
+                // get values from array and convert to double
+                double lastPrice = Convert.ToDouble(listTimeSales[0]);
+                decimal shares;
+                decimal.TryParse(listTimeSales[1], out shares);
+                int tradeSize = (int)Math.Floor(shares);
+                double tradeTime = Convert.ToDouble(listTimeSales[2]);
+
+                // add two zeros to trade size
+                int shareSize = tradeSize * 100;
+                string strShareSize = shareSize.ToString("###,####,##0");
+
+                // convert date
+                DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                epoch = epoch.AddMilliseconds(tradeTime);
+                epoch = epoch.AddHours(-8);
+
+                // get mean price
+                double meanPrice = ((Ask - Bid) / 2);
+                double mean = Bid + meanPrice;
+
+                var timeAndSales = new TimeAndSalesModel();
+
+                if(lastPrice >= Ask)
+                {
+                    timeAndSales.Price = lastPrice;
+                    timeAndSales.ShareSize = strShareSize;
+                    timeAndSales.Time = epoch.ToString("h:mm:ss:ff");
+                    timeAndSales.Condition = "OnAsk";
+                }
+                else if (lastPrice <= Bid)
+                {
+                    timeAndSales.Price = lastPrice;
+                    timeAndSales.ShareSize = strShareSize;
+                    timeAndSales.Time = epoch.ToString("h:mm:ss:ff");
+                    timeAndSales.Condition = "OnBid";
+                }
+                else if(lastPrice > mean && lastPrice < Ask)
+                {
+                    timeAndSales.Price = lastPrice;
+                    timeAndSales.ShareSize = strShareSize;
+                    timeAndSales.Time = epoch.ToString("h:mm:ss:ff");
+                    timeAndSales.Condition = "UnderAsk";
+                }
+                else
+                {
+                    // last price under the mean price but greater than bid
+                    timeAndSales.Price = lastPrice;
+                    timeAndSales.ShareSize = strShareSize;
+                    timeAndSales.Time = epoch.ToString("h:mm:ss:ff");
+                    timeAndSales.Condition = "UnderAsk";
+                }
+
+                // TODO: ADD MORE CONDTIONS AND CREATE COLOR CONVERTER
+                TimeAndSales.Add(timeAndSales);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public void Disconnect()
@@ -177,6 +251,19 @@ namespace DesktopUI.ViewModels.TraderPro
 
         }
 
+        private AsyncObservableCollection<TimeAndSalesModel> _timeAndSales;
+
+        public AsyncObservableCollection<TimeAndSalesModel> TimeAndSales
+        {
+            get { return _timeAndSales; }
+            set 
+            {
+                _timeAndSales = value;
+                NotifyOfPropertyChange(() => TimeAndSales);
+            }
+        }
+
+
         private string _status = "Disconnected :(";
 
         public string Status
@@ -188,7 +275,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => Status);
             }
         }
-
 
         private double _last = 0.0;
 
@@ -361,7 +447,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private int _orderId = 0;
 
         public int OrderId
@@ -404,6 +489,14 @@ namespace DesktopUI.ViewModels.TraderPro
         private void Tickevent(object sender, EventArgs e)
         {
             LMTPrice = Bid;
+        }
+
+        public void SymbolKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                getData();
+            }
         }
 
     }

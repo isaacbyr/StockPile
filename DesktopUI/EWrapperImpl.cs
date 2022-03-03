@@ -101,6 +101,16 @@ namespace DesktopUI
 		public virtual void tickString(int tickerId, int tickType, string value)
 		{
 			Console.WriteLine("Tick string. Ticker Id:" + tickerId + ", Type: " + tickType + ", Value: " + value);
+
+			// this is used for time and sales ticktype = 48 rt volume
+			string tickStringData = "Tick string. Ticker Id:" + tickerId + ", Type: " + tickType + ", Value: " + value;
+
+			// contains last price, trade size, trade time, total volume, vwap, single trade flag true, or false
+			if(tickType == 48)
+            {
+				string _tickString = value;
+				ibVM.AddTickString(_tickString);
+            }
 		}
 		//! [tickstring]
 

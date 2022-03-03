@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using DesktopUI.Library.EventModels;
 using DesktopUI.ViewModels.TraderPro;
@@ -11,7 +13,7 @@ namespace DesktopUI.ViewModels
 {
     public class ShellViewModel: Conductor<object>, IHandle<LogOnEvent>, IHandle<OpenPortfolioStockView>, IHandle<ReturnHomeEvent>,
         IHandle<OpenPortfolioSummaryView>, IHandle<OpenSocialView>, IHandle<OpenRegisterView>, IHandle<OpenLoginView>, IHandle<LogOffEvent>,
-        IHandle<ExitAppEvent>
+        IHandle<ExitAppEvent>, IHandle<LaunchPortoflioProEvent>, IHandle<LaunchTraderProEvent>, IHandle<LaunchTWSTradingEvent>
     {
         private readonly IEventAggregator _events;
         private LoginViewModel _loginVM;
@@ -20,15 +22,17 @@ namespace DesktopUI.ViewModels
         private readonly PortfolioSummaryViewModel _portfolioSummaryVM;
         private readonly SocialViewModel _socialVM;
         private readonly RegisterViewModel _registerVM;
-        private readonly TraderMainViewModel _mainVM;
+        private readonly TraderMainViewModel _traderMainVM;
+        private readonly IWindowManager _window;
         private readonly PaperTradeViewModel _paperTradeVM;
         private readonly LiveTradesViewModel _liveTradesVM;
         private readonly IBViewModel _ibVM;
+        private readonly MainMenuViewModel _mainMenuVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
-            SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel mainVM, 
-            PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM)
+            SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel traderMainVM, IWindowManager window,
+            PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -37,10 +41,12 @@ namespace DesktopUI.ViewModels
             _portfolioSummaryVM = portfolioSummaryVM;
             _socialVM = socialVM;
             _registerVM = registerVM;
-            _mainVM = mainVM;
+            _traderMainVM = traderMainVM;
+            _window = window;
             _paperTradeVM = paperTradeVM;
             _liveTradesVM = liveTradesVM;
             _ibVM = ibVM;
+            _mainMenuVM = mainMenuVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
@@ -52,7 +58,8 @@ namespace DesktopUI.ViewModels
             //ActivateItem(_portfolioSummaryVM);
             //ActivateItem(_paperTradeVM);
             //ActivateItem(_liveTradesVM); 
-            ActivateItem(_ibVM);
+            //ActivateItem(_ibVM);
+            ActivateItem(_mainMenuVM);
         }
 
         public void Handle(LogOnEvent message)
@@ -99,6 +106,21 @@ namespace DesktopUI.ViewModels
         public void Handle(ExitAppEvent message)
         {
             this.TryClose();
+        }
+
+        public void Handle(LaunchPortoflioProEvent message)
+        {
+            ActivateItem(_dashboardVM);
+        }
+
+        public void Handle(LaunchTraderProEvent message)
+        {
+            ActivateItem(_traderMainVM);
+        }
+
+        public void Handle(LaunchTWSTradingEvent message)
+        {
+            ActivateItem(_ibVM);
         }
     }
 }
