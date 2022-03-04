@@ -155,6 +155,7 @@
     <Compile Include="Models\TraderPro\CrossoverTransactionModel.cs" />
     <Compile Include="Models\TraderPro\IndicatorDisplayModel.cs" />
     <Compile Include="Models\TraderPro\MeasureModel.cs" />
+    <Compile Include="Models\TraderPro\OpenOrderModel.cs" />
     <Compile Include="Models\TraderPro\PaperTradeModel.cs" />
     <Compile Include="Models\TraderPro\RecentTradeModel.cs" />
     <Compile Include="Models\TraderPro\StockCloseModel.cs" />

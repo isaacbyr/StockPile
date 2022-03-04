@@ -92,6 +92,8 @@ namespace DesktopUI.ViewModels.TraderPro
 
         }
 
+      
+
         public void Connect()
         {
             // Parameters to connect to TWS
@@ -441,6 +443,30 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 _primaryExchange = value;
                 NotifyOfPropertyChange(() => PrimaryExchange);
+            }
+        }
+
+        private BindingList<OpenOrderModel> _orders;
+
+        public BindingList<OpenOrderModel> Orders
+        {
+            get { return _orders; }
+            set 
+            {
+                _orders = value;
+                NotifyOfPropertyChange(() => Orders);
+            }
+        }
+
+        private OpenOrderModel _order = new OpenOrderModel();
+
+        public OpenOrderModel Order
+        {
+            get { return _order; }
+            set
+            {
+                _order = value;
+                NotifyOfPropertyChange(() => Order);
             }
         }
 

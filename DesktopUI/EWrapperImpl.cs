@@ -107,10 +107,10 @@ namespace DesktopUI
 
 			// contains last price, trade size, trade time, total volume, vwap, single trade flag true, or false
 			if(tickType == 48)
-            {
+			{
 				string _tickString = value;
 				ibVM.AddTickString(_tickString);
-            }
+			}
 		}
 		//! [tickstring]
 
@@ -212,6 +212,8 @@ namespace DesktopUI
 		{
 			Console.WriteLine("OrderStatus. Id: " + orderId + ", Status: " + status + ", Filled: " + filled + ", Remaining: " + remaining
 				+ ", AvgFillPrice: " + avgFillPrice + ", PermId: " + permId + ", ParentId: " + parentId + ", LastFillPrice: " + lastFillPrice + ", ClientId: " + clientId + ", WhyHeld: " + whyHeld + ", MktCapPrice: " + mktCapPrice);
+		
+			
 		}
 		//! [orderstatus]
 
@@ -221,6 +223,8 @@ namespace DesktopUI
 			Console.WriteLine("OpenOrder. PermID: " + order.PermId + ", ClientId: " + order.ClientId + ", OrderId: " + orderId + ", Account: " + order.Account + 
 				", Symbol: " + contract.Symbol + ", SecType: " + contract.SecType + " , Exchange: " + contract.Exchange + ", Action: " + order.Action + ", OrderType: " + order.OrderType + 
 				", TotalQty: " + order.TotalQuantity + ", CashQty: " + order.CashQty + ", LmtPrice: " + order.LmtPrice + ", AuxPrice: " + order.AuxPrice + ", Status: " + orderState.Status);
+
+
 		}
 		//! [openorder]
 

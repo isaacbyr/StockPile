@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using DesktopUI.Library.EventModels;
+using DesktopUI.ViewModels.Slack;
 using DesktopUI.ViewModels.TraderPro;
 
 namespace DesktopUI.ViewModels
@@ -28,11 +29,13 @@ namespace DesktopUI.ViewModels
         private readonly LiveTradesViewModel _liveTradesVM;
         private readonly IBViewModel _ibVM;
         private readonly MainMenuViewModel _mainMenuVM;
+        private readonly SlackTraderViewModel _slackTraderVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
             SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel traderMainVM, IWindowManager window,
-            PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM)
+            PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM,
+            SlackTraderViewModel slackTraderVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -47,6 +50,7 @@ namespace DesktopUI.ViewModels
             _liveTradesVM = liveTradesVM;
             _ibVM = ibVM;
             _mainMenuVM = mainMenuVM;
+            _slackTraderVM = slackTraderVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
@@ -60,6 +64,7 @@ namespace DesktopUI.ViewModels
             //ActivateItem(_liveTradesVM); 
             //ActivateItem(_ibVM);
             ActivateItem(_mainMenuVM);
+            //ActivateItem(_slackTraderVM);
         }
 
         public void Handle(LogOnEvent message)
