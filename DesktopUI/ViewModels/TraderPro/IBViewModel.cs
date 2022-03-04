@@ -199,15 +199,112 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
         public void Buy()
-        {
+       {
             string side = "BUY";
             send_order(side);
+        }
+        
+        public void BracketBuy()
+        {
+            string side = "BUY";
+            send_bracket_order(side);
+        }
+
+        public void BracketSell()
+        {
+            string side = "SELL";
+            send_bracket_order(side);
         }
 
         public void Sell()
         {
             string side = "SELL";
             send_order(side);
+        }
+
+        public void send_bracket_order(string side)
+        {
+            // create a new contract
+            var contract = new Contract();
+            // set underlining values for a contract
+            contract.Symbol = Ticker;
+            contract.SecType = "STK";
+            contract.Exchange = SelectedMarket;
+            contract.PrimaryExch = "ISLAND";
+            contract.Currency = "USD";
+
+            // gets the next order id from the text box
+            int orderId = OrderId;
+            // get the side of the order (buy or sell)
+            string action = side;
+            // get thes order type (limit or market)
+            string order_type = SelectedType;
+            // gets number of shares (double)
+            int quantity = Quantity;
+            // gets price 
+            double lmtPrice = LMTPrice;
+            // gets take profit amount
+            double takeProfit = TakeProfit;
+            // gets stop loss 
+            double stopLoss = StopLoss;
+
+            // TODO: INSTEAD OF HARDCODING STOP LOSS WE CAN ADD IN A CALCULATION LIKE 50 CENTS OR 5% ETC;
+
+
+            // calls a bracket order function and stores the results in a list variable called bracket
+            List<Order> bracket = BracketOrder(OrderId, action, quantity, lmtPrice, takeProfit, stopLoss, order_type);
+
+            // bracket order function returns list of all the strings each one representing an order;
+            foreach(Order o in bracket)
+            {
+                ibClient.ClientSocket.placeOrder(o.OrderId, contract, o);
+            }
+
+            // increment order id by 3 to reduce chance or repeating
+            OrderId += 3;
+        }
+
+        public static List<Order> BracketOrder(int parentOrderId, string action, double quantity, double limitPrice, double takeProfitLimitPrice, double stopLossPrice, string order_type)
+        {
+            // main parent order
+            Order parent = new Order();
+            parent.ParentId = parentOrderId;
+            parent.Action = action; // buy or sell
+            parent.OrderType = order_type;
+            parent.TotalQuantity = quantity;
+            parent.LmtPrice = limitPrice;
+            // parent and children orders will need this attribute set to false to prevent accidental executions
+            // the last child will have it set to true
+            parent.Transmit = false;
+
+            // Profit Target Order
+            Order takeProfit = new Order();
+            takeProfit.OrderId = parentOrderId + 1;
+            takeProfit.Action = action.Equals("BUY") ? "SELL" : "BUY";
+            takeProfit.OrderType = "LMT";
+            takeProfit.TotalQuantity = quantity;
+            // take profit price
+            takeProfit.LmtPrice = takeProfitLimitPrice;
+            takeProfit.ParentId = parentOrderId;
+            takeProfit.Transmit = false;
+
+            // stop loss order
+            Order stopLoss = new Order();
+            stopLoss.OrderId = parentOrderId + 2;
+            takeProfit.Action = action.Equals("BUY") ? "SELL" : "BUY";
+            stopLoss.OrderType = "STP";
+            // stop trigger price
+            stopLoss.AuxPrice = stopLossPrice;
+            stopLoss.TotalQuantity = quantity;
+            stopLoss.ParentId = parentOrderId;
+            stopLoss.Transmit = true;
+
+            List<Order> bracketOrder = new List<Order>();
+            bracketOrder.Add(parent);
+            bracketOrder.Add(takeProfit);
+            bracketOrder.Add(stopLoss);
+
+            return bracketOrder;
         }
 
         public void send_order(string side)
@@ -373,6 +470,30 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
 
+        private List<string> _profitStopLimit = new List<string> { "0.25", "0.5", "0.75", "1", "1.50", "2", "2%", "5%", "10%", "20%", };
+
+        public List<string> ProfitStopLimit
+        {
+            get { return _profitStopLimit; }
+            set 
+            {
+                _profitStopLimit = value;
+                NotifyOfPropertyChange(() => ProfitStopLimit);
+            }
+        }
+
+        private string _selectedProfitStopLimit;
+
+        public string SelectedProftiStopLimit
+        {
+            get { return _selectedProfitStopLimit; }
+            set 
+            {
+                _selectedProfitStopLimit = value;
+                NotifyOfPropertyChange(() => _selectedProfitStopLimit);
+            }
+        }
+
 
         private List<string> _types = new List<string> { "LMT", "MKT", "STP" };
 
@@ -433,6 +554,90 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => Quantity);
             }
         }
+
+        private double _takeProfit = 0.00;
+
+        public double TakeProfit
+        {
+            get 
+            {
+                if (SelectedProftiStopLimit == null) return Last + 1.00;
+
+                switch (SelectedProftiStopLimit)
+                {
+                    case "1":
+                        return Last + 1.00;
+                    case "0.25":
+                        return Last + 0.25;
+                    case "0.5":
+                        return Last + 0.50;
+                    case "0.75":
+                        return Last + 0.75;
+                    case "1.50":
+                        return Last + 1.50;
+                    case "2":
+                        return Last + 2.00;
+                    case "5%":
+                        return ((Quantity * LMTPrice) + (Quantity * LMTPrice * 0.05)) / Quantity;
+                    case "10%":
+                        return ((Quantity * LMTPrice) + (Quantity * LMTPrice * 0.10)) / Quantity;
+                    case "2%":
+                        return ((Quantity * LMTPrice) + (Quantity * LMTPrice * 0.02)) / Quantity;
+                    case "20%":
+                        return ((Quantity * LMTPrice) + (Quantity * LMTPrice * 0.20)) / Quantity;
+                    default:
+                        return Last - 1.00;
+                }
+            }
+            set 
+            {
+                _takeProfit = value;
+                NotifyOfPropertyChange(() => TakeProfit);
+            }
+        }
+
+        private double _stopLoss = 0.00;
+
+        public double StopLoss
+        {
+            get 
+            {
+                if (SelectedProftiStopLimit == null) return Last - 1.00;
+
+                switch (SelectedProftiStopLimit)
+                {
+                    case "1":
+                        return Last - 1.00;
+                    case "0.25":
+                        return Last - 0.25;
+                    case "0.5":
+                        return Last - 0.50;
+                    case "0.75":
+                        return Last - 0.75;
+                    case "1.50":
+                        return Last - 1.50;
+                    case "2":
+                        return Last - 2.00;
+                    case "5%":
+                        return ((Quantity * LMTPrice) - (Quantity * LMTPrice* 0.05)) / Quantity;
+                    case "10%":
+                        return ((Quantity * LMTPrice) - (Quantity * LMTPrice * 0.10)) / Quantity;
+                    case "2%":
+                        return ((Quantity * LMTPrice) - (Quantity * LMTPrice * 0.02)) / Quantity;
+                    case "20%":
+                        return ((Quantity * LMTPrice) - (Quantity * LMTPrice * 0.20)) / Quantity;
+                    default:
+                        return Last - 1.00;
+                }
+
+            }
+            set 
+            {
+                _stopLoss = value;
+                NotifyOfPropertyChange(() => StopLoss);
+            }
+        }
+
 
 
         private string _ticker = "AAPL";
@@ -497,6 +702,16 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 getData();
             }
+        }
+
+        public void CancelAll()
+        {
+            ibClient.ClientSocket.reqGlobalCancel();
+        }
+
+        public void CancelLast()
+        {
+            ibClient.ClientSocket.cancelOrder(OrderId - 1);
         }
 
     }

@@ -23,12 +23,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"></RowDefinition>
                 <RowDefinition Height="180"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="80"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             
@@ -51,7 +51,11 @@
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="55"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="35"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center">
@@ -83,7 +87,7 @@
 
                     <!--Symbol-->
                     <TextBlock Text="Symbol" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
-                    <TextBox cal:Message.Attach="[Event KeyDown] = [Action SymboleyDown($source, $eventArgs)]" Grid.Row="3" Grid.Column="0" Width="90" Height="30" x:Name="Ticker" HorizontalContentAlignment="Center"></TextBox>
+                    <TextBox cal:Message.Attach="[Event KeyDown] = [Action SymbolKeyDown($source, $eventArgs)]" Grid.Row="3" Grid.Column="0" Width="90" Height="30" x:Name="Ticker" HorizontalContentAlignment="Center"></TextBox>
                     
                     <!--Quanity-->
                     <TextBlock Text="Quantity" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
@@ -144,68 +148,241 @@
 
                     <!--Buy-->
                     <Button Grid.Column="1" Grid.Row="8" Content="BUY" Background="LimeGreen" Foreground="White" x:Name="Buy"
-                    Width="125" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Center"></Button>
+                    Width="100" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Center"></Button>
+                    
+                    <!--Buy Bracket-->
+                    <Button Grid.Column="1" FontSize="12" Grid.Row="9" Content="BUY BRACKET" Background="LimeGreen" Foreground="White" x:Name="BuyBracket"
+                    Width="100" Height="20" VerticalContentAlignment="Center" VerticalAlignment="Center" ></Button>
                     
                     <!--Sell-->
                     <Button Grid.Column="2" Grid.Row="8" Content="SELL" Background="Crimson" Foreground="White" x:Name="Sell"
-                    Width="125" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Center"></Button>
+                    Width="100" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Center"></Button>
+
+                    <!--Sell Bracket-->
+                    <Button Grid.Column="2" FontSize="12" Grid.Row="9" Content="SELL BRACKET" Background="Crimson" Foreground="White" x:Name="SellBracket"
+                    Width="100" Height="20" VerticalContentAlignment="Center" VerticalAlignment="Center" ></Button>
+
+                    <!--Cancel Last-->
+                    <Button Grid.Column="0" FontSize="12" Grid.Row="9" Content="CANCEL LAST" Background="Yellow" Foreground="Black" x:Name="CancelLast"
+                    Width="100" Height="20" VerticalContentAlignment="Center" VerticalAlignment="Center" ></Button>
+
+
+                    <!--Cancel All-->
+                    <Button Grid.Column="3" FontSize="12" Grid.Row="9" Content="CANCEL ALL" Background="DarkOrange" Foreground="Black" x:Name="CancelAll"
+                    Width="100" Height="20" VerticalContentAlignment="Center" VerticalAlignment="Center" ></Button>
+
+                    <!--Profit/Stop StackPanel-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="10" Grid.ColumnSpan="2" Grid.Column="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Profit/Stop Limit" Grid.Column="0" FontSize="14" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 5 0" ></TextBlock>
+                            <ComboBox Grid.Row="0" Grid.Column="1" Width="70" Height="20" FontSize="14" x:Name="ProfitStopLimit" SelectedItem="{Binding SelectedProfitStopLimit}" VerticalContentAlignment="Center"></ComboBox>
+
+                        </Grid>
+                    </StackPanel>
                     
-                    
+                    <!--Take Profit-->
+                    <TextBlock Text="Take Profit" Grid.Column="0" FontSize="14" Grid.Row="11" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="11" Grid.Column="1" Width="90" Height="25" x:Name="TakeProfit" HorizontalContentAlignment="Center"></TextBox>
+
+                    <!--Stop Loss-->
+                    <TextBlock Text="Stop Loss" Grid.Column="2" FontSize="14" Grid.Row="11" HorizontalAlignment="Center" VerticalAlignment="Center" ></TextBlock>
+                    <TextBox Grid.Row="11" Grid.Column="3" Width="90" Height="25" x:Name="StopLoss" HorizontalContentAlignment="Center"></TextBox>
+
+
+
+
                     <!--Market Hours Checkbox--><!--
                     <CheckBox VerticalContentAlignment="Center" Margin="18 0 0 0" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="White"  Content="Outside Market Hours" IsChecked="False" Grid.Row="7"></CheckBox>-->
                 </Grid>
             </Border>
 
-            <Border Background="#1d2d44" CornerRadius="18" Grid.Column="3" Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="5">
+            <Border Background="#1d2d44" CornerRadius="18" Grid.Column="3" Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="3" Margin="5 5 100 5">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition ></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ListView Margin="35 10 35 30" Background="Black" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                          x:Name="TimeAndSales" BorderBrush="Transparent" Grid.Row="1">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="125">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Background" Value="#3E4C76"></Setter>
-                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="125">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Background" Value="#3E4C76"></Setter>
-                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Time}" Header="Time" Width="125">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Background" Value="#3E4C76"></Setter>
-                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Foreground" Value="White"></Setter>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-                                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
 
-                            </Style>
+                    <TabControl Margin="20" Background="Transparent">
+                        <TabItem Header="Time/Sales" Height="28" Margin="-2,-2,-2,-0.4" VerticalAlignment="Top" >
+                                <ListView Margin="10" Background="Black" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                          x:Name="TimeAndSales" BorderBrush="Transparent" Grid.Row="1" Width="375">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="125">
+                                                <GridViewColumn.HeaderContainerStyle>
+                                                    <Style TargetType="GridViewColumnHeader">
+                                                        <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                        <Setter Property="Foreground" Value="White"></Setter>
+                                                    </Style>
+                                                </GridViewColumn.HeaderContainerStyle>
+                                            </GridViewColumn>
+                                            <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="125">
+                                                <GridViewColumn.HeaderContainerStyle>
+                                                    <Style TargetType="GridViewColumnHeader">
+                                                        <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                        <Setter Property="Foreground" Value="White"></Setter>
+                                                    </Style>
+                                                </GridViewColumn.HeaderContainerStyle>
+                                            </GridViewColumn>
+                                            <GridViewColumn DisplayMemberBinding="{Binding Time}" Header="Time" Width="125">
+                                                <GridViewColumn.HeaderContainerStyle>
+                                                    <Style TargetType="GridViewColumnHeader">
+                                                        <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                        <Setter Property="Foreground" Value="White"></Setter>
+                                                    </Style>
+                                                </GridViewColumn.HeaderContainerStyle>
+                                            </GridViewColumn>
+                                        </GridView>
+                                    </ListView.View>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
 
-                        </ListView.ItemContainerStyle>
+                                        </Style>
 
-                    </ListView>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                           
+                        </TabItem>
+                        <TabItem Header="Orders">
+                            <ListView Margin="0 10 0 10" Background="Black" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                          x:Name="Orders" BorderBrush="Transparent" Grid.Row="1">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Time}" Header="Time" Width="40">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding OrderId}" Header="Id" Width="35">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Symbol}" Header="Symbol" Width="50">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="50">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Trigger}" Header="Trigger" Width="50">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="50">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Side}" Header="Side" Width="50">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Type}" Header="Type" Width="50">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status" Width="50">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Fill}" Header="Fill" Width="50">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Cancel}" Header="X" Width="40">
+                                            <GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="GridViewColumnHeader">
+                                                    <Setter Property="FontSize" Value="12"></Setter>
+                                                    <Setter Property="Background" Value="#3E4C76"></Setter>
+                                                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                                    <Setter Property="Foreground" Value="White"></Setter>
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="Foreground" Value="White"></Setter>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+
+                                    </Style>
+
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </TabItem>
+                    </TabControl>
+                   
                 </Grid>
             </Border>
         </Grid>
