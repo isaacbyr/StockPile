@@ -207,6 +207,7 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Slack\SlackTraderViewModel.cs" />
     <Compile Include="ViewModels\SocialViewModel.cs" />
+    <Compile Include="ViewModels\TraderPro\ExistingStrategiesViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\IBViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\LiveTradesViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\PaperTradeViewModel.cs" />
@@ -244,6 +245,9 @@
     </Compile>
     <Compile Include="Views\SocialView.xaml.cs">
       <DependentUpon>SocialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TraderPro\ExistingStrategiesView.xaml.cs">
+      <DependentUpon>ExistingStrategiesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TraderPro\IBView.xaml.cs">
       <DependentUpon>IBView.xaml</DependentUpon>
@@ -299,6 +303,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SocialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TraderPro\ExistingStrategiesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

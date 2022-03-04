@@ -8,6 +8,7 @@ namespace DataManager.Library.Models.TraderPro
 {
     public class StrategyModel
     {
+        public int Id { get; set; }
         public string UserId { get; set; }
         public string Name { get; set; }
         public string MA1 { get; set; }

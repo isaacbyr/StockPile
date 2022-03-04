@@ -428,7 +428,7 @@
                     <Button Content="Add To Exisiting" Background="SteelBlue" Foreground="White"
                             Grid.Row="5" MaxWidth="140" MinWidth="140"
                             MaxHeight="35" MinHeight="35" FontSize="16"
-                           x:Name="AddToExisitng" ></Button>
+                           x:Name="AddToExisting" ></Button>
 
                     <!--Seperator-->
                     <Border Background="White" Grid.Column="0" Grid.ColumnSpan="4"

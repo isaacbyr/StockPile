@@ -15,11 +15,14 @@ namespace DataManager.Library.DataAccess.TraderPro
         {
             var sql = new SqlDataAccess();
 
-            var p = new { };
+            var postedStrategy = new { UserId = strategy.UserId, Name = strategy.Name, 
+                                        MA1 = strategy.MA1, MA2 = strategy.MA2, Indicator = strategy.Indicator,
+                                        Interval = strategy.Interval, Range = strategy.Range};
+            var p = new { UserId = strategy.UserId };
             try
             {
                 sql.StartTransaction("StockPileData");
-                sql.SaveDataInTransaction("dbo.spStrategy_PostStrategy", strategy);
+                sql.SaveDataInTransaction("dbo.spStrategy_PostStrategy", postedStrategy);
                 sql.CommitTransaction();
             }
             catch (Exception e)

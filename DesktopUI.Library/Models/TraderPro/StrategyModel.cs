@@ -8,6 +8,7 @@ namespace DesktopUI.Library.Models.TraderPro
 {
     public class StrategyModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string MA1 { get; set; }
         public string MA2 { get; set; }

@@ -26,6 +26,7 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly IStrategyEndpoint _strategyEndpoint;
         private readonly IWindowManager _window;
         private readonly TransactionInfoViewModel _transactionInfoVM;
+        private readonly ExistingStrategiesViewModel _existingStrategiesVM;
 
         public SeriesCollection SeriesCollection { get; set; }
         public List<string> Labels { get; set; } = new List<string>();
@@ -34,12 +35,13 @@ namespace DesktopUI.ViewModels.TraderPro
         public List<List<decimal>> IndicatorList { get; set; } = new List<List<decimal>>();
 
         public TraderMainViewModel(IStockDataEndpoint stockDataEndpoint, IStrategyEndpoint strategyEndpoint,
-            IWindowManager window, TransactionInfoViewModel transactionInfoVM)
+            IWindowManager window, TransactionInfoViewModel transactionInfoVM, ExistingStrategiesViewModel existingStrategiesVM)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _strategyEndpoint = strategyEndpoint;
             _window = window;
             _transactionInfoVM = transactionInfoVM;
+            _existingStrategiesVM = existingStrategiesVM;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -1097,5 +1099,22 @@ namespace DesktopUI.ViewModels.TraderPro
             _transactionInfoVM.UpdateMessage(header, message);
             _window.ShowDialog(_transactionInfoVM, null, settings);
         } 
+
+        public void AddToExisting()
+        {
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            settings.ResizeMode = ResizeMode.NoResize;
+            settings.WindowStyle = WindowStyle.None;
+            //settings.Title = "Transaction Status";
+
+            _existingStrategiesVM.Ticker = ChartSymbol;
+            _existingStrategiesVM.BuyShares = BuyShares;
+            _existingStrategiesVM.SellShares = SellShares;
+            _existingStrategiesVM.ProfitLoss = Convert.ToDecimal(ProfitLoss);
+            _window.ShowDialog(_existingStrategiesVM, null, settings);
+
+            
+        }
     }
 }
