@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
 using DesktopUI.Library.Api.TraderPro;
+using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.Library.Models;
 using DesktopUI.Library.Models.TraderPro;
 using LiveCharts;
@@ -27,6 +28,7 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly IWindowManager _window;
         private readonly TransactionInfoViewModel _transactionInfoVM;
         private readonly ExistingStrategiesViewModel _existingStrategiesVM;
+        private readonly IEventAggregator _events;
 
         public SeriesCollection SeriesCollection { get; set; }
         public List<string> Labels { get; set; } = new List<string>();
@@ -35,13 +37,15 @@ namespace DesktopUI.ViewModels.TraderPro
         public List<List<decimal>> IndicatorList { get; set; } = new List<List<decimal>>();
 
         public TraderMainViewModel(IStockDataEndpoint stockDataEndpoint, IStrategyEndpoint strategyEndpoint,
-            IWindowManager window, TransactionInfoViewModel transactionInfoVM, ExistingStrategiesViewModel existingStrategiesVM)
+            IWindowManager window, TransactionInfoViewModel transactionInfoVM, 
+            ExistingStrategiesViewModel existingStrategiesVM, IEventAggregator events)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _strategyEndpoint = strategyEndpoint;
             _window = window;
             _transactionInfoVM = transactionInfoVM;
             _existingStrategiesVM = existingStrategiesVM;
+            _events = events;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -1107,14 +1111,24 @@ namespace DesktopUI.ViewModels.TraderPro
             settings.ResizeMode = ResizeMode.NoResize;
             settings.WindowStyle = WindowStyle.None;
             //settings.Title = "Transaction Status";
+            settings.Background = Brushes.Transparent;
 
             _existingStrategiesVM.Ticker = ChartSymbol;
             _existingStrategiesVM.BuyShares = BuyShares;
             _existingStrategiesVM.SellShares = SellShares;
             _existingStrategiesVM.ProfitLoss = Convert.ToDecimal(ProfitLoss);
             _window.ShowDialog(_existingStrategiesVM, null, settings);
-
             
+        }
+
+        public void OpenStrategies()
+        {
+            _events.PublishOnUIThread(new OpenStrategiesView());
+        }
+
+        public void PaperTradeLive()
+        {
+            _events.PublishOnUIThread(new OpenPaperTradeLiveView());
         }
     }
 }

@@ -86,5 +86,22 @@ namespace DataManager.Library.DataAccess.TraderPro
                 throw new Exception(ex.Message);
             }
         }
+
+        public List<StrategyItemModel> LoadStrategyStocksById(int id) 
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { Id = id };
+
+            try
+            {
+                var output = sql.LoadData<StrategyItemModel, dynamic>("dbo.spStrategy_GetAllStrategyStocks", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
       }
 }

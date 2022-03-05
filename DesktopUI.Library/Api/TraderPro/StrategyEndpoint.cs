@@ -70,5 +70,21 @@ namespace DesktopUI.Library.Api.TraderPro
                 }
             }
         }
+
+        public async Task<List<StrategyItemModel>> GetStrategyStocks(int id)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/strategy/{id}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<StrategyItemModel>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

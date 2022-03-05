@@ -120,6 +120,8 @@
     <Compile Include="EventModels\OpenLoginView.cs" />
     <Compile Include="EventModels\OpenRegisterView.cs" />
     <Compile Include="EventModels\OpenSocialView.cs" />
+    <Compile Include="EventModels\TraderPro\OpenPaperTradeLiveView.cs" />
+    <Compile Include="EventModels\TraderPro\OpenStrategiesView.cs" />
     <Compile Include="Models\FriendDisplayModel.cs" />
     <Compile Include="Models\FriendModel.cs" />
     <Compile Include="Models\FriendRequestModel.cs" />
@@ -177,8 +179,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventModels\TraderPro\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -46,5 +46,15 @@ namespace DataManager.Controllers.TraderPro
 
             return strategyData.LoadStrategies(id);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public List<StrategyItemModel> GetStrategyStocksById(int id)
+        {
+            var strategyData = new StrategyData();
+
+
+            return strategyData.LoadStrategyStocksById(id);
+        }
     }
 }

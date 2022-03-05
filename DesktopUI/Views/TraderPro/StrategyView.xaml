@@ -1,10 +1,11 @@
 ﻿<UserControl x:Class="DesktopUI.Views.TraderPro.StrategyView"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views.TraderPro"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" Foreground="White"
              d:DesignHeight="800" d:DesignWidth="1400">
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
@@ -23,6 +24,359 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
+
+            <!--Header-->
+            <TextBlock Text="TraderPro" FontSize="40"
+                       HorizontalAlignment="Center" FontWeight="Bold"
+                       VerticalAlignment="Center"></TextBlock>
+
+            <!--Menu-->
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="0"
+                            Content="Main Menu" x:Name="Menu"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="1"
+                            Content="Paper Trade" x:Name="PaperTrade"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="2" x:Name="PaperTradeLive"
+                            Content="Paper Trade (Live)"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="3" x:Name="TradeCrossovers"
+                            Content="Trade Crossovers"></Button>
+                    <!--<Button Background="SteelBlue" Margin="0 10 2 10"
+                            Foreground="White" Grid.Column="3"
+                            Content="Account"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="4"
+                            Content="Logout"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="5"
+                            Content="Exit"></Button>-->
+                </Grid>
+            </StackPanel>
+
+            <!--Time-->
+            <Border CornerRadius="18" Grid.Column="5" Grid.Row="0"
+                    Background="#1d2d44" Margin="15 10 15 5">
+
+                <TextBlock Foreground="White" Text="{Binding CurrentTime}" FontSize="30"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </Border>
+
+
+            <Border Background="#1d2d44" CornerRadius="18"
+                    Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" 
+                    Margin="100 100 20 100" Grid.RowSpan="4">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+
+                    </Grid.RowDefinitions>
+
+
+                    <!--Title-->
+                    <TextBlock HorizontalAlignment="Center"  VerticalAlignment="Center" Text="Strategies" FontSize="36" Foreground="White"
+                       ></TextBlock>
+
+
+                    <!--List View-->
+                    <ListView Grid.Row="1" Grid.Column="0" Margin="25 10 25 10" Grid.ColumnSpan="3"
+                     Background="Transparent" x:Name="Strategies" AlternationCount="2" BorderBrush="Transparent"
+                 SelectedItem="{Binding SelectedStrategy}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="125">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding MA1}" Header="MA1" Width="50">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                                   
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding MA2}" Header="MA2" Width="50">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Indicator}" Header="Indicator" Width="60">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Interval}" Header="Interval" Width="60">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                                    
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Range}" Header="Range" Width="60">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Count}" Header="Stocks" Width="60">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding ProfitLoss}" Header="Profit/Loss" Width="60">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Style.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
+                                        <Setter Property="Background" Value="#1d2d44" />
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex"  Value="1">
+                                        <Setter Property="Background" Value="#8A8A8A" />
+                                    </Trigger>
+                                </Style.Triggers>
+                                <Setter Property="cal:Message.Attach"
+                            Value="[Event MouseDoubleClick] = [Action StrategyView()]"></Setter>
+                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                <Setter Property="FontSize" Value="14"></Setter>
+
+                            </Style>
+
+                        </ListView.ItemContainerStyle>
+
+                    </ListView>
+
+                </Grid>
+            </Border>
+            <Border Background="#1d2d44" CornerRadius="18"
+                    Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="1" 
+                    Margin="20 100 100 100" Grid.RowSpan="4">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
+                        <RowDefinition Height="250"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+
+                    <!--Title-->
+                    <TextBlock HorizontalAlignment="Center" Grid.ColumnSpan="2"  VerticalAlignment="Center" Text="Strategy" FontSize="36" Foreground="White"
+                       ></TextBlock>
+                    
+                    <!--Strategy Description-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="80"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            
+                            <!--Name-->
+                            <TextBlock Foreground="White" Text="Name:" Grid.Column="0" Grid.Row="0" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                            <TextBlock Foreground="White" Text="{Binding SelectedName}" Grid.Column="1" Grid.Row="0" Margin="3 0 0 0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></TextBlock>
+
+
+                            <!--Interval-->
+                            <TextBlock Foreground="White" Text="Interval:" Grid.Column="0" Grid.Row="1" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                            <TextBlock Foreground="White" Text="{Binding SelectedInterval}" Grid.Column="1" Grid.Row="1" Margin="3 0 0 0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></TextBlock>
+
+                            <!--Range-->
+                            <TextBlock Foreground="White" Text="Range:" Grid.Column="0" Grid.Row="2" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                            <TextBlock Foreground="White" Text="{Binding SelectedRange}" Grid.Column="1" Grid.Row="2" Margin="3 0 0 0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></TextBlock>
+
+                            <!--Indicator-->
+                            <TextBlock Foreground="White" Text="Indicator:" Grid.Column="2" Grid.Row="0" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                            <TextBlock Foreground="White" Text="{Binding SelectedIndicator}" Grid.Column="3" Grid.Row="0" Margin="3 0 0 0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></TextBlock>
+
+                            <!--MA1-->
+                            <TextBlock Foreground="White" Text="MA1:" Grid.Column="2" Grid.Row="1" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                            <TextBlock Foreground="White" Text="{Binding SelectedMA1}" Grid.Column="3" Grid.Row="1" Margin="3 0 0 0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                            
+                            
+                            <!--MA2-->
+                            <TextBlock Foreground="White" Text="MA2:" Grid.Column="2" Grid.Row="2" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                            <TextBlock Foreground="White" Text="{Binding SelectedMA2}" Grid.Column="3" Grid.Row="2" Margin="3 0 0 0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></TextBlock>
+
+                        </Grid>
+                    </StackPanel>
+                    
+                    <!--List View-->
+                    <ListView Grid.Row="2" Grid.Column="0" Margin="25 10 25 10" Grid.ColumnSpan="3" Width="400"
+                     Background="Transparent" x:Name="Stocks" AlternationCount="2" BorderBrush="Transparent"
+                 SelectedItem="{Binding SelectedStock}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="125">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding BuyShares}" Header="Buy Shares" Width="90">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding SellShares}" Header="Sell Shares" Width="90">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding ProfitLoss}" Header="Profit Loss" Width="90">
+                                     <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="#8A8A8A"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Style.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
+                                        <Setter Property="Background" Value="#1d2d44" />
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex"  Value="1">
+                                        <Setter Property="Background" Value="#8A8A8A" />
+                                    </Trigger>
+                                </Style.Triggers>
+                                <Setter Property="cal:Message.Attach"
+                            Value="[Event MouseDoubleClick] = [Action Contact_View()]"></Setter>
+                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                <Setter Property="FontSize" Value="14"></Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                
+                   <!--Profit Loss-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="3" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Foreground="White" Text="Profit Loss:" Grid.Column="2" Grid.Row="2" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"></TextBlock>
+                            <TextBlock Foreground="White" Text="{Binding ProfitLoss}" Grid.Column="3" Grid.Row="2" Margin="3 0 0 0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"></TextBlock>
+
+                        </Grid>
+                    </StackPanel>
+                
+                    <!--Trade With This Strategy-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Foreground="White" Text="Trade With This Strategy?" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"></TextBlock>
+                            <Button Grid.Column="1" Content="Go" Width="125" Height="35" Margin="10 0 0 0" x:Name="TradeWithStrategy"
+                                    Background="SteelBlue" Foreground="White" FontSize="18"></Button>
+
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
         </Grid>
     </Border>
 </UserControl>

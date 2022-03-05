@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using DesktopUI.Library.EventModels;
+using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.ViewModels.Slack;
 using DesktopUI.ViewModels.TraderPro;
 
@@ -14,7 +15,8 @@ namespace DesktopUI.ViewModels
 {
     public class ShellViewModel: Conductor<object>, IHandle<LogOnEvent>, IHandle<OpenPortfolioStockView>, IHandle<ReturnHomeEvent>,
         IHandle<OpenPortfolioSummaryView>, IHandle<OpenSocialView>, IHandle<OpenRegisterView>, IHandle<OpenLoginView>, IHandle<LogOffEvent>,
-        IHandle<ExitAppEvent>, IHandle<LaunchPortoflioProEvent>, IHandle<LaunchTraderProEvent>, IHandle<LaunchTWSTradingEvent>
+        IHandle<ExitAppEvent>, IHandle<LaunchPortoflioProEvent>, IHandle<LaunchTraderProEvent>, IHandle<LaunchTWSTradingEvent>,
+        IHandle<OpenStrategiesView>, IHandle<OpenPaperTradeLiveView>
     {
         private readonly IEventAggregator _events;
         private LoginViewModel _loginVM;
@@ -30,12 +32,13 @@ namespace DesktopUI.ViewModels
         private readonly IBViewModel _ibVM;
         private readonly MainMenuViewModel _mainMenuVM;
         private readonly SlackTraderViewModel _slackTraderVM;
+        private readonly StrategyViewModel _strategyVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
             SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel traderMainVM, IWindowManager window,
             PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM,
-            SlackTraderViewModel slackTraderVM)
+            SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -51,6 +54,7 @@ namespace DesktopUI.ViewModels
             _ibVM = ibVM;
             _mainMenuVM = mainMenuVM;
             _slackTraderVM = slackTraderVM;
+            _strategyVM = strategyVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
@@ -126,6 +130,16 @@ namespace DesktopUI.ViewModels
         public void Handle(LaunchTWSTradingEvent message)
         {
             ActivateItem(_ibVM);
+        }
+
+        public void Handle(OpenStrategiesView message)
+        {
+            ActivateItem(_strategyVM);
+        }
+
+        public void Handle(OpenPaperTradeLiveView message)
+        {
+            ActivateItem(_liveTradesVM);
         }
     }
 }

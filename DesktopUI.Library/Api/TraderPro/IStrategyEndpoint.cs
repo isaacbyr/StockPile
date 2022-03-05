@@ -10,5 +10,6 @@ namespace DesktopUI.Library.Api.TraderPro
         Task<int> PostStrategy(StrategyModel strategy);
         Task<ResponseModel> PostStrategyStock(StrategyItemModel strategyItem);
         Task<List<StrategyModel>> LoadStrategies();
+        Task<List<StrategyItemModel>> GetStrategyStocks(int id);
     }
 }

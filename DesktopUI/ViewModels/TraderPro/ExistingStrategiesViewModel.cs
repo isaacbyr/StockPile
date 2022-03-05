@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api.TraderPro;
+using DesktopUI.Library.EventModels;
 using DesktopUI.Library.Models.TraderPro;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,12 @@ namespace DesktopUI.ViewModels.TraderPro
         public decimal ProfitLoss { get; set; }
 
         private readonly IStrategyEndpoint _strategyEndpoint;
+        private readonly IEventAggregator _events;
 
-        public ExistingStrategiesViewModel(IStrategyEndpoint strategyEndpoint)
+        public ExistingStrategiesViewModel(IStrategyEndpoint strategyEndpoint, IEventAggregator events)
         {
             _strategyEndpoint = strategyEndpoint;
+            _events = events;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -82,6 +85,11 @@ namespace DesktopUI.ViewModels.TraderPro
                 return;
             }
 
+        }
+
+        public void Close()
+        {
+            _events.PublishOnUIThread(new LaunchTraderProEvent());
         }
 
     }
