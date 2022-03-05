@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
 using DesktopUI.Library.Api.TraderPro;
+using DesktopUI.Library.EventModels;
 using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.Library.Models;
 using DesktopUI.Library.Models.TraderPro;
@@ -1129,6 +1130,16 @@ namespace DesktopUI.ViewModels.TraderPro
         public void PaperTradeLive()
         {
             _events.PublishOnUIThread(new OpenPaperTradeLiveView());
+        }
+
+        public void PaperTrade()
+        {
+            _events.PublishOnUIThread(new OpenPaperTradeView());
+        }
+
+        public void Menu()
+        {
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
         }
     }
 }

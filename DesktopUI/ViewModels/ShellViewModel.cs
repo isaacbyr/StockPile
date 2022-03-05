@@ -16,7 +16,8 @@ namespace DesktopUI.ViewModels
     public class ShellViewModel: Conductor<object>, IHandle<LogOnEvent>, IHandle<OpenPortfolioStockView>, IHandle<ReturnHomeEvent>,
         IHandle<OpenPortfolioSummaryView>, IHandle<OpenSocialView>, IHandle<OpenRegisterView>, IHandle<OpenLoginView>, IHandle<LogOffEvent>,
         IHandle<ExitAppEvent>, IHandle<LaunchPortoflioProEvent>, IHandle<LaunchTraderProEvent>, IHandle<LaunchTWSTradingEvent>,
-        IHandle<OpenStrategiesView>, IHandle<OpenPaperTradeLiveView>
+        IHandle<OpenStrategiesView>, IHandle<OpenPaperTradeLiveView>, IHandle<OpenMainMenuEvent>, IHandle<OpenPaperTradeView>,
+        IHandle<OpenTradeStrategyView>
     {
         private readonly IEventAggregator _events;
         private LoginViewModel _loginVM;
@@ -33,12 +34,13 @@ namespace DesktopUI.ViewModels
         private readonly MainMenuViewModel _mainMenuVM;
         private readonly SlackTraderViewModel _slackTraderVM;
         private readonly StrategyViewModel _strategyVM;
+        private readonly TradeStrategyViewModel _tradeStrategyVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
             SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel traderMainVM, IWindowManager window,
             PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM,
-            SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM)
+            SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM, TradeStrategyViewModel tradeStrategyVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -55,6 +57,7 @@ namespace DesktopUI.ViewModels
             _mainMenuVM = mainMenuVM;
             _slackTraderVM = slackTraderVM;
             _strategyVM = strategyVM;
+            _tradeStrategyVM = tradeStrategyVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
@@ -140,6 +143,30 @@ namespace DesktopUI.ViewModels
         public void Handle(OpenPaperTradeLiveView message)
         {
             ActivateItem(_liveTradesVM);
+        }
+
+        public void Handle(OpenMainMenuEvent message)
+        {
+            ActivateItem(_mainMenuVM);
+        }
+
+        public void Handle(OpenPaperTradeView message)
+        {
+            ActivateItem(_paperTradeVM);
+        }
+
+        public void Handle(OpenTradeStrategyView message)
+        {
+            _tradeStrategyVM.Ticker = message.Ticker;
+            _tradeStrategyVM.BuyShares = message.BuyShares;
+            _tradeStrategyVM.SellShares = message.SellShares;
+            _tradeStrategyVM.Indicator = message.Indicator;
+            _tradeStrategyVM.Interval = message.Interval;
+            _tradeStrategyVM.MA1 = message.MA1;
+            _tradeStrategyVM.MA2 = message.MA2;
+            _tradeStrategyVM.Range = message.Range;
+
+            ActivateItem(_tradeStrategyVM);
         }
     }
 }

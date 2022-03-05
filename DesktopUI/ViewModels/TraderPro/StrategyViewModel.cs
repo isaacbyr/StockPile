@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api.TraderPro;
+using DesktopUI.Library.EventModels;
+using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.Library.Models.TraderPro;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,12 @@ namespace DesktopUI.ViewModels.TraderPro
     public class StrategyViewModel: Screen
     {
         private readonly IStrategyEndpoint _strategyEndpoint;
+        private readonly IEventAggregator _events;
 
-        public StrategyViewModel(IStrategyEndpoint strategyEndpoint)
+        public StrategyViewModel(IStrategyEndpoint strategyEndpoint, IEventAggregator events)
         {
             _strategyEndpoint = strategyEndpoint;
+            _events = events;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -65,6 +69,19 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => Stocks);
             }
         }
+
+        private StrategyItemModel _selectedStock;
+
+        public StrategyItemModel SelectedStock
+        {
+            get { return _selectedStock; }
+            set 
+            { 
+                _selectedStock = value;
+                NotifyOfPropertyChange(() => SelectedStock);
+            }
+        }
+
 
         private string _selectedName;
 
@@ -173,7 +190,31 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public void TradeWithStrategy()
         {
+            if (SelectedStock == null || SelectedStrategy == null) return;
+            _events.PublishOnUIThread(
+                new OpenTradeStrategyView(
+                    SelectedStock.Ticker, SelectedStock.BuyShares, SelectedStock.SellShares,
+                    SelectedMA1, SelectedMA2, SelectedIndicator, SelectedInterval, SelectedRange));
+        }
 
+        public void TradeCrossovers()
+        {
+            _events.PublishOnUIThread(new LaunchTraderProEvent());
+        }
+
+        public void PaperTradeLive()
+        {
+            _events.PublishOnUIThread(new OpenPaperTradeView());
+        }
+
+        public void PaperTrade()
+        {
+            _events.PublishOnUIThread(new OpenPaperTradeView());
+        }
+
+        public void Menu()
+        {
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
         }
     }
 }

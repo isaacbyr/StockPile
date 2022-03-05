@@ -118,10 +118,13 @@
     <Compile Include="EventModels\LaunchTWSTradingEvent.cs" />
     <Compile Include="EventModels\LogOffEvent.cs" />
     <Compile Include="EventModels\OpenLoginView.cs" />
+    <Compile Include="EventModels\OpenMainMenuEvent.cs" />
     <Compile Include="EventModels\OpenRegisterView.cs" />
     <Compile Include="EventModels\OpenSocialView.cs" />
     <Compile Include="EventModels\TraderPro\OpenPaperTradeLiveView.cs" />
+    <Compile Include="EventModels\TraderPro\OpenPaperTradeView.cs" />
     <Compile Include="EventModels\TraderPro\OpenStrategiesView.cs" />
+    <Compile Include="EventModels\TraderPro\OpenTradeStrategyView.cs" />
     <Compile Include="Models\FriendDisplayModel.cs" />
     <Compile Include="Models\FriendModel.cs" />
     <Compile Include="Models\FriendRequestModel.cs" />

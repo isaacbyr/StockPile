@@ -17,6 +17,8 @@ using System.ComponentModel;
 using DesktopUI.Library.Models.TraderPro;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
+using DesktopUI.Library.EventModels.TraderPro;
+using DesktopUI.Library.EventModels;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -24,6 +26,7 @@ namespace DesktopUI.ViewModels.TraderPro
     {
         WebSocket ws;
         private readonly IPolygonDataEndpoint _polygonDataEndpoint;
+        private readonly IEventAggregator _events;
 
         public List<string> Labels { get; set; }
         public ChartValues<OhlcPoint> Values { get; set; }
@@ -33,9 +36,10 @@ namespace DesktopUI.ViewModels.TraderPro
         List<OhlcPoint> test = new List<OhlcPoint>();
 
 
-        public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint)
+        public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint, IEventAggregator events)
         {
            _polygonDataEndpoint = polygonDataEndpoint;
+            _events = events;
         }
 
         protected override void OnViewLoaded(object view)
@@ -555,6 +559,26 @@ namespace DesktopUI.ViewModels.TraderPro
         public void Sell()
         {
             SellShares = true;
+        }
+
+        public void TradeCrossovers()
+        {
+            _events.PublishOnUIThread(new LaunchTraderProEvent());
+        }
+
+        public void OpenStrategies()
+        {
+            _events.PublishOnUIThread(new OpenStrategiesView());
+        }
+
+        public void PaperTrade()
+        {
+            _events.PublishOnUIThread(new OpenPaperTradeView());
+        }
+
+        public void Menu()
+        {
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
         }
     }
 }

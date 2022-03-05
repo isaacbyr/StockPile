@@ -213,6 +213,7 @@
     <Compile Include="ViewModels\TraderPro\PaperTradeViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\StrategyViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\TraderMainViewModel.cs" />
+    <Compile Include="ViewModels\TraderPro\TradeStrategyViewModel.cs" />
     <Compile Include="ViewModels\TransactionInfoViewModel.cs" />
     <Compile Include="Views\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
@@ -262,6 +263,9 @@
     </Compile>
     <Compile Include="Views\TraderPro\TraderMainView.xaml.cs">
       <DependentUpon>TraderMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TraderPro\TradeStrategyView.xaml.cs">
+      <DependentUpon>TradeStrategyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TransactionInfoView.xaml.cs">
       <DependentUpon>TransactionInfoView.xaml</DependentUpon>
@@ -323,6 +327,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TraderPro\TraderMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TraderPro\TradeStrategyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
