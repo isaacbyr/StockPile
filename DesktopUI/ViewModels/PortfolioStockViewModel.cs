@@ -293,7 +293,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private decimal _accountBalance;
 
         public decimal AccountBalance
@@ -305,7 +304,6 @@ namespace DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => AccountBalance);
             }
         }
-
 
         private string _chartPrice;
 
@@ -514,7 +512,7 @@ namespace DesktopUI.ViewModels
         public async Task Buy()
         {
             //change account balance
-            await _userAccountEndpoint.UpdateAccountBalance(CashAmount);
+            await _userAccountEndpoint.UpdatePortfolioAccountBalance(CashAmount);
 
             //add to transaction table
             decimal price;

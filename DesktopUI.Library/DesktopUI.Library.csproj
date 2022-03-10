@@ -109,8 +109,10 @@
     <Compile Include="Api\PortfolioEndpoint.cs" />
     <Compile Include="Api\TraderPro\IPolygonDataEndpoint.cs" />
     <Compile Include="Api\TraderPro\IStrategyEndpoint.cs" />
+    <Compile Include="Api\TraderPro\ITradeTransactionEndpoint.cs" />
     <Compile Include="Api\TraderPro\PolygonDataEndpoint.cs" />
     <Compile Include="Api\TraderPro\StrategyEndpoint.cs" />
+    <Compile Include="Api\TraderPro\TradeTransactionEndpoint.cs" />
     <Compile Include="Api\UserEndpoint.cs" />
     <Compile Include="EventModels\ExitAppEvent.cs" />
     <Compile Include="EventModels\LaunchPortoflioProEvent.cs" />

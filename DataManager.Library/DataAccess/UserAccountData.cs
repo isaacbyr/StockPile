@@ -27,7 +27,7 @@ namespace DataManager.Library.DataAccess
             }
         }
 
-        public void UpdateAccountBalance(UpdateUserAccountModel update)
+        public void UpdatePortfolioAccountBalance(UpdateUserAccountModel update)
         {
             var sql = new SqlDataAccess();
             var p = new { UserId = update.UserId, CashAmount = update.Amount };
@@ -36,6 +36,24 @@ namespace DataManager.Library.DataAccess
             {
                 sql.StartTransaction("StockPileData");
                 sql.SaveDataInTransaction("dbo.spUserAccount_UpdateAccountBalance", p);
+                sql.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                sql.RollbackTransaction();
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void UpdateTradesAccountBalance(UpdateUserAccountModel update)
+        {
+            var sql = new SqlDataAccess();
+            var p = new { UserId = update.UserId, CashAmount = update.Amount };
+
+            try
+            {
+                sql.StartTransaction("StockPileData");
+                sql.SaveDataInTransaction("dbo.spUserAccount_UpdateTradesAccountBalance", p);
                 sql.CommitTransaction();
             }
             catch (Exception e)

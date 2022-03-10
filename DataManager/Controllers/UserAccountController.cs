@@ -24,14 +24,27 @@ namespace DataManager.Controllers
         }
 
         [HttpPut]
-        [Route("updatebalance")]
-        public void UpdateAccountBalance(UpdateUserAccountModel update)
+        [Route("updatebalance/portfolio")]
+        public void UpdatePortfolioAccountBalance(UpdateUserAccountModel update)
         {
             var userAccountData = new UserAccountData();
 
             update.UserId = RequestContext.Principal.Identity.GetUserId();
 
-            userAccountData.UpdateAccountBalance(update);
+            userAccountData.UpdatePortfolioAccountBalance(update);
+        }
+
+        [HttpPut]
+        [Route("updatebalance/trades")]
+        public void UpdateTradesAccountBalance(UpdateUserAccountModel update)
+        {
+            var userAccountData = new UserAccountData();
+
+            //update.UserId = RequestContext.Principal.Identity.GetUserId();
+            update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+
+
+            userAccountData.UpdateTradesAccountBalance(update);
         }
 
         [HttpGet]
@@ -40,7 +53,9 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            string id = RequestContext.Principal.Identity.GetUserId();
+            //TODO: 
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return userAccountData.LoadAccountBalance(id);
         }

@@ -50,14 +50,14 @@ namespace DesktopUI.Library.Api
             }
         }
 
-        public async Task UpdateAccountBalance(decimal cashAmount)
+        public async Task UpdatePortfolioAccountBalance(decimal cashAmount)
         {
             var amount = new UpdateUserAccountModel
             {
                 Amount = cashAmount
             };
 
-            using(HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/useraccount/updatebalance", amount))
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/useraccount/updatebalance/portfolio", amount))
             {
                 if(response.IsSuccessStatusCode)
                 {
@@ -95,6 +95,26 @@ namespace DesktopUI.Library.Api
         public async Task PostNewUserAccount(UserAccountModel userAccount)
         {
             using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/useraccount", userAccount))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task UpdateTradesAccountBalance(decimal cashAmount)
+        {
+            var amount = new UpdateUserAccountModel
+            {
+                Amount = cashAmount
+            };
+
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/useraccount/updatebalance/trades", amount))
             {
                 if (response.IsSuccessStatusCode)
                 {

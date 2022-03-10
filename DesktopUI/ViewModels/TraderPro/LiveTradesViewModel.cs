@@ -29,6 +29,7 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly IPolygonDataEndpoint _polygonDataEndpoint;
         private readonly IEventAggregator _events;
         private readonly IUserAccountEndpoint _userAccountEndpoint;
+        private readonly IPortfolioEndpoint _portfolioEndpoint;
 
         public List<string> Labels { get; set; }
         public ChartValues<OhlcPoint> Values { get; set; }
@@ -38,24 +39,42 @@ namespace DesktopUI.ViewModels.TraderPro
         List<OhlcPoint> test = new List<OhlcPoint>();
 
 
-        public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint, IEventAggregator events, IUserAccountEndpoint userAccountEndpoint)
+        public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint, IEventAggregator events, 
+            IUserAccountEndpoint userAccountEndpoint, IPortfolioEndpoint portfolioEndpoint)
         {
            _polygonDataEndpoint = polygonDataEndpoint;
             _events = events;
             _userAccountEndpoint = userAccountEndpoint;
+            _portfolioEndpoint = portfolioEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
         {
             await LoadAccountBalance();
+            await LoadPortfolioOverview("AAPL");
             StartClock();
+        }
+
+        private async Task LoadPortfolioOverview(string ticker)
+        {
+            var result = await _portfolioEndpoint.GetPortfolioStock(ticker);
+            if(result != null)
+            {
+                CurrentPositionAveragePrice = result.AveragePrice;
+                CurrentPositionShares = result.Shares;
+            }
+            else
+            {
+                CurrentPositionShares = 0;
+                CurrentPositionAveragePrice = 0;
+            }
         }
 
         private async Task LoadAccountBalance()
         {
 
-              AccountBalance = await _userAccountEndpoint.LoadAccountBalance();
-
+            var result = await _userAccountEndpoint.LoadAccountBalance();
+            AccountBalance = Math.Round(result, 2);
         }
 
         private void StartConnection()
@@ -330,14 +349,60 @@ namespace DesktopUI.ViewModels.TraderPro
             CurrentTime = DateTime.Now.ToString("t");
         }
 
-        private BindingList<PortfolioStockDisplayModel> _portfolioStocks;
+        private decimal _currentPositionAveragePrice;
 
-        public BindingList<PortfolioStockDisplayModel> PortfolioStocks
+        public decimal CurrentPositionAveragePrice
+        {
+            get { return _currentPositionAveragePrice; }
+            set 
+            {
+                _currentPositionAveragePrice = value;
+                NotifyOfPropertyChange(() => CurrentPositionAveragePrice);
+            }
+        }
+
+        private int _currentPositionShares;
+
+        public int CurrentPositionShares
+        {
+            get { return _currentPositionShares; }
+            set 
+            {
+                _currentPositionShares = value;
+                NotifyOfPropertyChange(() => CurrentPositionShares);
+            }
+        }
+
+        private ObservableCollection<PortfolioStockDisplayModel> _portfolioStocks;
+
+        public ObservableCollection<PortfolioStockDisplayModel> PortfolioStocks
         {
             get { return _portfolioStocks; }
             set { _portfolioStocks = value; }
         }
 
+        private double _cashAmount;
+
+        public double CashAmount
+        {
+            get 
+            {
+                return Math.Round(Price * Shares);
+            }
+            set
+            {
+                _cashAmount = value;
+                NotifyOfPropertyChange(() => CanBuy);
+            }
+        }
+
+        public double PortfolioProfitLoss
+        {
+            get
+            {
+                return Math.Round(((double)CurrentPositionAveragePrice - Price) * CurrentPositionShares, 2);
+            }
+        }
 
         private decimal _accountBalance;
 
@@ -569,7 +634,23 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        public bool CanBuy
+        {
+            get
+            {
+                if (CashAmount < (double)AccountBalance) return true;
+                else return false;
+            }
+        }
 
+        public bool CanSell
+        {
+            get
+            {
+                if (Shares <= CurrentPositionShares && Shares > 0) return true;
+                else return false;
+            }
+        }
 
         public async Task SearchForTrades()
         {
@@ -582,6 +663,26 @@ namespace DesktopUI.ViewModels.TraderPro
             StartConnection();
         }
 
+        public async Task PortfolioBuy()
+        {
+            // change account balance
+            await _userAccountEndpoint.UpdateTradesAccountBalance((decimal)CashAmount);
+
+            // add to transaction table
+            var transaction = new TransactionModel
+            {
+                Ticker = ChartSymbol,
+                Buy = true,
+                Price =(decimal)Price,
+                Sell = false,
+                Shares = Shares,
+                Date = DateTime.Now
+            };
+
+
+
+
+        }
 
         public void Buy()
         {
