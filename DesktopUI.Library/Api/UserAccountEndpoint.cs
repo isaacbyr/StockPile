@@ -18,6 +18,22 @@ namespace DesktopUI.Library.Api
             _apiHelper = apiHelper;
         }
 
+        public async Task<decimal> LoadAccountBalance()
+        {
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/useraccount/balance"))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<int>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
         public async Task<UserPortfolioOverviewModel> GetPortfolioOverview()
         {
             using(HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/useraccount"))

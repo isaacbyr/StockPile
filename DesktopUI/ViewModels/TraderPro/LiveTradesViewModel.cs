@@ -19,6 +19,7 @@ using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.Library.EventModels;
+using DesktopUI.Library.Api;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -27,6 +28,7 @@ namespace DesktopUI.ViewModels.TraderPro
         WebSocket ws;
         private readonly IPolygonDataEndpoint _polygonDataEndpoint;
         private readonly IEventAggregator _events;
+        private readonly IUserAccountEndpoint _userAccountEndpoint;
 
         public List<string> Labels { get; set; }
         public ChartValues<OhlcPoint> Values { get; set; }
@@ -36,15 +38,24 @@ namespace DesktopUI.ViewModels.TraderPro
         List<OhlcPoint> test = new List<OhlcPoint>();
 
 
-        public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint, IEventAggregator events)
+        public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint, IEventAggregator events, IUserAccountEndpoint userAccountEndpoint)
         {
            _polygonDataEndpoint = polygonDataEndpoint;
             _events = events;
+            _userAccountEndpoint = userAccountEndpoint;
         }
 
-        protected override void OnViewLoaded(object view)
+        protected override async void OnViewLoaded(object view)
         {
+            await LoadAccountBalance();
             StartClock();
+        }
+
+        private async Task LoadAccountBalance()
+        {
+
+              AccountBalance = await _userAccountEndpoint.LoadAccountBalance();
+
         }
 
         private void StartConnection()
@@ -317,6 +328,27 @@ namespace DesktopUI.ViewModels.TraderPro
         private void Tickevent(object sender, EventArgs e)
         {
             CurrentTime = DateTime.Now.ToString("t");
+        }
+
+        private BindingList<PortfolioStockDisplayModel> _portfolioStocks;
+
+        public BindingList<PortfolioStockDisplayModel> PortfolioStocks
+        {
+            get { return _portfolioStocks; }
+            set { _portfolioStocks = value; }
+        }
+
+
+        private decimal _accountBalance;
+
+        public decimal AccountBalance
+        {
+            get { return _accountBalance; }
+            set 
+            {
+                _accountBalance = value;
+                NotifyOfPropertyChange(() => AccountBalance);
+            }
         }
 
         private bool _isConnecting = true;

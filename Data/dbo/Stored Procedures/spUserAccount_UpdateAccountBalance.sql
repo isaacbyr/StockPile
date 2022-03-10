@@ -4,6 +4,6 @@
 AS
 BEGIN
 	UPDATE [dbo].[UserAccount]
-	SET AccountBalance = AccountBalance - @CashAmount
+	SET PortfolioAccountBalance = PortfolioAccountBalance - @CashAmount
 	WHERE UserId = @UserId
 END

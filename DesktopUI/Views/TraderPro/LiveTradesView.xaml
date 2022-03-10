@@ -20,7 +20,8 @@
                 <ColumnDefinition Width="115"></ColumnDefinition>
                 <ColumnDefinition Width="115"></ColumnDefinition>
                 <ColumnDefinition Width="230"></ColumnDefinition>
-                <ColumnDefinition Width="230"></ColumnDefinition>
+                <ColumnDefinition Width="115"></ColumnDefinition>
+                <ColumnDefinition Width="115"></ColumnDefinition>
                 <ColumnDefinition Width="225"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -78,7 +79,7 @@
             </StackPanel>
 
             <!--Time-->
-            <Border CornerRadius="18" Grid.Column="6" Grid.Row="0"
+            <Border CornerRadius="18" Grid.Column="7" Grid.Row="0"
                     Background="#1d2d44" Margin="15 10 15 5">
 
                 <TextBlock Foreground="White" Text="{Binding CurrentTime}" FontSize="30"
@@ -132,19 +133,7 @@
                 </Grid>
             </Border>
             
-            <!--Trade With Account-->
-            <Border Background="#1D2D44" Grid.Column="4" Grid.Row="2" 
-                    Grid.ColumnSpan="2" Margin="165,25,70,5" CornerRadius="18">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <CheckBox x:Name="TradeWithAccount" Foreground="White" Content="Trade With Account?" VerticalContentAlignment="Center"></CheckBox>
-                    </StackPanel>
-                </Grid>
-            </Border>
+         
             
             <!--Buy/Sell Panel-->
             <Border CornerRadius="18" Background="#1d2d44" Grid.Column="3" Grid.ColumnSpan="2"
@@ -175,8 +164,8 @@
                 </Grid>
             </Border>
 
-            <!--Chart-->
-            <Border Background="#1D2D44" Grid.Row="3" Grid.RowSpan="4"
+            <!--Chart--> 
+            <Border Background="#1D2D44" Grid.Row="3" Grid.RowSpan="4" CornerRadius="18"
                     Grid.Column="0" Grid.ColumnSpan="6" Margin="10 5 5 10">
                 <lvc:CartesianChart  Zoom="Xy" x:Name="MainChart" Margin="15">
                     <lvc:CartesianChart.Series>
@@ -203,43 +192,43 @@
             </Border>
 
             <!--Account Balance-->
-            <Border CornerRadius="18" Background="#1D2D44" Grid.Column="6" Grid.Row="2" Margin="5 5 10 5">
+            <Border CornerRadius="18" Grid.ColumnSpan="2"  Background="#1D2D44" Grid.Column="6" Grid.Row="2" Margin="5 5 10 5">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Account Balance:" Foreground="White"
                                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontSize="14" Margin="5 0 0 0"></TextBlock>
+                                       FontSize="16" Margin="5 0 0 0"></TextBlock>
                     <TextBlock Grid.Column="1" Text="{Binding AccountBalance}" Foreground="White"
                                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontSize="14" Margin="5 0 0 0"></TextBlock>
+                                       FontSize="16" Margin="5 0 0 0"></TextBlock>
                 </Grid>
             </Border>
             
-            <!--History-->
-            <Border Grid.Row="3" Grid.Column="6" Margin="5 5 10 5" 
+            <!--Portfolio-->
+            <Border Grid.Row="3" Grid.ColumnSpan="2"  Grid.Column="6" Margin="5 5 10 5" 
                     Background="#1D2D44" Grid.RowSpan="2" CornerRadius="18">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="200"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <!--Header-->
-                    <TextBlock Grid.Column="0" Text="History" Grid.Row="0" Foreground="White"
+                    <TextBlock Grid.Column="0" Text="Portfolio" Grid.Row="0" Foreground="White"
                                        VerticalAlignment="Center" HorizontalAlignment="Center"
                                        FontSize="18" Margin="5 0 0 0"></TextBlock>
 
                     <!--List View-->
-                    <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                    <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                           x:Name="History" BorderBrush="Transparent" Height="200"
                               SelectedItem="{Binding SelectedHistory}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Date}" Header="Date" Width="75">
+                                <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="60">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="GridViewColumnHeader">
                                             <Setter Property="Background" Value="Transparent"></Setter>
@@ -248,7 +237,7 @@
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
                                 </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="75">
+                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="60">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="GridViewColumnHeader">
                                             <Setter Property="Background" Value="Transparent"></Setter>
@@ -257,7 +246,7 @@
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
                                 </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="65">
+                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="60">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="GridViewColumnHeader">
                                             <Setter Property="Background" Value="Transparent"></Setter>
@@ -266,7 +255,16 @@
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
                                 </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="65">
+                                <GridViewColumn DisplayMemberBinding="{Binding AveragePrice}" Header="Avg Price" Width="70">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding ProfitLoss}" Header="P/L" Width="70">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="GridViewColumnHeader">
                                             <Setter Property="Background" Value="Transparent"></Setter>
@@ -282,22 +280,35 @@
                         </ListView.Resources>
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
-
                                 <Setter Property="Foreground" Value="{Binding Converter={StaticResource TransactionColorConverter}}"></Setter>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                 <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-
                             </Style>
-
                         </ListView.ItemContainerStyle>
 
                     </ListView>
+                    <!--Realized Profit Loss-->
+                    <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Profit/Loss" Foreground="White"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
+                            <TextBlock Grid.Column="1" Text="{Binding ProfitLoss}" Foreground="White"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
+                        </Grid>
+                    </StackPanel>
 
                 </Grid>
             </Border>
             
             <!--`Transactions-->
-            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="6"
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="6" Grid.ColumnSpan="2"
                     Grid.Row="5" Grid.RowSpan="3" Margin="5,5,10,10">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -313,7 +324,7 @@
                     
                     <!--List View-->
                     <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                          x:Name="Transactions" BorderBrush="Transparent" 
+                                          x:Name="Transactions" BorderBrush="Transparent" HorizontalAlignment="Center" Width="225"
                               SelectedItem="{Binding SelectedTransaction}">
                         <ListView.View>
                             <GridView>
@@ -326,7 +337,7 @@
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
                                 </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="65">
+                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="75">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="GridViewColumnHeader">
                                             <Setter Property="Background" Value="Transparent"></Setter>
@@ -335,7 +346,7 @@
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
                                 </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="65">
+                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="75">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="GridViewColumnHeader">
                                             <Setter Property="Background" Value="Transparent"></Setter>
@@ -370,10 +381,10 @@
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" Text="Profit/Loss" Foreground="White"
+                            <TextBlock Grid.Column="0" Text=" Daily Profit/Loss" Foreground="White"
                                        VerticalAlignment="Center" HorizontalAlignment="Center"
                                        FontSize="18" Margin="5 0 0 0"></TextBlock>
-                            <TextBlock Grid.Column="1" Text="{Binding ProfitLoss}" Foreground="White"
+                            <TextBlock Grid.Column="1" Text="{Binding DailyProfitLoss}" Foreground="White"
                                        VerticalAlignment="Center" HorizontalAlignment="Center"
                                        FontSize="18" Margin="5 0 0 0"></TextBlock>
                         </Grid>

@@ -45,6 +45,22 @@ namespace DataManager.Library.DataAccess
             }
         }
 
+        public decimal LoadAccountBalance(string id)
+        {
+            var sql = new SqlDataAccess();
+            var p = new { UserId = id };
+
+            try
+            {
+                var output = sql.LoadData<decimal, dynamic>("dbo.spUserAccount_LoadAccountBalance", p, "StockPileData").First();
+                return output;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public decimal UpdateAfterSale(UpdateUserAccountModel update)
         {
             var sql = new SqlDataAccess();

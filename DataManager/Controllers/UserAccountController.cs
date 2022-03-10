@@ -34,6 +34,18 @@ namespace DataManager.Controllers
             userAccountData.UpdateAccountBalance(update);
         }
 
+        [HttpGet]
+        [Route("balance")]
+        public decimal LoadAccountBalance()
+        {
+            var userAccountData = new UserAccountData();
+
+            string id = RequestContext.Principal.Identity.GetUserId();
+
+            return userAccountData.LoadAccountBalance(id);
+        }
+
+
         [HttpPut]
         [Route("sale")]
         public decimal UpdateAfterSale(UpdateUserAccountModel update)
