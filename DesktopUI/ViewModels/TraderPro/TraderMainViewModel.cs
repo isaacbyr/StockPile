@@ -887,7 +887,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 
             }
             
-
         }
 
         private void AddTransactionsToView()
