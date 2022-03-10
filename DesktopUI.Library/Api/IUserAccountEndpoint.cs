@@ -5,7 +5,8 @@ namespace DesktopUI.Library.Api
 {
     public interface IUserAccountEndpoint
     {
-        Task<decimal> LoadAccountBalance();
+        Task<decimal> LoadTradesAccountBalance();
+        Task<decimal> LoadPortfolioAccountBalance();
         Task<UserPortfolioOverviewModel> GetPortfolioOverview();
         Task UpdatePortfolioAccountBalance(decimal cashAmount);
         Task UpdateTradesAccountBalance(decimal cashAmount);

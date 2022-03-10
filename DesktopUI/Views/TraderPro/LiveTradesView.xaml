@@ -135,7 +135,7 @@
             
          
             
-            <!--Buy/Sell Panel-->
+            <!--Buy/Sell Panel--><!--
             <Border CornerRadius="18" Background="#1d2d44" Grid.Column="3" Grid.ColumnSpan="2"
                     Grid.Row="2" Margin="5,5,70,5">
                 <Grid>
@@ -145,24 +145,24 @@
                         <ColumnDefinition Width="70"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <!--Shares-->
+                    --><!--Shares--><!--
                     <TextBox MinHeight="30" MaxHeight="30" Margin="18 0 3 0" x:Name="Shares" 
                                  VerticalContentAlignment="Center" FontSize="16" Text="100"
                                  Foreground="White" Background="Transparent" />
 
 
-                    <!--Buy Button-->
+                    --><!--Buy Button--><!--
                     <Button Content="Buy" Grid.Column="1" Grid.Row="1" Margin="2 0 2 0"
                             Background="LimeGreen" MaxHeight="30" Foreground="White"
                             x:Name="Buy"></Button>
 
-                    <!--Search Button-->
+                    --><!--Search Button--><!--
                     <Button Content="Sell" Grid.Column="2" Grid.Row="1" Margin="0 0 4 0"
                             Background="Crimson" MaxHeight="30" Foreground="White"
                           x:Name="Sell"></Button>
 
                 </Grid>
-            </Border>
+            </Border>-->
 
             <!--Chart--> 
             <Border Background="#1D2D44" Grid.Row="3" Grid.RowSpan="4" CornerRadius="18"
@@ -206,107 +206,88 @@
                                        FontSize="16" Margin="5 0 0 0"></TextBlock>
                 </Grid>
             </Border>
-            
-            <!--Portfolio-->
-            <Border Grid.Row="3" Grid.ColumnSpan="2"  Grid.Column="6" Margin="5 5 10 5" 
-                    Background="#1D2D44" Grid.RowSpan="2" CornerRadius="18">
+
+
+            <!--Buy panel-->
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="6"
+                    Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="5 5 10 5">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="200"></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
 
-                    <!--Header-->
-                    <TextBlock Grid.Column="0" Text="Portfolio" Grid.Row="0" Foreground="White"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
+                    <!--Current Position-->
+                    <TextBlock Text="Current Position" VerticalAlignment="Center" TextDecorations="Underline"
+                               Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                               FontSize="20"/>
 
-                    <!--List View-->
-                    <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                          x:Name="History" BorderBrush="Transparent" Height="200"
-                              SelectedItem="{Binding SelectedHistory}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="60">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Background" Value="Transparent"></Setter>
-                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="60">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Background" Value="Transparent"></Setter>
-                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="60">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Background" Value="Transparent"></Setter>
-                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding AveragePrice}" Header="Avg Price" Width="70">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Background" Value="Transparent"></Setter>
-                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding ProfitLoss}" Header="P/L" Width="70">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Background" Value="Transparent"></Setter>
-                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                        <ListView.Resources>
-                            <converters:TraderProTransactionItemColorConverter x:Key="TransactionItemColorConverter"></converters:TraderProTransactionItemColorConverter>
-                        </ListView.Resources>
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Foreground" Value="{Binding Converter={StaticResource TransactionColorConverter}}"></Setter>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-                                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
+                    <!--Stock Name-->
+                    <TextBlock Text="Stock" HorizontalAlignment="Center" TextDecorations="Underline"
+                               VerticalAlignment="Center" Margin="0 0 3 0" 
+                               FontSize="16" Grid.Row="1" Grid.Column="0"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Text="{Binding ChartSymbol}"/>
 
-                    </ListView>
-                    <!--Realized Profit Loss-->
-                    <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
+                    <!--Shares-->
+                    <TextBlock Text="Shares" HorizontalAlignment="Center" TextDecorations="Underline"
+                               VerticalAlignment="Center" Margin="0 0 3 0" 
+                               FontSize="16" Grid.Row="1" Grid.Column="1"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Text="{Binding CurrentPositionShares}"/>
 
-                            <TextBlock Grid.Column="0" Text="Profit/Loss" Foreground="White"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
-                            <TextBlock Grid.Column="1" Text="{Binding ProfitLoss}" Foreground="White"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
-                        </Grid>
-                    </StackPanel>
+                    <!--Average Price-->
+                    <TextBlock Text="Avg. Price" HorizontalAlignment="Center" TextDecorations="Underline"
+                               VerticalAlignment="Center" Margin="0 0 3 0" 
+                               FontSize="16" Grid.Row="1" Grid.Column="2"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Text="{Binding CurrentPositionAveragePrice}"/>
 
+                    <!--Profit/Loss-->
+                    <TextBlock Text="Profit/Loss" HorizontalAlignment="Center" TextDecorations="Underline"
+                               VerticalAlignment="Center" Margin="0 0 3 0" 
+                               FontSize="16" Grid.Row="1" Grid.Column="3"/>
+                    <TextBlock Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Text="{Binding ProfitLoss}"/>
+
+                    <!--New Position-->
+                    <TextBlock Text="New Position" VerticalAlignment="Center" TextDecorations="Underline"
+                               Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                              FontSize="20"/>
+
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="4" Text="Stock" Grid.Column="0" VerticalAlignment="Center" TextDecorations="Underline"/>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="4" Text="Shares" Grid.Column="1" VerticalAlignment="Center" TextDecorations="Underline"/>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="4" Text="Price" Grid.Column="2" VerticalAlignment="Center" TextDecorations="Underline"/>
+                    <TextBlock HorizontalAlignment="Center" Grid.Row="4" Text="Cash Amount" Grid.Column="3" VerticalAlignment="Center" TextDecorations="Underline"/>
+
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Ticker}" Grid.Column="0" Grid.Row="5"/>
+                    <TextBox Margin="0 0 0 5" Grid.Column="1"  Width="80"  Grid.Row="5" x:Name="Shares"
+                                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Background="Transparent"
+                                     Foreground="White"/>
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="5" Text="{Binding Price}" Grid.Column="2"/>
+                    <TextBlock Margin="0 0 0 5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="5" Text="{Binding CashAmount}" Grid.Column="3"/>
+
+                    <Button Content="Buy" Background="LimeGreen" Foreground="White" x:Name="Buy"
+                            Grid.Column="1" Grid.Row="6" MinHeight="30" MaxHeight="30" Width="80"/>
+
+                    <Button Content="Sell" Background="Red" Foreground="White" x:Name="Sell"
+                            Grid.Column="2" Grid.Row="6" MinHeight="30" MaxHeight="30"/>
                 </Grid>
+
             </Border>
-            
+
             <!--`Transactions-->
             <Border CornerRadius="18" Background="#1d2d44" Grid.Column="6" Grid.ColumnSpan="2"
                     Grid.Row="5" Grid.RowSpan="3" Margin="5,5,10,10">

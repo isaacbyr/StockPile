@@ -18,11 +18,27 @@ namespace DesktopUI.Library.Api
             _apiHelper = apiHelper;
         }
 
-        public async Task<decimal> LoadAccountBalance()
+        public async Task<decimal> LoadTradesAccountBalance()
         {
-            using(HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/useraccount/balance"))
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/useraccount/tradesbalance"))
             {
                 if(response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<decimal>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task<decimal> LoadPortfolioAccountBalance()
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/useraccount/balance"))
+            {
+                if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsAsync<int>();
                     return result;

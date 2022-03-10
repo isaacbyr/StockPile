@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spUserAccount_LoadAccountBalance]
+﻿CREATE PROCEDURE [dbo].[spUserAccount_LoadTradesAccountBalance]
 	@UserId NVARCHAR(128)
 AS
 BEGIN

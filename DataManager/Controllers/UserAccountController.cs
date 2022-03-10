@@ -48,7 +48,7 @@ namespace DataManager.Controllers
         }
 
         [HttpGet]
-        [Route("balance")]
+        [Route("tradesbalance")]
         public decimal LoadAccountBalance()
         {
             var userAccountData = new UserAccountData();
@@ -57,7 +57,7 @@ namespace DataManager.Controllers
             //string id = RequestContext.Principal.Identity.GetUserId();
             string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
-            return userAccountData.LoadAccountBalance(id);
+            return userAccountData.LoadTradesAccountBalance(id);
         }
 
 

@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.Library.EventModels;
 using DesktopUI.Library.Api;
+using System.Threading;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -29,7 +30,8 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly IPolygonDataEndpoint _polygonDataEndpoint;
         private readonly IEventAggregator _events;
         private readonly IUserAccountEndpoint _userAccountEndpoint;
-        private readonly IPortfolioEndpoint _portfolioEndpoint;
+        private readonly ITradePortfolioEndpoint _tradePortfolioEndpoint;
+        private readonly ITradeTransactionEndpoint _tradeTransactionEndpoint;
 
         public List<string> Labels { get; set; }
         public ChartValues<OhlcPoint> Values { get; set; }
@@ -40,12 +42,14 @@ namespace DesktopUI.ViewModels.TraderPro
 
 
         public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint, IEventAggregator events, 
-            IUserAccountEndpoint userAccountEndpoint, IPortfolioEndpoint portfolioEndpoint)
+            IUserAccountEndpoint userAccountEndpoint, ITradePortfolioEndpoint tradePortfolioEndpoint,
+            ITradeTransactionEndpoint tradeTransactionEndpoint)
         {
            _polygonDataEndpoint = polygonDataEndpoint;
             _events = events;
             _userAccountEndpoint = userAccountEndpoint;
-            _portfolioEndpoint = portfolioEndpoint;
+            _tradePortfolioEndpoint = tradePortfolioEndpoint;
+            _tradeTransactionEndpoint = tradeTransactionEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -57,7 +61,8 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private async Task LoadPortfolioOverview(string ticker)
         {
-            var result = await _portfolioEndpoint.GetPortfolioStock(ticker);
+            //TODO CHANGE THIS TO TRADE PRORTFOLIO ENDPOINT
+            var result = await _tradePortfolioEndpoint.GetPortfolioStock(ticker);
             if(result != null)
             {
                 CurrentPositionAveragePrice = result.AveragePrice;
@@ -73,7 +78,7 @@ namespace DesktopUI.ViewModels.TraderPro
         private async Task LoadAccountBalance()
         {
 
-            var result = await _userAccountEndpoint.LoadAccountBalance();
+            var result = await _userAccountEndpoint.LoadTradesAccountBalance();
             AccountBalance = Math.Round(result, 2);
         }
 
@@ -244,6 +249,7 @@ namespace DesktopUI.ViewModels.TraderPro
                         Shares = Shares
                     };
                     Transactions.Add(transaction);
+                    new Thread(() => PortfolioBuy()) { IsBackground = true }.Start();
                 }
                 else
                 {
@@ -527,6 +533,7 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 _shares = value;
                 NotifyOfPropertyChange(() => Shares);
+                NotifyOfPropertyChange(() => CashAmount);
             }
         }
 
@@ -631,6 +638,8 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 _price = value;
                 NotifyOfPropertyChange(() => Price);
+                NotifyOfPropertyChange(() => CashAmount);
+
             }
         }
 
@@ -679,8 +688,25 @@ namespace DesktopUI.ViewModels.TraderPro
                 Date = DateTime.Now
             };
 
+            //post transaction
+            await _tradeTransactionEndpoint.PostTransaction(transaction);
 
+            //update portfolio table
+            var stock = new PortfolioModel
+            {
+                Ticker = Ticker,
+                Price = (decimal)Price,
+                Shares = Shares
+            };
 
+            if (CurrentPositionShares == 0)
+            {
+                await _tradePortfolioEndpoint.PostStock(stock);
+            }
+            else
+            {
+                //await _tradePortfolioEndpoint.UpdatePortfolioBuy(stock);
+            }
 
         }
 

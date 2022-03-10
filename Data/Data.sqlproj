@@ -110,11 +110,15 @@
     <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_GetAllStrategies.sql" />
     <Build Include="dbo\Stored Procedures\spStrategyItem_Post.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_GetAllStrategyStocks.sql" />
-    <Build Include="dbo\Stored Procedures\spUserAccount_LoadAccountBalance.sql" />
+    <Build Include="dbo\Stored Procedures\spUserAccount_LoadTradesAccountBalance.sql" />
     <Build Include="dbo\Tables\TraderPro\TradesPortfolio.sql" />
     <Build Include="dbo\Tables\TraderPro\TradesRealizedProtitLoss.sql" />
     <Build Include="dbo\Tables\TraderPro\TradeTransaction.sql" />
     <Build Include="dbo\Stored Procedures\spUserAccount_UpdateTradesAccountBalance.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradeTransaction_PostTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_GetStockByTicker.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_UpdatePortfolioBuy.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_PostStock.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />
