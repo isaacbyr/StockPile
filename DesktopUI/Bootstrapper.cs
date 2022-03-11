@@ -42,6 +42,7 @@ namespace DesktopUI
                 .Singleton<ITransactionEndoint, TransactionEndpoint>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<INewsEndpoint, NewsEndpoint>()
+                .Singleton<ITWSTradingEndpoint, TWSTradingEndpoint>()
                 .Singleton<ITradePortfolioEndpoint, TradePortfolioEndpoint>()
                 .Singleton<ITradeTransactionEndpoint, TradeTransactionEndpoint>()
                 .Singleton<IEventAggregator, EventAggregator>();

@@ -82,7 +82,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private string _selectedName;
 
         public string SelectedName

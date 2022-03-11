@@ -333,8 +333,6 @@
                                         <Setter Property="Background" Value="#8A8A8A" />
                                     </Trigger>
                                 </Style.Triggers>
-                                <Setter Property="cal:Message.Attach"
-                            Value="[Event MouseDoubleClick] = [Action Contact_View()]"></Setter>
                                 <Setter Property="Foreground" Value="White"></Setter>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                 <Setter Property="HorizontalAlignment" Value="Center"></Setter>

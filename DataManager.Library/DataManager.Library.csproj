@@ -53,6 +53,7 @@
     <Compile Include="DataAccess\TraderPro\StrategyData.cs" />
     <Compile Include="DataAccess\TraderPro\TradesPortfolioData.cs" />
     <Compile Include="DataAccess\TraderPro\TradeTransactionData.cs" />
+    <Compile Include="DataAccess\TraderPro\TWSTradingData.cs" />
     <Compile Include="DataAccess\TransactionData.cs" />
     <Compile Include="DataAccess\UserAccountData.cs" />
     <Compile Include="DataAccess\UserData.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Models\SocialDashboardDataModel.cs" />
     <Compile Include="Models\TraderPro\StrategyItemModel.cs" />
     <Compile Include="Models\TraderPro\StrategyModel.cs" />
+    <Compile Include="Models\TraderPro\TWSTradeModel.cs" />
     <Compile Include="Models\TransactionChartData.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\UpdateRealizedPLModel.cs" />
