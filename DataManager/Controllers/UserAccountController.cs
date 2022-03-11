@@ -72,6 +72,20 @@ namespace DataManager.Controllers
             return userAccountData.UpdateAfterSale(update);
         }
 
+
+        [HttpPut]
+        [Route("sale/trades")]
+        public decimal UpdateTradesAfterSale(UpdateUserAccountModel update)
+        {
+            var userAccountData = new UserAccountData();
+
+            //TODO: CHANGE HARDCODE
+            update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            //update.UserId = RequestContext.Principal.Identity.GetUserId();
+
+            return userAccountData.UpdateTradesAfterSale(update);
+        }
+
         [HttpPost]
         public void PostNewUserAccount(UserAccountModel userAccount)
         {

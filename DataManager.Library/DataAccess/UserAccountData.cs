@@ -95,6 +95,22 @@ namespace DataManager.Library.DataAccess
             }
         }
 
+        public decimal UpdateTradesAfterSale(UpdateUserAccountModel update)
+        {
+            var sql = new SqlDataAccess();
+            var p = new { UserId = update.UserId, RealizedProfitLoss = update.RealizedProfitLoss, SaleAmount = update.Amount };
+
+            try
+            {
+                var output = sql.LoadData<decimal, dynamic>("dbo.spUserAccount_UpdateTradesAfterSale", p, "StockPileData").First();
+                return output;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public void PostNewUserAccount(UserAccountModel userAccount)
         {
             var sql = new SqlDataAccess();

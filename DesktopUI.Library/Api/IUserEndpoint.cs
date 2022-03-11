@@ -8,5 +8,6 @@ namespace DesktopUI.Library.Api
     {
         Task<List<FriendModel>> FriendSearch(string searchInput);
         Task LogUser(LoggedInUserModel user);
+        Task<decimal> UpdateTradesAfterSale(decimal realizedProfitLoss, decimal cashAmount);
     }
 }

@@ -293,6 +293,8 @@ namespace DesktopUI.ViewModels.TraderPro
                         Shares = Shares
                     };
                     Transactions.Add(transaction);
+                    new Thread(() => PortfolioBuy()) { IsBackground = true }.Start();
+
                 }
                 else
                 {
@@ -399,6 +401,7 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 _cashAmount = value;
                 NotifyOfPropertyChange(() => CanBuy);
+                NotifyOfPropertyChange(() => CanSell);
             }
         }
 
@@ -534,6 +537,8 @@ namespace DesktopUI.ViewModels.TraderPro
                 _shares = value;
                 NotifyOfPropertyChange(() => Shares);
                 NotifyOfPropertyChange(() => CashAmount);
+                NotifyOfPropertyChange(() => CanBuy);
+                NotifyOfPropertyChange(() => CanSell);
             }
         }
 
@@ -639,6 +644,8 @@ namespace DesktopUI.ViewModels.TraderPro
                 _price = value;
                 NotifyOfPropertyChange(() => Price);
                 NotifyOfPropertyChange(() => CashAmount);
+                NotifyOfPropertyChange(() => CanBuy);
+                NotifyOfPropertyChange(() => CanSell);
 
             }
         }
@@ -705,9 +712,51 @@ namespace DesktopUI.ViewModels.TraderPro
             }
             else
             {
-                //await _tradePortfolioEndpoint.UpdatePortfolioBuy(stock);
+                await _tradePortfolioEndpoint.UpdatePortfolioBuy(stock);
             }
 
+        }
+
+        public async Task PortfolioSell()
+        {
+            // add transaction to table
+            var transaction = new TransactionModel
+            {
+                Ticker = ChartSymbol,
+                Buy = true,
+                Price = (decimal)Price,
+                Sell = false,
+                Shares = Shares,
+                Date = DateTime.Now
+            };
+            await _tradeTransactionEndpoint.PostTransaction(transaction);
+
+            //Update Portfolio
+            var stock = new PortfolioModel
+            {
+                Ticker = ChartSymbol,
+                Price = (decimal)Price,
+                Shares = Shares
+            };
+
+
+            // if sold shares equals shares in portfolio delete entry
+            decimal realizedProfitLoss;
+
+            if (CurrentPositionShares == Shares)
+            {
+                realizedProfitLoss = await _tradePortfolioEndpoint.UpdateAndDeletePortfolio(stock);
+            }
+            else
+            {
+                // else update exisitng position
+                realizedProfitLoss = await _tradePortfolioEndpoint.UpdatePortfolioSell(stock);
+            }
+
+            // update user account table, account balance and realizedgains
+            var result = await _userAccountEndpoint.UpdateTradesAfterSale(realizedProfitLoss, (decimal)CashAmount);
+
+            AccountBalance = Math.Round(result, 2);
         }
 
         public void Buy()

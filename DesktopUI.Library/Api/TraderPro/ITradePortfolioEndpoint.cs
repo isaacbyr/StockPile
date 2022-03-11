@@ -7,5 +7,8 @@ namespace DesktopUI.Library.Api.TraderPro
     {
         Task<PortfolioStockDashboardModel> GetPortfolioStock(string ticker);
         Task PostStock(PortfolioModel stock);
+        Task UpdatePortfolioBuy(PortfolioModel stock);
+        Task<decimal> UpdateAndDeletePortfolio(PortfolioModel stock);
+        Task<decimal> UpdatePortfolioSell(PortfolioModel stock);
     }
 }

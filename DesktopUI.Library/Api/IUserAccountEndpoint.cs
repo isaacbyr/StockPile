@@ -11,6 +11,7 @@ namespace DesktopUI.Library.Api
         Task UpdatePortfolioAccountBalance(decimal cashAmount);
         Task UpdateTradesAccountBalance(decimal cashAmount);
         Task<decimal> UpdateAfterSale(decimal realizedProfitLoss, decimal cashAmount);
+        Task<decimal> UpdateTradesAfterSale(decimal realizedProfitLoss, decimal cashAmount);
         Task PostNewUserAccount(UserAccountModel userAccount);
     }
 }

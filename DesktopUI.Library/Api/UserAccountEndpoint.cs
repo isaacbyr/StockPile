@@ -108,6 +108,28 @@ namespace DesktopUI.Library.Api
             }
         }
 
+        public async Task<decimal> UpdateTradesAfterSale(decimal realizedProfitLoss, decimal cashAmount)
+        {
+            var amount = new UpdateUserAccountModel
+            {
+                Amount = cashAmount,
+                RealizedProfitLoss = realizedProfitLoss
+            };
+
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/useraccount/sale/trades", amount))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<decimal>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
         public async Task PostNewUserAccount(UserAccountModel userAccount)
         {
             using(HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/useraccount", userAccount))

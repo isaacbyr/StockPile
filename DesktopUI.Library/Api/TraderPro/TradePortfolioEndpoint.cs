@@ -62,5 +62,37 @@ namespace DesktopUI.Library.Api.TraderPro
                 }
             }
         }
+
+        public async Task<decimal> UpdatePortfolioSell(PortfolioModel stock)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/tradesportfolio/sell", stock))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<decimal>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task<decimal> UpdateAndDeletePortfolio(PortfolioModel stock)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PutAsJsonAsync("/api/tradesportfolio/delete", stock))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<decimal>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

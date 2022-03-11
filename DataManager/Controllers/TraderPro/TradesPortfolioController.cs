@@ -53,5 +53,31 @@ namespace DataManager.Controllers.TraderPro
 
             portfolioData.UpdatePortfolioBuy(stock);
         }
+
+        [HttpPut]
+        [Route("sell")]
+        public decimal UpdatePortfolioSell(PortfolioModel stock)
+        {
+            var portfolioData = new TradesPortfolioData();
+
+            //TODO: REMOVE HARDCODE OF USER ID
+            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+
+            return portfolioData.UpdatePortfolioSell(stock);
+        }
+
+        [HttpPut]
+        [Route("{delete}")]
+        public decimal UpdateAndDeleteStock(PortfolioModel stock)
+        {
+            var portfolioData = new TradesPortfolioData();
+
+            //TODO: REMOVE HARDCODE OF USER ID
+            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+
+            return portfolioData.UpdateAndDeleteStock(stock);
+        }
     }
 }

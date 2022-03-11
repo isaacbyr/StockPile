@@ -66,6 +66,43 @@ namespace DataManager.Library.DataAccess.TraderPro
             }
         }
 
+        public decimal UpdatePortfolioSell(PortfolioModel stock)
+        {
+
+            var sql = new SqlDataAccess();
+
+            var p = new { UserId = stock.UserId, Price = stock.Price, Shares = stock.Shares, Ticker = stock.Ticker };
+
+            try
+            {
+                var realizedProfitLoss = sql.LoadData<decimal, dynamic>("dbo.spTradesPortfolio_UpdatePortfolioSell", p, "StockPileData").First();
+                return realizedProfitLoss;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public decimal UpdateAndDeleteStock(PortfolioModel stock)
+        {
+            var sql = new SqlDataAccess();
+
+            var delete_p = new { UserId = stock.UserId, Ticker = stock.Ticker };
+            var update_p = new { UserId = stock.UserId, Ticker = stock.Ticker, Price = stock.Price, Shares = stock.Shares };
+
+            try
+            {
+                var realizedProfitLoss = sql.LoadData<decimal, dynamic>("dbo.spTradesPortfolio_UpdatePortfolioSell", update_p, "StockPileData").First();
+                sql.LoadData<dynamic, dynamic>("dbo.spTradesPortfolio_DeleteStock", delete_p, "StockPileData");
+                return realizedProfitLoss;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
 
     }
 }

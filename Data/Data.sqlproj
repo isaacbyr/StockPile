@@ -119,6 +119,9 @@
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_GetStockByTicker.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_UpdatePortfolioBuy.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_PostStock.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_UpdatePortfolioSell.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_DeleteStock.sql" />
+    <Build Include="dbo\Stored Procedures\spUserAccount_UpdateTradesAfterSale.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />
