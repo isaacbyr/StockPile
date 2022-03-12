@@ -34,6 +34,8 @@ namespace DesktopUI.ViewModels.TraderPro
             Strategies = new BindingList<StrategyModel>(results);
         }
 
+
+
         private BindingList<StrategyModel> _strategiess;
 
         public BindingList<StrategyModel> Strategies

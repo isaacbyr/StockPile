@@ -31,8 +31,8 @@ namespace DesktopUI.ViewModels.TraderPro
 
         protected override async void OnViewLoaded(object view)
         {
-            await PostTWSTradeStrategy();
-            await LoadTWSStrategies();
+            //await PostTWSTradeStrategy();
+            //await LoadTWSStrategies();
         }
 
         private async Task LoadTWSStrategies()
