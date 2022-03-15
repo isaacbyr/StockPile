@@ -10,6 +10,7 @@ using DesktopUI.Library.EventModels;
 using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.ViewModels.Slack;
 using DesktopUI.ViewModels.TraderPro;
+using DesktopUI.ViewModels.Twitter;
 
 namespace DesktopUI.ViewModels
 {
@@ -35,12 +36,14 @@ namespace DesktopUI.ViewModels
         private readonly SlackTraderViewModel _slackTraderVM;
         private readonly StrategyViewModel _strategyVM;
         private readonly TradeStrategyViewModel _tradeStrategyVM;
+        private readonly TwitterScreenerViewModel _twitterScreenerVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
             SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel traderMainVM, IWindowManager window,
             PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM,
-            SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM, TradeStrategyViewModel tradeStrategyVM)
+            SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM, TradeStrategyViewModel tradeStrategyVM,
+            TwitterScreenerViewModel twitterScreenerVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -58,6 +61,7 @@ namespace DesktopUI.ViewModels
             _slackTraderVM = slackTraderVM;
             _strategyVM = strategyVM;
             _tradeStrategyVM = tradeStrategyVM;
+            _twitterScreenerVM = twitterScreenerVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
@@ -70,8 +74,8 @@ namespace DesktopUI.ViewModels
             //ActivateItem(_paperTradeVM);
             //ActivateItem(_liveTradesVM); 
             //ActivateItem(_ibVM);
-            ActivateItem(_mainMenuVM);
-            //ActivateItem(_slackTraderVM);
+            //ActivateItem(_mainMenuVM);
+            ActivateItem(_twitterScreenerVM);
         }
 
         public void Handle(LogOnEvent message)

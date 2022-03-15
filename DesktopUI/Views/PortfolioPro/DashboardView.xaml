@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="DesktopUI.Views.DashboardView"
+﻿<UserControl x:Class="DesktopUI.Views.PortfolioPro.DashboardView"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"

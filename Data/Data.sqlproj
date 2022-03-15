@@ -63,69 +63,75 @@
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="dbo\Stored Procedures\TraderPro" />
     <Folder Include="dbo\Tables\TraderPro" />
+    <Folder Include="dbo\Tables\PortfolioPro" />
+    <Folder Include="dbo\Tables\Shared" />
+    <Folder Include="dbo\Stored Procedures\PortfolioPro" />
+    <Folder Include="dbo\Stored Procedures\Shared" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\StockPileData.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\User.sql" />
-    <Build Include="dbo\Stored Procedures\spUser_GetUserById.sql" />
-    <Build Include="dbo\Tables\UserAccount.sql" />
-    <Build Include="dbo\Tables\Transactions.sql" />
-    <Build Include="dbo\Tables\Portfolio.sql" />
-    <Build Include="dbo\Tables\WatchList.sql" />
-    <Build Include="dbo\Stored Procedures\spWatchlist_LoadAllById.sql" />
-    <Build Include="dbo\Stored Procedures\spPortfolio_GetAllByUserId.sql" />
-    <Build Include="dbo\Stored Procedures\spUserAccount_GetPortfolioOverview.sql" />
-    <Build Include="dbo\Stored Procedures\spPortfolio_GetStockByTicker.sql" />
-    <Build Include="dbo\Stored Procedures\spUserAccount_UpdateAccountBalance.sql" />
-    <Build Include="dbo\Stored Procedures\spTransaction_PostTransaction.sql" />
-    <Build Include="dbo\Stored Procedures\spPortfolio_PostStock.sql" />
-    <Build Include="dbo\Stored Procedures\spPortfolio_DeleteStock.sql" />
-    <Build Include="dbo\Stored Procedures\spPortfolio_UpdatePortfolioSell.sql" />
-    <Build Include="dbo\Stored Procedures\spUserAccount_UpdateAfterSale.sql" />
-    <Build Include="dbo\Stored Procedures\spPortfolio_UpdatePortfolioBuy.sql" />
-    <Build Include="dbo\Stored Procedures\spWatchlist_InsertWatchlistStock.sql" />
-    <Build Include="dbo\Tables\RealizedProfitLoss.sql" />
-    <Build Include="dbo\Stored Procedures\spRealizedPL_PostRealizedPL.sql" />
-    <Build Include="dbo\Stored Procedures\spRealizedPL_LoadHistoryByUser.sql" />
-    <Build Include="dbo\Stored Procedures\spTransaction_LoadById.sql" />
-    <Build Include="dbo\Stored Procedures\spTransaction_LoadChartData.sql" />
-    <Build Include="dbo\Tables\Friends.sql" />
-    <Build Include="dbo\Stored Procedures\spFriends_LoadFriendsById.sql" />
-    <Build Include="dbo\Tables\FriendRequests.sql" />
-    <Build Include="dbo\Stored Procedures\spFriendRequests_LoadRequestsById.sql" />
-    <Build Include="dbo\Stored Procedures\spFriends_PostFriendship.sql" />
-    <Build Include="dbo\Stored Procedures\spFriendRequests_DeleteRequest.sql" />
-    <Build Include="dbo\Stored Procedures\spUser_FriendSearch.sql" />
-    <Build Include="dbo\Stored Procedures\spFriendRequests_NewRequest.sql" />
-    <Build Include="dbo\Stored Procedures\spRealizedPL_LoadById.sql" />
-    <Build Include="dbo\Stored Procedures\spTransaction_LoadDashboardById.sql" />
-    <Build Include="dbo\Stored Procedures\spUser_InsertNewUser.sql" />
-    <Build Include="dbo\Stored Procedures\spUserAccount_AddNewUserAccount.sql" />
     <Build Include="dbo\Tables\TraderPro\Strategies.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_PostStrategy.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_GetStrategyId.sql" />
     <Build Include="dbo\Tables\TraderPro\StrategyItem.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_GetAllStrategies.sql" />
-    <Build Include="dbo\Stored Procedures\spStrategyItem_Post.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spStrategy_GetAllStrategyStocks.sql" />
-    <Build Include="dbo\Stored Procedures\spUserAccount_LoadTradesAccountBalance.sql" />
     <Build Include="dbo\Tables\TraderPro\TradesPortfolio.sql" />
     <Build Include="dbo\Tables\TraderPro\TradesRealizedProtitLoss.sql" />
     <Build Include="dbo\Tables\TraderPro\TradeTransaction.sql" />
-    <Build Include="dbo\Stored Procedures\spUserAccount_UpdateTradesAccountBalance.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradeTransaction_PostTransaction.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_GetStockByTicker.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_UpdatePortfolioBuy.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_PostStock.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_UpdatePortfolioSell.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_DeleteStock.sql" />
-    <Build Include="dbo\Stored Procedures\spUserAccount_UpdateTradesAfterSale.sql" />
     <Build Include="dbo\Tables\TraderPro\TWSTradingStrategies.sql" />
     <Build Include="dbo\Tables\TraderPro\TWSTrading.sql" />
+    <Build Include="dbo\Tables\PortfolioPro\FriendRequests.sql" />
+    <Build Include="dbo\Tables\PortfolioPro\Friends.sql" />
+    <Build Include="dbo\Tables\PortfolioPro\Portfolio.sql" />
+    <Build Include="dbo\Tables\PortfolioPro\RealizedProfitLoss.sql" />
+    <Build Include="dbo\Tables\PortfolioPro\Transactions.sql" />
+    <Build Include="dbo\Tables\PortfolioPro\WatchList.sql" />
+    <Build Include="dbo\Tables\Shared\User.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spFriendRequests_DeleteRequest.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spFriendRequests_LoadRequestsById.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spFriendRequests_NewRequest.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spFriends_LoadFriendsById.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spFriends_PostFriendship.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spPortfolio_DeleteStock.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spPortfolio_GetAllByUserId.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spPortfolio_GetStockByTicker.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spPortfolio_PostStock.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spPortfolio_UpdatePortfolioBuy.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spPortfolio_UpdatePortfolioSell.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spRealizedPL_LoadById.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spRealizedPL_LoadHistoryByUser.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spRealizedPL_PostRealizedPL.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spTransaction_LoadById.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spTransaction_LoadChartData.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spTransaction_LoadDashboardById.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spTransaction_PostTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spWatchlist_LoadAllById.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spWatchlist_InsertWatchlistStock.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUser_GetUserById.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spStrategyItem_Post.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Shared\UserAccount.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUser_InsertNewUser.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUserAccount_AddNewUserAccount.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUserAccount_GetPortfolioOverview.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUserAccount_LoadTradesAccountBalance.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUserAccount_UpdateAccountBalance.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUserAccount_UpdateAfterSale.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUserAccount_UpdateTradesAccountBalance.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUserAccount_UpdateTradesAfterSale.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUser_FriendSearch.sql" />
   </ItemGroup>
 </Project>

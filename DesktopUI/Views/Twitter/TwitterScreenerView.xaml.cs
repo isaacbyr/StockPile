@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DesktopUI.Views
+namespace DesktopUI.Views.Twitter
 {
     /// <summary>
-    /// Interaction logic for DashboardView.xaml
+    /// Interaction logic for TwitterScreenerView.xaml
     /// </summary>
-    public partial class DashboardView : UserControl
+    public partial class TwitterScreenerView : UserControl
     {
-        public DashboardView()
+        public TwitterScreenerView()
         {
             InitializeComponent();
-        }
-
-        private void PortfolioStocks_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }
