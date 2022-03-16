@@ -24,5 +24,14 @@ namespace DataManager.Controllers.TraderPro
 
             transactionData.PostTransaction(transaction);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public List<SocialDashboardDataModel> LoadById(string id)
+        {
+            var transactionData = new TradeTransactionData();
+
+            return transactionData.LoadDashboardById(id);
+        }
     }
 }

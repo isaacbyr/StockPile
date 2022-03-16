@@ -66,6 +66,22 @@ namespace DesktopUI.Library.Api
             }
         }
 
+        public async Task<UserPortfolioOverviewModel> GetTradesPortfolioOverview()
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/useraccount/trades"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<UserPortfolioOverviewModel>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
         public async Task UpdatePortfolioAccountBalance(decimal cashAmount)
         {
             var amount = new UpdateUserAccountModel

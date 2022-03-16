@@ -34,7 +34,7 @@ namespace DesktopUI.Library.Api.TraderPro
 
         public async Task<List<TWSTradeModel>> LoadStrategies()
         {
-            using(HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/aoi/tswtrading"))
+            using(HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/tswtrading"))
             {
                 if (response.IsSuccessStatusCode)
                 {

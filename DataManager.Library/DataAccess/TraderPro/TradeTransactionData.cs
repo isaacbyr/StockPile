@@ -26,5 +26,22 @@ namespace DataManager.Library.DataAccess.TraderPro
                 throw new Exception(e.Message);
             }
         }
+
+        public List<SocialDashboardDataModel> LoadDashboardById(string id)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { Id = id };
+
+            try
+            {
+                var output = sql.LoadData<SocialDashboardDataModel, dynamic>("dbo.spTradeTransaction_LoadDashboardById", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

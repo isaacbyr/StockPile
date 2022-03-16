@@ -218,7 +218,7 @@ namespace DesktopUI.ViewModels
         private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Interval = TimeSpan.FromSeconds(10);
             timer.Tick += Tickevent;
             timer.Start();
         }
@@ -463,7 +463,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private BindingList<PortfolioStockDisplayModel> _portfolioStocks;
 
         public BindingList<PortfolioStockDisplayModel> PortfolioStocks
@@ -538,7 +537,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private decimal _startAmount;
 
         public decimal StartAmount
@@ -562,7 +560,6 @@ namespace DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => NumHoldings);
             }
         }
-
 
         private string _leftChartStock;
 

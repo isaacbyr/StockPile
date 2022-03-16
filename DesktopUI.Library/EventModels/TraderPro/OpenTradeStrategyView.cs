@@ -16,8 +16,10 @@ namespace DesktopUI.Library.EventModels.TraderPro
         public string Indicator { get; set; }
         public string Interval { get; set; }
         public string Range { get; set; }
+        public bool AddNew { get; set; }
 
-        public OpenTradeStrategyView(string ticker, int buyShares, int sellShares, string ma1, string ma2, string indicator, string interval, string range)
+        public OpenTradeStrategyView(string ticker, int buyShares, int sellShares, string ma1, string ma2, string indicator, 
+            string interval, string range, bool addNew)
         {
             Ticker = ticker;
             BuyShares = buyShares;
@@ -27,6 +29,11 @@ namespace DesktopUI.Library.EventModels.TraderPro
             Indicator = indicator;
             Interval = interval;
             Range = range;
+            AddNew = addNew;
+        }
+        public OpenTradeStrategyView(bool addNew)
+        {
+            AddNew = addNew;
         }
 
 

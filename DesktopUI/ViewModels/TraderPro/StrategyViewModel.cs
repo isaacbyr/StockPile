@@ -195,7 +195,7 @@ namespace DesktopUI.ViewModels.TraderPro
             _events.PublishOnUIThread(
                 new OpenTradeStrategyView(
                     SelectedStock.Ticker, SelectedStock.BuyShares, SelectedStock.SellShares,
-                    SelectedMA1, SelectedMA2, SelectedIndicator, SelectedInterval, SelectedRange));
+                    SelectedMA1, SelectedMA2, SelectedIndicator, SelectedInterval, SelectedRange, true));
         }
 
         public void TradeCrossovers()

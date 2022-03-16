@@ -23,6 +23,20 @@ namespace DataManager.Controllers
             return userAccountData.LoadPortfolioOverview(id);
         }
 
+        [HttpGet]
+        [Route("trades")]
+        public UserPortfolioOverviewModel LoadTradesPortfolioOverview()
+        {
+            var userAccountData = new UserAccountData();
+
+            //TODO: REMOVE HARDCODE OF USER ID
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+
+            return userAccountData.LoadTradesPortfolioOverview(id);
+        }
+
+
         [HttpPut]
         [Route("updatebalance/portfolio")]
         public void UpdatePortfolioAccountBalance(UpdateUserAccountModel update)

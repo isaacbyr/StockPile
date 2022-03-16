@@ -118,6 +118,9 @@
     <Build Include="dbo\Stored Procedures\PortfolioPro\spWatchlist_InsertWatchlistStock.sql" />
     <Build Include="dbo\Stored Procedures\Shared\spUser_GetUserById.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spStrategyItem_Post.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_GetAllByUserId.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spUserAccount_GetTradesPortfolioOverview.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradeTransaction_LoadDashboardById.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

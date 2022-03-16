@@ -267,6 +267,8 @@ namespace DesktopUI.ViewModels.TraderPro
                         Shares = Shares
                     };
                     Transactions.Add(transaction);
+                    new Thread(() => PortfolioSell()) { IsBackground = true }.Start();
+
                 }
                 else
                 {
@@ -315,6 +317,8 @@ namespace DesktopUI.ViewModels.TraderPro
                         Shares = Shares
                     };
                     Transactions.Add(transaction);
+                    new Thread(() => PortfolioSell()) { IsBackground = true }.Start();
+
                 }
                 else
                 {

@@ -18,7 +18,9 @@ namespace DataManager.Controllers
         {
             var watchlistData = new WatchlistData();
 
-            string id = RequestContext.Principal.Identity.GetUserId();
+            //TODO: REMOVE HARDCODE OF USER ID
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return watchlistData.LoadWatchlistStocksById(id);
         }

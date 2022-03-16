@@ -15,6 +15,18 @@ namespace DataManager.Controllers.TraderPro
     {
 
         [HttpGet]
+        public List<PortfolioStockDashboardModel> LoadPortfolioStocks()
+        {
+            var portfolioData = new TradesPortfolioData();
+
+            //TODO: REMOVE HARDCODE OF USER ID
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+
+            return portfolioData.LoadPortfolio(id);
+        }
+
+        [HttpGet]
         [Route("{ticker}")]
         public PortfolioStockDashboardModel GetPortfolioStock(string ticker)
         {

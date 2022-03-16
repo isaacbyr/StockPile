@@ -37,13 +37,14 @@ namespace DesktopUI.ViewModels
         private readonly StrategyViewModel _strategyVM;
         private readonly TradeStrategyViewModel _tradeStrategyVM;
         private readonly TwitterScreenerViewModel _twitterScreenerVM;
+        private readonly TraderProDashboardViewModel _tradeProDashboardVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
             SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel traderMainVM, IWindowManager window,
             PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM,
             SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM, TradeStrategyViewModel tradeStrategyVM,
-            TwitterScreenerViewModel twitterScreenerVM)
+            TwitterScreenerViewModel twitterScreenerVM, TraderProDashboardViewModel tradeProDashboardVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -62,6 +63,7 @@ namespace DesktopUI.ViewModels
             _strategyVM = strategyVM;
             _tradeStrategyVM = tradeStrategyVM;
             _twitterScreenerVM = twitterScreenerVM;
+            _tradeProDashboardVM = tradeProDashboardVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
@@ -75,7 +77,8 @@ namespace DesktopUI.ViewModels
             //ActivateItem(_liveTradesVM); 
             //ActivateItem(_ibVM);
             //ActivateItem(_mainMenuVM);
-            ActivateItem(_twitterScreenerVM);
+            ActivateItem(_tradeProDashboardVM);
+            //ActivateItem(_twitterScreenerVM);
         }
 
         public void Handle(LogOnEvent message)
@@ -161,14 +164,25 @@ namespace DesktopUI.ViewModels
 
         public void Handle(OpenTradeStrategyView message)
         {
-            _tradeStrategyVM.Ticker = message.Ticker;
-            _tradeStrategyVM.BuyShares = message.BuyShares;
-            _tradeStrategyVM.SellShares = message.SellShares;
-            _tradeStrategyVM.Indicator = message.Indicator;
-            _tradeStrategyVM.Interval = message.Interval;
-            _tradeStrategyVM.MA1 = message.MA1;
-            _tradeStrategyVM.MA2 = message.MA2;
-            _tradeStrategyVM.Range = message.Range;
+
+            if(message.AddNew == true)
+            {
+                _tradeStrategyVM.Ticker = message.Ticker;
+                _tradeStrategyVM.BuyShares = message.BuyShares;
+                _tradeStrategyVM.SellShares = message.SellShares;
+                _tradeStrategyVM.Indicator = message.Indicator;
+                _tradeStrategyVM.Interval = message.Interval;
+                _tradeStrategyVM.MA1 = message.MA1;
+                _tradeStrategyVM.MA2 = message.MA2;
+                _tradeStrategyVM.Range = message.Range;
+                _tradeStrategyVM.AddNew = true;
+            }
+            else
+            {
+                _tradeStrategyVM.AddNew = false;
+            }
+
+
 
             ActivateItem(_tradeStrategyVM);
         }

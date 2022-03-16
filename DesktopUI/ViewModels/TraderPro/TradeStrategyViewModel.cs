@@ -15,8 +15,13 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly ITWSTradingEndpoint _tWSTradingEndpoint;
 
 
+        public TradeStrategyViewModel(bool addNew)
+        {
+            AddNew = addNew;
+        }
+
         public TradeStrategyViewModel(string ticker, int buyShares, int sellShares, string ma1, string ma2, 
-            string indicator, string interval, string range, ITWSTradingEndpoint tWSTradingEndpoint)
+            string indicator, string interval, string range, bool addNew , ITWSTradingEndpoint tWSTradingEndpoint)
         {
             Ticker = ticker;
             BuyShares = buyShares;
@@ -25,13 +30,18 @@ namespace DesktopUI.ViewModels.TraderPro
             MA2 = ma2;
             Indicator = indicator;
             Interval = interval;
+            AddNew = addNew;
             Range = range;
             _tWSTradingEndpoint = tWSTradingEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
         {
-            //await PostTWSTradeStrategy();
+            if(AddNew == true)
+            {
+                await PostTWSTradeStrategy();
+
+            }
             //await LoadTWSStrategies();
         }
 
@@ -58,6 +68,17 @@ namespace DesktopUI.ViewModels.TraderPro
             await _tWSTradingEndpoint.PostTWSStategy(trade);
         }
 
+        private bool _addNew;
+
+        public bool AddNew
+        {
+            get { return _addNew; }
+            set 
+            {
+                _addNew = value;
+                NotifyOfPropertyChange(() => AddNew);
+            }
+        }
 
         private BindingList<TWSTradeModel> _strategies;
 

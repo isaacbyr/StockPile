@@ -17,6 +17,22 @@ namespace DesktopUI.Library.Api.TraderPro
             _apiHelper = apiHelper;
         }
 
+        public async Task<List<PortfolioStockDashboardModel>> LoadPortfolioStocks()
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/tradesportfolio"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<PortfolioStockDashboardModel>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
         public async Task<PortfolioStockDashboardModel> GetPortfolioStock(string ticker)
         {
             using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/tradesportfolio/{ticker}"))

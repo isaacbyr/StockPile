@@ -31,5 +31,21 @@ namespace DesktopUI.Library.Api.TraderPro
                 }
             }
         }
+
+        public async Task<List<SocialDashboardDataModel>> LoadTransactionsById(string id)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/tradetransaction/{id}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<SocialDashboardDataModel>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

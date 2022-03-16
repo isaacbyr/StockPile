@@ -1121,6 +1121,7 @@ namespace DesktopUI.ViewModels.TraderPro
             
         }
 
+
         public void OpenStrategies()
         {
             _events.PublishOnUIThread(new OpenStrategiesView());

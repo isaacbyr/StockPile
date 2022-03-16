@@ -1,16 +1,15 @@
-﻿<UserControl x:Class="DesktopUI.Views.PortfolioPro.DashboardView"
-             xmlns:cal="http://www.caliburnproject.org"
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+﻿<UserControl x:Class="DesktopUI.Views.TraderPro.TraderProDashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:cal="http://www.caliburnproject.org"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DesktopUI.Views"
              xmlns:converters="clr-namespace:DesktopUI.Converters"
-             mc:Ignorable="d" Background="Transparent"
-              FontFamily="Microsoft Sans Serif" Foreground="White"
+             xmlns:local="clr-namespace:DesktopUI.Views.TraderPro"
+             mc:Ignorable="d"
+             Foreground="White"
              d:DesignHeight="800" d:DesignWidth="1400">
-   
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -32,45 +31,47 @@
                 <RowDefinition Height="150"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            
+
             <!--Header-->
-            <TextBlock Text="StockPile" FontSize="40"
+            <TextBlock Text="TraderPro" FontSize="40"
                        HorizontalAlignment="Center" FontWeight="Bold"
                        VerticalAlignment="Center"></TextBlock>
-            
+
             <!--Menu-->
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                   <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="0"
-                            Content="Social" x:Name="OpenSocial"></Button>
+                            Content="Main Menu" x:Name="Menu">
+                    </Button>
+                 
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="1"
-                            Content="Performance" x:Name="Performance"></Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="2" x:Name="BuyStocks"
-                            Content="Buy Stocks"></Button>
+                            Content="Paper Trade" x:Name="PaperTrade"></Button>
                     <Button Background="SteelBlue" Margin="0 10 2 10"
-                            Foreground="White" Grid.Column="3"
-                            Content="Account"></Button>
+                            Foreground="White" Grid.Column="2" x:Name="PaperTradeLive"
+                            Content="Paper Trade (Live)"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="4"
-                            Content="Logout"></Button>
+                            Foreground="White" Grid.Column="3" x:Name="OpenStrategies"
+                            Content="Strategies"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="4" x:Name="TWSStrategies"
+                            Content=" TWS Strategies"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="5"
-                            Content="Exit"></Button>
+                            Content="Trade Crossovers" x:Name="TradeCrossovers">
+                    </Button>
                 </Grid>
             </StackPanel>
 
@@ -97,7 +98,7 @@
                         <TextBlock TextDecorations="Underline" HorizontalAlignment="Center" Grid.Row="0" Text="Portfolio Stocks" Margin="0 5 0 0" FontSize="16"></TextBlock>
                         <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                           x:Name="PortfolioStocks" BorderBrush="Transparent"
-                                  SelectedItem="{Binding SelectedPortfolioStock}" SelectionChanged="PortfolioStocks_SelectionChanged">
+                                  SelectedItem="{Binding SelectedPortfolioStock}" >
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="65">
@@ -140,7 +141,7 @@
                                     <Setter Property="cal:Message.Attach"
                                             Value="[Event MouseDoubleClick] = [Action LoadPortfolioStockView()]"></Setter>
                                 </Style>
-                             
+
                             </ListView.ItemContainerStyle>
 
                         </ListView>
@@ -152,7 +153,7 @@
             <!--Watchlist sidebar-->
             <Border CornerRadius="18" Grid.Row="6" Grid.RowSpan="4"
                     Background="#1D2D44" Margin="10 5 5 10">
-                
+
                 <StackPanel Orientation="Vertical" Grid.Column="0"
                             Grid.Row="0">
                     <Grid>
@@ -208,7 +209,7 @@
                                 </Style>
 
                             </ListView.ItemContainerStyle>
-                            
+
                         </ListView>
                         <StackPanel Grid.Row="2" Margin="25 5 25 0">
                             <Grid>
@@ -223,7 +224,7 @@
                     </Grid>
                 </StackPanel>
             </Border>
-            
+
             <!--Spy Chart Border-->
             <Border Background="#1D2D44" Grid.Column="1" Grid.Row="6"
                     Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="5 5 5 10"
@@ -255,20 +256,20 @@
                               Padding="0 0 0 0"  VerticalContentAlignment="Center"
                                 x:Name="SearchLeftChart"></Button>
                         </Grid>
-                    
+
                     </StackPanel>
-                    <lvc:CartesianChart Foreground="Black" Grid.Row="1" Grid.Column="0" Margin="5 0 15 18" Series="{Binding SpySeriesCollection}">
+                    <lvc:CartesianChart Foreground="Black" Grid.Row="1" Grid.Column="0" Margin="5 0 15 18" Series="{Binding LeftSeriesCollection}">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Labels="{Binding SpyLabels}" LabelsRotation="60">
+                            <lvc:Axis Labels="{Binding LeftLabels}" LabelsRotation="60">
                                 <lvc:Axis.Separator>
                                     <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
-                                   </lvc:Axis.Separator>
+                                </lvc:Axis.Separator>
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Price">
                                 <lvc:Axis.Separator>
-                                <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
+                                    <lvc:Separator Step="10" StrokeThickness="0.2"></lvc:Separator>
                                 </lvc:Axis.Separator>
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisY>
@@ -297,7 +298,7 @@
                         <RowDefinition Height="35"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    
+
                     <StackPanel Grid.Column="0" Grid.Row="0" Margin="0 0 0 0">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -319,18 +320,18 @@
                     </StackPanel>
 
                     <!--Chart-->
-                    <lvc:CartesianChart Foreground="Black" Grid.Row="1" Grid.Column="0" Margin="5 0 15 18" Series="{Binding DowSeriesCollection}">
+                    <lvc:CartesianChart Foreground="Black" Grid.Row="1" Grid.Column="0" Margin="5 0 15 18" Series="{Binding RightSeriesCollection}">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Labels="{Binding DowLabels}" LabelsRotation="60">
+                            <lvc:Axis Labels="{Binding RightLabels}" LabelsRotation="60">
                                 <lvc:Axis.Separator>
-                                    <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
+                                    <lvc:Separator StrokeThickness="0.2" Step="5"></lvc:Separator>
                                 </lvc:Axis.Separator>
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Price">
                                 <lvc:Axis.Separator>
-                                    <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
+                                    <lvc:Separator StrokeThickness="0.2" Step="200" ></lvc:Separator>
                                 </lvc:Axis.Separator>
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisY>
@@ -343,7 +344,7 @@
                     CornerRadius="18">
                 
             </Border>-->
-            
+
             <!--Daily Gainers-->
             <Border Grid.Column="5" Grid.Row="6" Grid.RowSpan="3"
                     Margin="5 5 10 10" Background="#1D2D44"
@@ -394,12 +395,12 @@
                                     </GridViewColumn>
                                 </GridView>
                             </ListView.View>
-                            <ListView.Resources>
+                            <!--<ListView.Resources>
                                 <converters:WatchlistItemColorConverter x:Key="WatchlistItemColorConverter"></converters:WatchlistItemColorConverter>
-                            </ListView.Resources>
+                            </ListView.Resources>-->
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
-                                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource WatchlistItemColorConverter}}"></Setter>
+                                    <Setter Property="Foreground" Value="#03AC13"></Setter>
                                     <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                     <Setter Property="HorizontalAlignment" Value="Center"></Setter>
                                 </Style>
@@ -407,7 +408,7 @@
                             </ListView.ItemContainerStyle>
 
                         </ListView>
-                        
+
                         <!--Refres Button-->
                         <Button x:Name="RefreshDailyGainers" Grid.Row="2" Margin="0 2 0 0" MaxWidth="60" MinWidth="60" Content="Refresh" Background="SteelBlue" Foreground="White"></Button>
                     </Grid>
@@ -441,9 +442,9 @@
                     <Button Content="View More" Foreground="White" Background="SteelBlue"
                             Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" x:Name="ViewMorePortoflioSummary"
                             Margin="30 10 18 10"></Button>
-                    
+
                     <!--Stats-->
-                    
+
                     <!--Starting Amount-->
                     <TextBlock Text="Starting Amount:" Grid.Column="0" Grid.Row="1"
                                VerticalAlignment="Center" HorizontalAlignment="Right"
@@ -471,7 +472,7 @@
                                Margin="0 0 5 0"></TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center"
                                HorizontalAlignment="Left" Text="{Binding UnrealizedProfitLoss}"></TextBlock>
-                   
+
                     <!--Realized Profit Loss-->
                     <TextBlock Text="Realized P/L:" Grid.Column="2" Grid.Row="2"
                                VerticalAlignment="Center" HorizontalAlignment="Right"
@@ -483,15 +484,15 @@
                     <TextBlock Text="Asset Allocation" Grid.Column="0" FontSize="15"
                                Grid.Row="4" VerticalAlignment="Bottom" Grid.ColumnSpan="2"
                                HorizontalAlignment="Center" Margin="10 0 0 0">
-                        
+
                     </TextBlock>
-                    
+
                     <!--Pie Chart-->
                     <lvc:PieChart Grid.Column="0" Grid.ColumnSpan="2" Margin="10 10 10 10" Foreground="Black"
                                   Grid.Row="5" Series="{Binding PieSeriesCollection}">
-                        
+
                     </lvc:PieChart>
-                    
+
                     <!--Top Holdings-->
                     <TextBlock Text="Top Holdings" Grid.Column="2" Grid.Row="4"
                                VerticalAlignment="Bottom" Grid.ColumnSpan="2"
@@ -508,7 +509,7 @@
                     </lvc:CartesianChart>
                 </Grid>
             </Border>
-       
+
             <!--News Border-->
             <Border CornerRadius="18" Background="#1D2D44"
                     Margin="5 10 10 5" Grid.Column="3"
@@ -557,7 +558,7 @@
                             Value="[Event MouseDoubleClick] = [Action Article_View()]"></Setter>
                             </Style>
                         </ListBox.ItemContainerStyle>
-                        
+
                     </ListBox>
                 </Grid>
             </Border>
@@ -615,7 +616,7 @@
                     </ListBox>
                 </Grid>
             </Border>
-            
+
             <!--Daily Losers-->
             <Border CornerRadius="18" Background="#1d2d44" 
                     Margin="5 5 10 5" Grid.Column="5" Grid.Row="3"
@@ -665,12 +666,12 @@
                                     </GridViewColumn>
                                 </GridView>
                             </ListView.View>
-                            <ListView.Resources>
+                            <!--<ListView.Resources>
                                 <converters:WatchlistItemColorConverter x:Key="WatchlistItemColorConverter"></converters:WatchlistItemColorConverter>
-                            </ListView.Resources>
+                            </ListView.Resources>-->
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
-                                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource WatchlistItemColorConverter}}"></Setter>
+                                    <Setter Property="Foreground" Value="Red"></Setter>
                                     <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                     <Setter Property="HorizontalAlignment" Value="Center"></Setter>
                                 </Style>
@@ -678,7 +679,7 @@
                             </ListView.ItemContainerStyle>
 
                         </ListView>
-                        
+
                         <!--Refresh Button-->
                         <Button x:Name="RefreshDailyLosers" Grid.Row="2" Margin="0 2 0 0" MaxWidth="60" MinWidth="60" Content="Refresh" Background="SteelBlue" Foreground="White"></Button>
 
@@ -688,5 +689,4 @@
 
         </Grid>
     </Border>
-
 </UserControl>

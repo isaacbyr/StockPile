@@ -27,6 +27,24 @@ namespace DataManager.Library.DataAccess
             }
         }
 
+        public UserPortfolioOverviewModel LoadTradesPortfolioOverview(string id)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { UserId = id };
+
+            try
+            {
+                var output = sql.LoadData<UserPortfolioOverviewModel, dynamic>("dbo.spUserAccount_GetTradesPortfolioOverview", p, "StockPileData").First();
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
         public void UpdatePortfolioAccountBalance(UpdateUserAccountModel update)
         {
             var sql = new SqlDataAccess();
