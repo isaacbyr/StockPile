@@ -32,6 +32,7 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly IUserAccountEndpoint _userAccountEndpoint;
         private readonly ITradePortfolioEndpoint _tradePortfolioEndpoint;
         private readonly ITradeTransactionEndpoint _tradeTransactionEndpoint;
+        private readonly ITradeRealizedPLEndpoint _tradeRealizedPLEndpoint;
 
         public List<string> Labels { get; set; }
         public ChartValues<OhlcPoint> Values { get; set; }
@@ -43,13 +44,14 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public LiveTradesViewModel(IPolygonDataEndpoint polygonDataEndpoint, IEventAggregator events, 
             IUserAccountEndpoint userAccountEndpoint, ITradePortfolioEndpoint tradePortfolioEndpoint,
-            ITradeTransactionEndpoint tradeTransactionEndpoint)
+            ITradeTransactionEndpoint tradeTransactionEndpoint, ITradeRealizedPLEndpoint tradeRealizedPLEndpoint)
         {
            _polygonDataEndpoint = polygonDataEndpoint;
             _events = events;
             _userAccountEndpoint = userAccountEndpoint;
             _tradePortfolioEndpoint = tradePortfolioEndpoint;
             _tradeTransactionEndpoint = tradeTransactionEndpoint;
+            _tradeRealizedPLEndpoint = tradeRealizedPLEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -108,8 +110,9 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             Console.WriteLine("Connected!");
             ws.Send("{\"action\":\"auth\",\"params\":\"g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1\"}");
-            ws.Send("{\"action\":\"subscribe\",\"params\":\"A.AAPL\"}");
+            ws.Send("{\"action\":\"subscribe\",\"params\":\"A.*\"}");
         }
+
 
         private void ws_MessageRecieved(object sender, MessageReceivedEventArgs e)
         {
@@ -558,15 +561,11 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private double _profitLoss;
-
-        public double ProfitLoss
+        public decimal ProfitLoss
         {
-            get { return _profitLoss; }
-            set
-            {
-                _profitLoss = value;
-                NotifyOfPropertyChange(() => ProfitLoss);
+            get
+            { 
+                return Math.Round((CurrentPositionAveragePrice - (decimal)Price) * CurrentPositionShares, 2);
             }
         }
 
@@ -658,7 +657,7 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             get
             {
-                if (CashAmount < (double)AccountBalance) return true;
+                if (CashAmount < (double)AccountBalance && Shares > 0) return true;
                 else return false;
             }
         }
@@ -719,6 +718,9 @@ namespace DesktopUI.ViewModels.TraderPro
                 await _tradePortfolioEndpoint.UpdatePortfolioBuy(stock);
             }
 
+            await ResetBuyPanel();
+            await LoadAccountBalance();
+
         }
 
         public async Task PortfolioSell()
@@ -727,9 +729,9 @@ namespace DesktopUI.ViewModels.TraderPro
             var transaction = new TransactionModel
             {
                 Ticker = ChartSymbol,
-                Buy = true,
+                Buy = false,
                 Price = (decimal)Price,
-                Sell = false,
+                Sell = true,
                 Shares = Shares,
                 Date = DateTime.Now
             };
@@ -761,6 +763,12 @@ namespace DesktopUI.ViewModels.TraderPro
             var result = await _userAccountEndpoint.UpdateTradesAfterSale(realizedProfitLoss, (decimal)CashAmount);
 
             AccountBalance = Math.Round(result, 2);
+
+            // update profit loss table
+            await _tradeRealizedPLEndpoint.PostProfitLoss(realizedProfitLoss);
+
+            await ResetBuyPanel();
+            await LoadAccountBalance();
         }
 
         public void Buy()
@@ -771,6 +779,13 @@ namespace DesktopUI.ViewModels.TraderPro
         public void Sell()
         {
             SellShares = true;
+        }
+
+        private async Task ResetBuyPanel()
+        {
+            Shares = 0;
+            CashAmount = 0;
+            await LoadPortfolioOverview(ChartSymbol);
         }
 
         public void TradeCrossovers()

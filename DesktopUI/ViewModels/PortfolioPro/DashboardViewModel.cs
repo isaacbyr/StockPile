@@ -621,7 +621,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private BindingList<NewsArticleModel> _articles;
 
         public BindingList<NewsArticleModel> Articles

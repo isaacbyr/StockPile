@@ -99,6 +99,8 @@
     <Compile Include="Api\PortfolioPro\INewsEndpoint.cs" />
     <Compile Include="Api\PortfolioPro\IPortfolioEndpoint.cs" />
     <Compile Include="Api\PortfolioPro\IRealizedProfitLossEndpoint.cs" />
+    <Compile Include="Api\TraderPro\ITradeRealizedPLEndpoint.cs" />
+    <Compile Include="Api\TraderPro\TradeRealizedPLEndpoint.cs" />
     <Compile Include="Api\Yahoo Finance\IStockDataEndpoint.cs" />
     <Compile Include="Api\PortfolioPro\ITransactionEndoint.cs" />
     <Compile Include="Api\Shared\IUserAccountEndpoint.cs" />
@@ -130,6 +132,8 @@
     <Compile Include="EventModels\TraderPro\OpenPaperTradeLiveView.cs" />
     <Compile Include="EventModels\TraderPro\OpenPaperTradeView.cs" />
     <Compile Include="EventModels\TraderPro\OpenStrategiesView.cs" />
+    <Compile Include="EventModels\TraderPro\OpenTraderDashboardView.cs" />
+    <Compile Include="EventModels\TraderPro\OpenTraderPerformanceView.cs" />
     <Compile Include="EventModels\TraderPro\OpenTradeStrategyView.cs" />
     <Compile Include="Models\PortfolioPro\FriendDisplayModel.cs" />
     <Compile Include="Models\PortfolioPro\FriendModel.cs" />

@@ -45,6 +45,7 @@ namespace DesktopUI
                 .Singleton<ITWSTradingEndpoint, TWSTradingEndpoint>()
                 .Singleton<ITradePortfolioEndpoint, TradePortfolioEndpoint>()
                 .Singleton<ITradeTransactionEndpoint, TradeTransactionEndpoint>()
+                .Singleton<ITradeRealizedPLEndpoint, TradeRealizedPLEndpoint>()
                 .Singleton<IEventAggregator, EventAggregator>();
 
             GetType().Assembly.GetTypes()

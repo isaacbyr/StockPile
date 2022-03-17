@@ -622,6 +622,60 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private string _searchInputLeftChart;
+
+        public string SearchInputLeftChart
+        {
+            get { return _searchInputLeftChart; }
+            set
+            {
+                _searchInputLeftChart = value;
+                NotifyOfPropertyChange(() => SearchInputLeftChart);
+            }
+        }
+
+        private string _searchInputRightChart;
+
+        public string SearchInputRightChart
+        {
+            get { return _searchInputRightChart; }
+            set
+            {
+                _searchInputRightChart = value;
+                NotifyOfPropertyChange(() => SearchInputRightChart);
+            }
+        }
+
+
+        public async Task RefreshWatchlist()
+        {
+            await LoadWatchListData();
+        }
+
+        public async Task RefreshPortfolio()
+        {
+            await LoadPortfolioData();
+        }
+
+        public async Task SearchLeftChart()
+        {
+            await LoadLeftChartData(SearchInputLeftChart);
+        }
+
+        public async Task SearchRightChart()
+        {
+            await LoadRightChartData(SearchInputRightChart);
+        }
+
+        public void Performance()
+        {
+            _events.PublishOnUIThread(new OpenTraderPerformanceView());
+        }
+
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
 
         public void TradeCrossovers()
         {

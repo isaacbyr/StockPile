@@ -27,6 +27,7 @@ namespace DesktopUI.ViewModels
         private readonly TransactionInfoViewModel _transactionInfoVM;
         private readonly IWatchListEndpoint _watchlistEndpoint;
         private readonly IApiHelper _apiHelper;
+        private readonly IRealizedProfitLossEndpoint _realizedPLEndpoint;
 
         public string TickerOnLoad { get; set; } = "AAPL";
         public SeriesCollection SeriesCollection { get; set; }
@@ -35,7 +36,7 @@ namespace DesktopUI.ViewModels
         public PortfolioStockViewModel(IStockDataEndpoint stockDataEndpoint, IEventAggregator events,
             IUserAccountEndpoint userAccountEndpoint, IPortfolioEndpoint portfolioEndpoint,
             ITransactionEndoint transactionEndpoint, IWindowManager window, TransactionInfoViewModel transactionInfoVM,
-            IWatchListEndpoint watchlistEndpoint, IApiHelper apiHelper)
+            IWatchListEndpoint watchlistEndpoint, IApiHelper apiHelper, IRealizedProfitLossEndpoint realizedPLEndpoint)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _events = events;
@@ -46,6 +47,7 @@ namespace DesktopUI.ViewModels
             _transactionInfoVM = transactionInfoVM;
             _watchlistEndpoint = watchlistEndpoint;
             _apiHelper = apiHelper;
+            _realizedPLEndpoint = realizedPLEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -592,8 +594,12 @@ namespace DesktopUI.ViewModels
 
             // update user account table, account balance and realizedgains
             var result = await _userAccountEndpoint.UpdateAfterSale(realizedProfitLoss, CashAmount);
-            
+
             AccountBalance = Math.Round(result,2);
+
+            // update profit loss table
+            await _realizedPLEndpoint.PostProfitLoss(realizedProfitLoss);
+
             DisplayTransactionCompletion("Transaction Complete",$"Sold {NewPositionShares} shares of {ChartSymbol} for {ChartPrice}");
             await ResetBuyPanel();
 

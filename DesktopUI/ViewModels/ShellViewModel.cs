@@ -18,7 +18,7 @@ namespace DesktopUI.ViewModels
         IHandle<OpenPortfolioSummaryView>, IHandle<OpenSocialView>, IHandle<OpenRegisterView>, IHandle<OpenLoginView>, IHandle<LogOffEvent>,
         IHandle<ExitAppEvent>, IHandle<LaunchPortoflioProEvent>, IHandle<LaunchTraderProEvent>, IHandle<LaunchTWSTradingEvent>,
         IHandle<OpenStrategiesView>, IHandle<OpenPaperTradeLiveView>, IHandle<OpenMainMenuEvent>, IHandle<OpenPaperTradeView>,
-        IHandle<OpenTradeStrategyView>
+        IHandle<OpenTradeStrategyView>, IHandle<OpenTraderPerformanceView>, IHandle<OpenTraderDashboardView>
     {
         private readonly IEventAggregator _events;
         private LoginViewModel _loginVM;
@@ -38,13 +38,15 @@ namespace DesktopUI.ViewModels
         private readonly TradeStrategyViewModel _tradeStrategyVM;
         private readonly TwitterScreenerViewModel _twitterScreenerVM;
         private readonly TraderProDashboardViewModel _tradeProDashboardVM;
+        private readonly TraderPortfolioOverviewViewModel _traderPortoflioOverviewVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
             SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel traderMainVM, IWindowManager window,
             PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM,
             SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM, TradeStrategyViewModel tradeStrategyVM,
-            TwitterScreenerViewModel twitterScreenerVM, TraderProDashboardViewModel tradeProDashboardVM)
+            TwitterScreenerViewModel twitterScreenerVM, TraderProDashboardViewModel tradeProDashboardVM, 
+            TraderPortfolioOverviewViewModel traderPortoflioOverviewVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -64,6 +66,7 @@ namespace DesktopUI.ViewModels
             _tradeStrategyVM = tradeStrategyVM;
             _twitterScreenerVM = twitterScreenerVM;
             _tradeProDashboardVM = tradeProDashboardVM;
+            _traderPortoflioOverviewVM = traderPortoflioOverviewVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
@@ -74,11 +77,12 @@ namespace DesktopUI.ViewModels
             //ActivateItem(_dashboardVM);
             //ActivateItem(_portfolioSummaryVM);
             //ActivateItem(_paperTradeVM);
-            //ActivateItem(_liveTradesVM); 
+           // ActivateItem(_liveTradesVM);
             //ActivateItem(_ibVM);
             //ActivateItem(_mainMenuVM);
-            ActivateItem(_tradeProDashboardVM);
+            //ActivateItem(_tradeProDashboardVM);
             //ActivateItem(_twitterScreenerVM);
+           ActivateItem(_traderPortoflioOverviewVM);
         }
 
         public void Handle(LogOnEvent message)
@@ -185,6 +189,16 @@ namespace DesktopUI.ViewModels
 
 
             ActivateItem(_tradeStrategyVM);
+        }
+
+        public void Handle(OpenTraderPerformanceView message)
+        {
+            ActivateItem(_traderPortoflioOverviewVM);
+        }
+
+        public void Handle(OpenTraderDashboardView message)
+        {
+            ActivateItem(_tradeProDashboardVM);
         }
     }
 }

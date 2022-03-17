@@ -354,22 +354,7 @@
 
                     </ListView>
 
-                    <!--Realized Profit Loss-->
-                    <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" Text=" Daily Profit/Loss" Foreground="White"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
-                            <TextBlock Grid.Column="1" Text="{Binding DailyProfitLoss}" Foreground="White"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontSize="18" Margin="5 0 0 0"></TextBlock>
-                        </Grid>
-                    </StackPanel>
+                  
                 </Grid>
             </Border>
         </Grid>

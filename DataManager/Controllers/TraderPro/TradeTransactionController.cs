@@ -13,6 +13,32 @@ namespace DataManager.Controllers.TraderPro
     [RoutePrefix("api/tradetransaction")]
     public class TradeTransactionController : ApiController
     {
+        [HttpGet]
+        public List<TransactionModel> LoadTransactions()
+        {
+
+            var transactionData = new TradeTransactionData();
+
+            //TODO: REMOVE HARDCODE USER ID
+            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+
+            return transactionData.LoadTransactions(id);
+        }
+
+        [HttpGet]
+        [Route("chart")]
+        public List<TransactionChartData> LoadChartData()
+        {
+            var transactionData = new TradeTransactionData();
+
+            //TODO: REMOVE HARDCODE USER ID
+            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+
+            return transactionData.LoadChartData(id);
+        }
+
         [HttpPost]
         public void PostTransaction(TransactionModel transaction)
         {

@@ -121,6 +121,11 @@
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_GetAllByUserId.sql" />
     <Build Include="dbo\Stored Procedures\Shared\spUserAccount_GetTradesPortfolioOverview.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradeTransaction_LoadDashboardById.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradeTransaction_LoadChartData.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradeTransaction_LoadById.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradeRealizedPL_PostRealizedPL.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradeRealizedPL_LoadHistoryByUser.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradeRealizedPL_LoadById.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

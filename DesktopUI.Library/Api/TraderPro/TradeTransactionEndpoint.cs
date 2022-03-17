@@ -47,5 +47,38 @@ namespace DesktopUI.Library.Api.TraderPro
                 }
             }
         }
+
+        public async Task<List<TransactionChartData>> LoadChartData()
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/tradetransaction/chart"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<TransactionChartData>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+
+        public async Task<List<TransactionModel>> LoadTransactions()
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/tradetransaction"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<TransactionModel>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

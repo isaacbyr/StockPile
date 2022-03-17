@@ -51,6 +51,7 @@
     <Compile Include="DataAccess\PortfolioPro\PortfolioData.cs" />
     <Compile Include="DataAccess\PortfolioPro\RealizedPLData.cs" />
     <Compile Include="DataAccess\TraderPro\StrategyData.cs" />
+    <Compile Include="DataAccess\TraderPro\TradeRealizedPLData.cs" />
     <Compile Include="DataAccess\TraderPro\TradesPortfolioData.cs" />
     <Compile Include="DataAccess\TraderPro\TradeTransactionData.cs" />
     <Compile Include="DataAccess\TraderPro\TWSTradingData.cs" />

@@ -8,5 +8,7 @@ namespace DesktopUI.Library.Api.TraderPro
     {
         Task PostTransaction(TransactionModel transaction);
         Task<List<SocialDashboardDataModel>> LoadTransactionsById(string id);
+        Task<List<TransactionModel>> LoadTransactions();
+        Task<List<TransactionChartData>> LoadChartData();
     }
 }

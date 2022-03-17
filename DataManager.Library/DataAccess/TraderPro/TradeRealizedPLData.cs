@@ -8,16 +8,17 @@ using System.Threading.Tasks;
 
 namespace DataManager.Library.DataAccess.TraderPro
 {
-    public class TradeTransactionData
+    public class TradeRealizedPLData
     {
-        public void PostTransaction(TransactionModel transaction)
+
+        public void PostRealizedPL(UpdateRealizedPLModel realizedPL)
         {
             var sql = new SqlDataAccess();
 
             try
             {
                 sql.StartTransaction("StockPileData");
-                sql.SaveDataInTransaction("dbo.spTradeTransaction_PostTransaction", transaction);
+                sql.SaveDataInTransaction("dbo.spTradeRealizedPL_PostRealizedPL", realizedPL);
                 sql.CommitTransaction();
             }
             catch (Exception e)
@@ -27,7 +28,7 @@ namespace DataManager.Library.DataAccess.TraderPro
             }
         }
 
-        public List<TransactionModel> LoadTransactions(string id)
+        public List<RealizedPLChartModel> LoadHistory(string id)
         {
             var sql = new SqlDataAccess();
 
@@ -35,7 +36,7 @@ namespace DataManager.Library.DataAccess.TraderPro
 
             try
             {
-                var output = sql.LoadData<TransactionModel, dynamic>("dbo.spTradeTransaction_LoadById", p, "StockPileData");
+                var output = sql.LoadData<RealizedPLChartModel, dynamic>("dbo.spTradeRealizedPL_LoadHistoryByUser", p, "StockPileData");
                 return output;
             }
             catch (Exception ex)
@@ -44,24 +45,7 @@ namespace DataManager.Library.DataAccess.TraderPro
             }
         }
 
-        public List<TransactionChartData> LoadChartData(string id)
-        {
-            var sql = new SqlDataAccess();
-
-            var p = new { UserId = id };
-
-            try
-            {
-                var output = sql.LoadData<TransactionChartData, dynamic>("dbo.spTradeTransaction_LoadChartData", p, "StockPileData");
-                return output;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public List<SocialDashboardDataModel> LoadDashboardById(string id)
+        public List<LeaderboardModel> LoadById(string id)
         {
             var sql = new SqlDataAccess();
 
@@ -69,7 +53,7 @@ namespace DataManager.Library.DataAccess.TraderPro
 
             try
             {
-                var output = sql.LoadData<SocialDashboardDataModel, dynamic>("dbo.spTradeTransaction_LoadDashboardById", p, "StockPileData");
+                var output = sql.LoadData<LeaderboardModel, dynamic>("dbo.spTradeRealizedPL_LoadById", p, "StockPileData");
                 return output;
             }
             catch (Exception ex)

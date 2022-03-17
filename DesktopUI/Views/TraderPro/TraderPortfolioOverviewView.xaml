@@ -1,0 +1,415 @@
+﻿<UserControl x:Class="DesktopUI.Views.TraderPro.TraderPortfolioOverviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:converters="clr-namespace:DesktopUI.Converters"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DesktopUI.Views.TraderPro"
+             mc:Ignorable="d" Foreground="White"
+             d:DesignHeight="800" d:DesignWidth="1400">
+    <Border CornerRadius="18" Background="#3E4C76">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="225"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="225"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!--Header-->
+            <TextBlock Text="TradePro" FontSize="40"
+                       HorizontalAlignment="Center" FontWeight="Bold"
+                       VerticalAlignment="Center"></TextBlock>
+            <!--Menu-->
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                    
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="0"
+                            Content="Main Menu" x:Name="Menu">
+                    </Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="1"
+                            Content="Dashboard" x:Name="Dashboard"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="2"
+                            Content="Paper Trade" x:Name="PaperTrade"></Button>
+                    <Button Background="SteelBlue" Margin="0 10 2 10"
+                            Foreground="White" Grid.Column="3" x:Name="PaperTradeLive"
+                            Content="Paper Trade (Live)"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="4" x:Name="OpenStrategies"
+                            Content="Strategies"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="5" x:Name="TWSStrategies"
+                            Content=" TWS Strategies"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="6"
+                            Content="Trade Crossovers" x:Name="TradeCrossovers">
+                    </Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="7"
+                            Content="Social" x:Name="OpenSocial"></Button>
+                    
+                </Grid>
+            </StackPanel>
+            <!--Time-->
+            <Border CornerRadius="18" Grid.Column="5" Grid.Row="0"
+                    Background="#1d2d44" Margin="15 10 15 5">
+
+                <TextBlock Foreground="White" Text="{Binding CurrentTime}" FontSize="30"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </Border>
+
+            <!--P/L Chart-->
+            <Border Background="#1d2d44" CornerRadius="18" Grid.Column="0"
+                    Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="2"
+                    Margin="10 5 5 10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--Header-->
+                    <TextBlock Text="Realized Profit/Loss" VerticalAlignment="Center"
+                               HorizontalAlignment="Center" TextDecorations="Underline" FontSize="22"></TextBlock>
+
+                    <!--Chart-->
+                    <lvc:CartesianChart Foreground="Black" Grid.Row="1" Margin="5 0 15 18" Series="{Binding SeriesCollection}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Labels="{Binding Labels}" LabelsRotation="60">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator StrokeThickness="0.2" Step="1"></lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Profit">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator StrokeThickness="0.2" Step="100"></lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+
+                </Grid>
+            </Border>
+
+            <!--Transaction Border-->
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="3"
+                    Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="3"
+                    Margin="5 5 10 10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="150"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--Header-->
+                    <TextBlock Text="Transaction History" VerticalAlignment="Center" Grid.ColumnSpan="2"
+                               HorizontalAlignment="Center" TextDecorations="Underline" FontSize="22"></TextBlock>
+                    <!--Transaction Listbox-->
+                    <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                   Grid.RowSpan="2" x:Name="Transactions" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Date}" Header="Date" Width="80">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Transaction}" Header="Transaction" Width="260">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Margin" Value="0 0 0 0"></Setter>
+                                <!--<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>-->
+                                <Setter Property="FontSize" Value="12"></Setter>
+                                <!--<Setter Property="HorizontalAlignment" Value="Center"></Setter>-->
+                                <Setter Property="Foreground" Value="White"></Setter>
+                            </Style>
+
+                        </ListView.ItemContainerStyle>
+
+                    </ListView>
+
+                    <!--Transaction Chart-->
+                    <lvc:CartesianChart Foreground="Black" Grid.Column="1" Grid.RowSpan="2" Grid.Row="1" Margin="5 5 5 10" Series="{Binding TransactionSeriesCollection}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Labels="{Binding TransactionLabels}" LabelsRotation="60">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator IsEnabled="False" Step="1"></lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="# Transactions"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+                </Grid>
+            </Border>
+
+            <!--PortfolioStocks-->
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="0"
+                    Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                    Margin="10 5 5 5">
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="270"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock TextDecorations="Underline" HorizontalAlignment="Center" Grid.Row="0" Text="Portfolio Stocks" Margin="0 5 0 0" FontSize="22"></TextBlock>
+                    <ListView Grid.Row="1" Grid.Column="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                          x:Name="PortfolioStocks" BorderBrush="Transparent"
+                                  SelectedItem="{Binding SelectedPortfolioStock}" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Ticker}" Header="Ticker" Width="65">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Shares}" Header="Shares" Width="70">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding AveragePrice}" Header="Avg Price" Width="95">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Market Price" Width="95">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding ProfitLoss}" Header="Unrealized P/L" Width="120">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"></Setter>
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.Resources>
+                            <converters:PortfolioItemColorConverter x:Key="PortfolioItemColorConverter"></converters:PortfolioItemColorConverter>
+                        </ListView.Resources>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Foreground" Value="{Binding Converter={StaticResource PortfolioItemColorConverter}}"></Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                <Setter Property="cal:Message.Attach"
+                                            Value="[Event MouseDoubleClick] = [Action LoadPortfolioStockView()]"></Setter>
+                            </Style>
+
+                        </ListView.ItemContainerStyle>
+
+                    </ListView>
+                    <Button x:Name="RefreshPortfolio" Grid.Row="2" Margin="0 2 0 0" MaxWidth="65" MinWidth="65"
+                            Content="Refresh" Background="SteelBlue" Foreground="White"
+                            MaxHeight="30" MinHeight="30"></Button>
+                </Grid>
+            </Border>
+
+            <!--Portfolio Overview-->
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="2"
+                    Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                    Margin="5 5 5 5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Portfolio Overview" FontSize="22" TextDecorations="Underline"
+                               Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="2"
+                               HorizontalAlignment="Center"  Grid.Column="1">
+
+                    </TextBlock>
+                    <!--Stats-->
+
+                    <!--Starting Amount-->
+                    <TextBlock Text="Starting Amount:" Grid.Column="0" Grid.Row="1"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding StartAmount}"></TextBlock>
+
+                    <!--Account Balance-->
+                    <TextBlock Text="Account Balance:" Grid.Column="0" Grid.Row="2"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding AccountBalance}"></TextBlock>
+
+                    <!--Number of stocks-->
+                    <TextBlock Text="Num Holdings:" Grid.Column="0" Grid.Row="3"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding NumHoldings}"></TextBlock>
+
+                    <!--Unrealized Profit Loss-->
+                    <TextBlock Text="Unrealized P/L:" Grid.Column="2" Grid.Row="1"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding UnrealizedProfitLoss}"></TextBlock>
+
+                    <!--Realized Profit Loss-->
+                    <TextBlock Text="Realized P/L:" Grid.Column="2" Grid.Row="2"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="3" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding RealizedProfitLoss}"></TextBlock>
+
+                    <!--Seperator-->
+                    <Border Background="White" Grid.Column="0" Grid.ColumnSpan="4"
+                            Grid.Row="4" MinHeight="2" MaxHeight="2"></Border>
+
+                    <!--Wins-->
+                    <TextBlock Text="Wins:" Grid.Column="2" Grid.Row="5"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="5" Grid.Column="3" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding Wins}"></TextBlock>
+
+                    <!--Losses-->
+                    <TextBlock Text="Losses:" Grid.Column="2" Grid.Row="6"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="6" Grid.Column="3" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding Losses}"></TextBlock>
+
+                    <!--Winning Percentage-->
+                    <TextBlock Text="Winning %:" Grid.Column="2" Grid.Row="7"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="7" Grid.Column="3" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding WinningPercentage}"></TextBlock>
+
+                    <!--Top Performer-->
+                    <TextBlock Text="Top Performer:" Grid.Column="0" Grid.Row="5"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding TopPerformer}"></TextBlock>
+
+                    <!--Worst Performer-->
+                    <TextBlock Text="Worst Performer:" Grid.Column="0" Grid.Row="6"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0 0 5 0"></TextBlock>
+                    <TextBlock Grid.Row="6" Grid.Column="1" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Text="{Binding WorstPerformer}"></TextBlock>
+
+                </Grid>
+            </Border>
+
+            <!--Asset Allocation-->
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="4"
+                    Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                    Margin="5 5 10 5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!--Asset Alloc-->
+                    <TextBlock Text="Asset Allocation" FontSize="22" TextDecorations="Underline"
+                               Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="2"
+                               HorizontalAlignment="Center" >
+
+                    </TextBlock>
+
+                    <!--Pie Chart-->
+                    <lvc:PieChart Margin="10 10 10 10" Foreground="White" LegendLocation="Bottom"
+                                  Grid.Row="1" Series="{Binding PieSeriesCollection}">
+
+                    </lvc:PieChart>
+                </Grid>
+            </Border>
+
+
+        </Grid>
+    </Border>
+</UserControl>

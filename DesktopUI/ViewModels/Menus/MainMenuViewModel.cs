@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
 using DesktopUI.Library.EventModels;
+using DesktopUI.Library.EventModels.TraderPro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace DesktopUI.ViewModels
 
         public void LaunchTraderPro()
         {
-            _events.PublishOnUIThread(new LaunchTraderProEvent());
+            _events.PublishOnUIThread(new OpenTraderDashboardView());
         }
 
         public void LaunchTWSTrading()

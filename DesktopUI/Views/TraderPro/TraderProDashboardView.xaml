@@ -47,6 +47,10 @@
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+
+
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -72,6 +76,12 @@
                             Foreground="White" Grid.Column="5"
                             Content="Trade Crossovers" x:Name="TradeCrossovers">
                     </Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="6"
+                            Content="Social" x:Name="OpenSocial"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="7"
+                            Content="Performance" x:Name="Performance"></Button>
                 </Grid>
             </StackPanel>
 

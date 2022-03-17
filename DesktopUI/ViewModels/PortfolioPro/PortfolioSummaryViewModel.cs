@@ -286,7 +286,7 @@ namespace DesktopUI.ViewModels
         private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMinutes(1);
+            timer.Interval = TimeSpan.FromSeconds(10);
             timer.Tick += tickevent;
             timer.Start();
         }
@@ -369,8 +369,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
-
         private decimal _realizedProfitLoss = 0;
 
         public decimal RealizedProfitLoss
@@ -445,7 +443,6 @@ namespace DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => StartAmount);
             }
         }
-
 
         private decimal _accountBalance;
 

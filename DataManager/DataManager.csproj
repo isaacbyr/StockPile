@@ -225,6 +225,7 @@
     <Compile Include="Controllers\PortfolioPro\RealizedPLController.cs" />
     <Compile Include="Controllers\TraderPro\StrategyController.cs" />
     <Compile Include="Controllers\TraderPro\TradesPortfolioController.cs" />
+    <Compile Include="Controllers\TraderPro\TradeRealizedPLController.cs" />
     <Compile Include="Controllers\TraderPro\TradeTransactionController.cs" />
     <Compile Include="Controllers\TraderPro\TWSTradingController.cs" />
     <Compile Include="Controllers\PortfolioPro\TransactionController.cs" />
