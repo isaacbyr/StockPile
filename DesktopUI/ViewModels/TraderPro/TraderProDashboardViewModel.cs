@@ -667,6 +667,11 @@ namespace DesktopUI.ViewModels.TraderPro
             await LoadRightChartData(SearchInputRightChart);
         }
 
+        public void TWSStrategies()
+        {
+            _events.PublishOnUIThread(new OpenTradeStrategyView(false));
+        }
+
         public void Performance()
         {
             _events.PublishOnUIThread(new OpenTraderPerformanceView());

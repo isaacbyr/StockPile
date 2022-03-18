@@ -127,6 +127,8 @@
     <Build Include="dbo\Stored Procedures\TraderPro\spTradeRealizedPL_LoadHistoryByUser.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradeRealizedPL_LoadById.sql" />
     <Build Include="dbo\Stored Procedures\PortfolioPro\spFriends_LoadFriendById.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTWSTradingStrategies_PostStrategy.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTWSTradingStrategies_LoadAllStrategies.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

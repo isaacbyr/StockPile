@@ -91,9 +91,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
 
         }
-
-      
-
+        // function to connect to TWS
         public void Connect()
         {
             // Parameters to connect to TWS
@@ -125,6 +123,8 @@ namespace DesktopUI.ViewModels.TraderPro
             StartTimer();
         }
 
+           // method to get/load data for time and sales
+           // doesnt actually work unless user has a 
         public void AddTickString(string _tickString)
         {
             try
@@ -201,7 +201,7 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
         public void Buy()
-       {
+        {
             string side = "BUY";
             send_order(side);
         }
@@ -362,7 +362,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private string _status = "Disconnected :(";
 
         public string Status
@@ -399,7 +398,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private double _bid = 0.0;
 
         public double Bid
@@ -424,7 +422,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private List<string> _tifs = new List<string> { "DAY", "GTC" };
 
         public List<string> TIFS
@@ -432,7 +429,6 @@ namespace DesktopUI.ViewModels.TraderPro
             get { return _tifs; }
             set { _tifs = value; }
         }
-
 
         private string _primaryExchange = "NASDAQ";
 
@@ -470,7 +466,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private int _visible = 100;
 
         public int Visible
@@ -494,7 +489,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => SelectedType);
             }
         }
-
 
         private List<string> _profitStopLimit = new List<string> { "0.25", "0.5", "0.75", "1", "1.50", "2", "2%", "5%", "10%", "20%", };
 
@@ -520,7 +514,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private List<string> _types = new List<string> { "LMT", "MKT", "STP" };
 
         public List<string> Types
@@ -532,7 +525,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => Types);
             }
         }
-
 
         private string _selectedMarket = "SMART";
 
@@ -546,7 +538,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private List<string> _markets = new List<string> { "SMART", "NYSE" };
 
         public List<string> Markets
@@ -554,7 +545,6 @@ namespace DesktopUI.ViewModels.TraderPro
             get { return _markets; }
             set { _markets = value; }
         }
-
 
         private double _lmtPrice;
 
@@ -567,7 +557,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => LMTPrice);
             }
         }
-
 
         private int _quantity = 100;
 
@@ -664,8 +653,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
-
         private string _ticker = "AAPL";
 
         public string Ticker
@@ -707,7 +694,6 @@ namespace DesktopUI.ViewModels.TraderPro
             var content = (double)(e.Source as Button).Content;
             LMTPrice = content;
         }
-
 
         private void StartTimer()
         {

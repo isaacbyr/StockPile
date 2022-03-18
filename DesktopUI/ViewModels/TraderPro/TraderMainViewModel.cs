@@ -703,7 +703,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private string _newStrategy;
 
         public string NewStrategy
@@ -715,7 +714,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => NewStrategy);
             }
         }
-
 
         public void Clear ()
         {
@@ -814,6 +812,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         }
 
+        // function to find crossover between the two passed emas
         public async Task FindCrossovers()
         {
             Buys = new List<ChartPointModel>(); 
