@@ -27,6 +27,24 @@ namespace DataManager.Library.DataAccess
             }
         }
 
+        public FriendModel LoadFriendById(string id)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { FollowerId = id };
+
+            try
+            {
+                var output = sql.LoadData<FriendModel, dynamic>("dbo.spFriends_LoadFriendById", p, "StockPileData").First();
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
         public void PostFriendship(string followeeId, string followerId)
         {
             var sql = new SqlDataAccess();

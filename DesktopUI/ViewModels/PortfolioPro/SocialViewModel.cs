@@ -2,12 +2,15 @@
 using DesktopUI.Library.Api;
 using DesktopUI.Library.EventModels;
 using DesktopUI.Library.Models;
+using DesktopUI.ViewModels.PortfolioPro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace DesktopUI.ViewModels
@@ -21,10 +24,12 @@ namespace DesktopUI.ViewModels
         private readonly ITransactionEndoint _transactionEndpoint;
         private readonly IApiHelper _apiHelper;
         private readonly IEventAggregator _events;
+        private readonly FriendProfileViewModel _friendProfileVM;
+        private readonly IWindowManager _window;
 
         public SocialViewModel(IFriendsEndpoint friendEndpoint, IFriendRequestEndpoint friendRequestEndpoint,
             IUserEndpoint userEndpoint, IRealizedProfitLossEndpoint realizedPLEndpoint, ITransactionEndoint transactionEndpoint,
-            IApiHelper apiHelper, IEventAggregator events)
+            IApiHelper apiHelper, IEventAggregator events, FriendProfileViewModel friendProfileVM, IWindowManager window)
         {
             _friendEndpoint = friendEndpoint;
             _friendRequestEndpoint = friendRequestEndpoint;
@@ -33,6 +38,8 @@ namespace DesktopUI.ViewModels
             _transactionEndpoint = transactionEndpoint;
             _apiHelper = apiHelper;
             _events = events;
+            _friendProfileVM = friendProfileVM;
+            _window = window;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -286,7 +293,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private FriendDisplayModel _selectedFriendRequest;
 
         public FriendDisplayModel SelectedFriendRequest
@@ -299,7 +305,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private BindingList<FriendDisplayModel> _friendRequests;
 
         public BindingList<FriendDisplayModel> FriendRequests
@@ -311,7 +316,6 @@ namespace DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => FriendRequests);
             }
         }
-
 
         private BindingList<FriendDisplayModel> friends;
 
@@ -349,6 +353,18 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private LeaderboardDisplayModel _selectedLeaderboardFriend;
+
+        public LeaderboardDisplayModel SelectedLeaderboardFriend
+        {
+            get { return _selectedLeaderboardFriend; }
+            set 
+            {
+                _selectedLeaderboardFriend = value;
+                NotifyOfPropertyChange(() => SelectedLeaderboardFriend);
+            }
+        }
+
         private List<TransactionDisplayModel> _dashboard;
 
         public List<TransactionDisplayModel> Dashboard
@@ -360,7 +376,6 @@ namespace DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Dashboard);
             }
         }
-
 
         public async Task Accept()
         {
@@ -413,6 +428,21 @@ namespace DesktopUI.ViewModels
             else
             {
                 return;
+            }
+        }
+
+        public void Open_UserProfile()
+        {
+            if(SelectedLeaderboardFriend != null)
+            {
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.WindowStyle = WindowStyle.None;
+                settings.AutoScroll = true;
+
+                _friendProfileVM.FriendId = SelectedLeaderboardFriend.Id;
+                _window.ShowDialog(_friendProfileVM, null, settings);
             }
         }
 

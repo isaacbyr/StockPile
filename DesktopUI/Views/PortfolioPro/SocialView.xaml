@@ -161,8 +161,8 @@
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="Foreground" Value="White"></Setter>
-                                <Setter Property="cal:Message.Attach"
-                            Value="[Event MouseDoubleClick] = [Action Open_UserProfile()]"></Setter>
+                                <!--<Setter Property="cal:Message.Attach"
+                            Value="[Event MouseDoubleClick] = [Action Open_UserProfile()]"></Setter>-->
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
@@ -219,9 +219,10 @@
                     <!--Header-->
                     <TextBlock Text="Leaderboard" VerticalAlignment="Center"
                                HorizontalAlignment="Center" TextDecorations="Underline" FontSize="26"></TextBlock>
-                    <!--Transaction Listbox-->
+                    <!--Leaderboard Listbox-->
                     <ListView Margin="50 0 50 0" Grid.Row="1" Grid.Column="0" MaxWidth="470" MinWidth="470" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                   Grid.RowSpan="2" x:Name="Leaderboard" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                   Grid.RowSpan="2" x:Name="Leaderboard" BorderBrush="Transparent" 
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectedItem="{Binding SelectedLeaderboardFriend}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn DisplayMemberBinding="{Binding FullName}" Header="Name" Width="200">
@@ -257,6 +258,8 @@
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Margin" Value="0 0 0 0"></Setter>
                                 <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="cal:Message.Attach"
+                            Value="[Event MouseDoubleClick] = [Action Open_UserProfile()]"></Setter>
                                 <!--<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>-->
                                 <Setter Property="FontSize" Value="12"></Setter>
                                 <!--<Setter Property="HorizontalAlignment" Value="Center"></Setter>-->

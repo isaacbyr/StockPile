@@ -53,6 +53,22 @@ namespace DesktopUI.Library.Api.TraderPro
             }
         }
 
+        public async Task<List<RealizedPLChartModel>> LoadHistoryByUserId(string id)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/traderealizedpl/history/{id}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<RealizedPLChartModel>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
         public async Task<List<LeaderboardModel>> LoadRealizedPL(string id)
         {
             using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/traderealizedpl/{id}"))

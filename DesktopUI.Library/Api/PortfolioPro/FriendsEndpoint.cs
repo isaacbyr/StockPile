@@ -33,6 +33,23 @@ namespace DesktopUI.Library.Api
             }
         }
 
+        public async Task<FriendModel> LoadFriendById(string id)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/friends/{id}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<FriendModel>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+
         public async Task PostFriendship(string followerId)
         {
             var newfriendship = new NewFriendshipModel

@@ -120,6 +120,7 @@
     <Compile Include="Api\TraderPro\TradeTransactionEndpoint.cs" />
     <Compile Include="Api\TraderPro\TWSTradingEndpoint.cs" />
     <Compile Include="Api\Shared\UserEndpoint.cs" />
+    <Compile Include="EventModels\PortfolioPro\OpenFriendProfileView.cs" />
     <Compile Include="EventModels\Shared\ExitAppEvent.cs" />
     <Compile Include="EventModels\PortfolioPro\LaunchPortoflioProEvent.cs" />
     <Compile Include="EventModels\TraderPro\LaunchTraderProEvent.cs" />

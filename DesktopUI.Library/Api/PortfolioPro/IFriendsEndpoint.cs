@@ -8,5 +8,6 @@ namespace DesktopUI.Library.Api
     {
         Task<List<FriendModel>> LoadFriends();
         Task PostFriendship(string followerId);
+        Task<FriendModel> LoadFriendById(string id);
     }
 }

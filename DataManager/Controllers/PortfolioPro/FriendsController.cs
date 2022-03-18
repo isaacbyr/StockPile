@@ -24,6 +24,16 @@ namespace DataManager.Controllers
             return friendsData.LoadFriends(id);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public FriendModel LoadFriendById(string id)
+        {
+            var friendsData = new FriendsData();
+
+            return friendsData.LoadFriendById(id);
+        }
+
+
         [HttpPost]
         public void PostFriendship(NewFriendshipModel friends)
         {

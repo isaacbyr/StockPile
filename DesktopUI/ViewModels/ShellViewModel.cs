@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using DesktopUI.Library.EventModels;
+using DesktopUI.Library.EventModels.PortfolioPro;
 using DesktopUI.Library.EventModels.TraderPro;
+using DesktopUI.ViewModels.PortfolioPro;
 using DesktopUI.ViewModels.Slack;
 using DesktopUI.ViewModels.TraderPro;
 using DesktopUI.ViewModels.Twitter;
@@ -39,6 +41,7 @@ namespace DesktopUI.ViewModels
         private readonly TwitterScreenerViewModel _twitterScreenerVM;
         private readonly TraderProDashboardViewModel _tradeProDashboardVM;
         private readonly TraderPortfolioOverviewViewModel _traderPortoflioOverviewVM;
+        private readonly FriendProfileViewModel _friendProfileVM;
 
         public ShellViewModel(IEventAggregator events, LoginViewModel loginVM, DashboardViewModel dashboardVM,
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
@@ -46,7 +49,7 @@ namespace DesktopUI.ViewModels
             PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM,
             SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM, TradeStrategyViewModel tradeStrategyVM,
             TwitterScreenerViewModel twitterScreenerVM, TraderProDashboardViewModel tradeProDashboardVM, 
-            TraderPortfolioOverviewViewModel traderPortoflioOverviewVM)
+            TraderPortfolioOverviewViewModel traderPortoflioOverviewVM, FriendProfileViewModel friendProfileVM)
         {
             _events = events;
             _loginVM = loginVM;
@@ -67,6 +70,7 @@ namespace DesktopUI.ViewModels
             _twitterScreenerVM = twitterScreenerVM;
             _tradeProDashboardVM = tradeProDashboardVM;
             _traderPortoflioOverviewVM = traderPortoflioOverviewVM;
+            _friendProfileVM = friendProfileVM;
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
@@ -200,5 +204,7 @@ namespace DesktopUI.ViewModels
         {
             ActivateItem(_tradeProDashboardVM);
         }
+
+       
     }
 }

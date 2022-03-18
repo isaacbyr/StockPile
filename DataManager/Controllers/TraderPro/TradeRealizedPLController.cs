@@ -38,6 +38,15 @@ namespace DataManager.Controllers.TraderPro
         }
 
         [HttpGet]
+        [Route("history/{id}")]
+        public List<RealizedPLChartModel> LoadHistoryByUserId(string id)
+        {
+            var realizedPLData = new TradeRealizedPLData();
+
+            return realizedPLData.LoadHistory(id);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public List<LeaderboardModel> LoadById(string id)
         {

@@ -250,6 +250,7 @@
     <Compile Include="ViewModels\PortfolioPro\DashboardViewModel.cs" />
     <Compile Include="ViewModels\Menus\LoginViewModel.cs" />
     <Compile Include="ViewModels\Menus\MainMenuViewModel.cs" />
+    <Compile Include="ViewModels\PortfolioPro\FriendProfileViewModel.cs" />
     <Compile Include="ViewModels\PortfolioPro\PortfolioStockViewModel.cs" />
     <Compile Include="ViewModels\PortfolioPro\PortfolioSummaryViewModel.cs" />
     <Compile Include="ViewModels\Menus\RegisterViewModel.cs" />
@@ -275,6 +276,9 @@
     </Compile>
     <Compile Include="Views\Menus\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PortfolioPro\FriendProfileView.xaml.cs">
+      <DependentUpon>FriendProfileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PortfolioPro\PortfolioStockView.xaml.cs">
       <DependentUpon>PortfolioStockView.xaml</DependentUpon>
@@ -340,6 +344,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Menus\MainMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PortfolioPro\FriendProfileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

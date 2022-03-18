@@ -34,6 +34,15 @@ namespace DataManager.Controllers
         }
 
         [HttpGet]
+        [Route("history/{id}")]
+        public List<RealizedPLChartModel> LoadHistoryByUserId(string id)
+        {
+            var realizedPLData = new RealizedPLData();
+
+            return realizedPLData.LoadHistory(id);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public List<LeaderboardModel> LoadById(string id)
         {
