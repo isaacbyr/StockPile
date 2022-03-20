@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using DesktopUI.Helpers;
 using DesktopUI.Library.Api;
 using DesktopUI.Library.Api.TraderPro;
 using DesktopUI.Library.Models;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DesktopUI
 {
@@ -20,6 +22,11 @@ namespace DesktopUI
         public Bootstrapper()
         {
             Initialize();
+
+            ConventionManager.AddElementConvention<PasswordBox>(
+            PasswordBoxHelper.BoundPasswordProperty,
+            "Password",
+            "PasswordChanged");
         }
 
         protected override void Configure()

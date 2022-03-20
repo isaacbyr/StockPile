@@ -10,6 +10,7 @@ using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,40 +69,39 @@ namespace DesktopUI.ViewModels.TraderPro
             await LoadPortfolioOverview();
             await LoadFriends();
             await LoadDashboard();
-            LoadTopHoldings();
+            await LoadTopHoldings();
             StartClock();
         }
 
-        private void LoadTopHoldings()
+        private async Task LoadTopHoldings()
         {
+            List<SolidColorBrush> colors = new List<SolidColorBrush> { Brushes.AliceBlue, Brushes.CadetBlue, Brushes.LightBlue };
 
-            TopHoldingsSeriesCollection = new SeriesCollection
+            var results = await _tradePortfolioEndpoint.LoadTopHoldings();
+
+            int index = 0;
+            TopHoldingsSeriesCollection = new SeriesCollection();
+            TopHoldingsLabels = new List<string>();
+
+            foreach (var r in results)
             {
-                new ColumnSeries()
+                var column = new ColumnSeries()
                 {
-                    Values = new ChartValues<double> {10000},
-                    Title = "AAPL",
-                    Fill = System.Windows.Media.Brushes.AliceBlue
-                },
-                new ColumnSeries()
-                {
-                    Values = new ChartValues<double> {11800},
-                    Title = "NFLX",
-                    Fill = System.Windows.Media.Brushes.CadetBlue
-                },
-                new ColumnSeries()
-                {
-                    Values = new ChartValues<double> {7500},
-                    Title = "LULU",
-                    Fill = System.Windows.Media.Brushes.LightBlue
-                },
-            };
+                    Values = new ChartValues<int> { r.Shares },
+                    Title = r.Ticker,
+                    Fill = colors[index],
+                };
 
-            TopHoldingsLabels = new List<string> { "AAPL", "NFLX", "LULU" };
+                TopHoldingsSeriesCollection.Add(column);
+                TopHoldingsLabels.Add(r.Ticker);
+                index++;
+
+            }
             Formatter = value => value.ToString("N");
 
             NotifyOfPropertyChange(() => TopHoldingsLabels);
             NotifyOfPropertyChange(() => TopHoldingsSeriesCollection);
+
         }
 
         private void StartClock()
@@ -646,6 +646,29 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private NewsArticleModel _selectedArticle;
+
+        public NewsArticleModel SelectedArticle
+        {
+            get { return _selectedArticle; }
+            set
+            {
+                _selectedArticle = value;
+                NotifyOfPropertyChange(() => SelectedArticle);
+            }
+        }
+
+        private string _newsSearchInput;
+
+        public string NewsSearchInput
+        {
+            get { return _newsSearchInput; }
+            set
+            {
+                _newsSearchInput = value;
+                NotifyOfPropertyChange(() => NewsSearchInput);
+            }
+        }
 
         public async Task RefreshWatchlist()
         {
@@ -665,6 +688,41 @@ namespace DesktopUI.ViewModels.TraderPro
         public async Task SearchRightChart()
         {
             await LoadRightChartData(SearchInputRightChart);
+        }
+
+        public async Task RefreshDailyGainers()
+        {
+            await LoadDailyGainers();
+        }
+
+        public async Task RefreshDailyLosers()
+        {
+            await LoadDailyLosers();
+        }
+
+        public void Article_View()
+        {
+            if (SelectedArticle == null)
+            {
+                return;
+            }
+            Process.Start(SelectedArticle.Url);
+        }
+
+        public async Task SearchNews()
+        {
+            await LoadMarketNews(NewsSearchInput);
+        }
+
+        public void ViewMorePortfolioSummary()
+        {
+            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+        }
+
+
+        public void ViewMoreSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
         }
 
         public void TWSStrategies()

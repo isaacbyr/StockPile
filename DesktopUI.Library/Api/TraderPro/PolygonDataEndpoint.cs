@@ -13,14 +13,59 @@ namespace DesktopUI.Library.Api.TraderPro
 {
     public class PolygonDataEndpoint: IPolygonDataEndpoint
     {
-        public async Task<(List<double>, List<double>, List<double>, List<double>, List<DateTime>)> LoadTradeData(string ticker,int interval, string timestamp)
+        public async Task<List<double>> LoadMAData(string ticker, int interval, string startTimestamp, string endTimestamp, int lastResults)
         {
             string API_KEY = "g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1";
 
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://api.polygon.io/");
 
-            var response = await httpClient.GetAsync($"v2/aggs/ticker/{ticker}/range/{interval}/minute/{timestamp}/{timestamp}?adjusted=true&sort=asc&limit=50000&apiKey={API_KEY}");
+            var response = await httpClient.GetAsync($"v2/aggs/ticker/{ticker}/range/{interval}/minute/{startTimestamp}/{endTimestamp}?adjusted=true&sort=asc&limit=50000&apiKey={API_KEY}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                var data = (JObject)JsonConvert.DeserializeObject(responseBody);
+
+                var closes = new List<double>();
+
+                foreach (var r in data.SelectToken("results"))
+                {
+                    var close = (double)r.SelectToken("c");
+                    var stringTs = (string)r.SelectToken("t");
+
+                    var dt = ConvertTimestampToDate(stringTs);
+
+                    var lower = new DateTime(2011, 9, 14, 6, 30, 00);
+                    var upper = new DateTime(2011, 9, 14, 13, 00, 00);
+
+                    if (dt.TimeOfDay >= lower.TimeOfDay && dt.TimeOfDay <= upper.TimeOfDay)
+                    {           
+                        closes.Add(close);
+                    }
+
+                }
+
+                closes = closes.Skip(Math.Max(0, closes.Count - lastResults)).Take(lastResults).ToList();
+
+                return closes;
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
+
+
+        public async Task<(List<double>, List<double>, List<double>, List<double>, List<DateTime>)> LoadTradeData(string ticker,int interval, string startTimestamp, string endTimestamp)
+        {
+            string API_KEY = "g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1";
+
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://api.polygon.io/");
+
+            var response = await httpClient.GetAsync($"v2/aggs/ticker/{ticker}/range/{interval}/minute/{startTimestamp}/{endTimestamp}?adjusted=true&sort=asc&limit=50000&apiKey={API_KEY}");
 
             if(response.IsSuccessStatusCode)
             {
@@ -78,6 +123,59 @@ namespace DesktopUI.Library.Api.TraderPro
                 closes.RemoveRange(0, startIndex);
                 dates.RemoveRange(endIndex, removeCount);
                 dates.RemoveRange(0, startIndex);
+
+                return (opens, highs, lows, closes, dates);
+            }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+        }
+
+        public async Task<(List<double>, List<double>, List<double>, List<double>, List<DateTime>)> LoadChartData(string ticker, int interval, string startTimestamp, string endTimestamp)
+        {
+            string API_KEY = "g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1";
+
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://api.polygon.io/");
+
+            var response = await httpClient.GetAsync($"v2/aggs/ticker/{ticker}/range/{interval}/minute/{startTimestamp}/{endTimestamp}?adjusted=true&sort=asc&limit=50000&apiKey={API_KEY}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                var data = (JObject)JsonConvert.DeserializeObject(responseBody);
+
+                var opens = new List<double>();
+                var highs = new List<double>();
+                var closes = new List<double>();
+                var lows = new List<double>();
+                var dates = new List<DateTime>();
+
+                foreach (var r in data.SelectToken("results"))
+                {
+                    var open = (double)r.SelectToken("o");
+                    var high = (double)r.SelectToken("h");
+                    var low = (double)r.SelectToken("l");
+                    var close = (double)r.SelectToken("c");
+                    var stringTs = (string)r.SelectToken("t");
+
+                    var dt = ConvertTimestampToDate(stringTs);
+
+                    var lower = new DateTime(2011, 9, 14, 6, 30, 00);
+                    var upper = new DateTime(2011, 9, 14, 13, 00, 00);
+
+                    if(dt.TimeOfDay >= lower.TimeOfDay && dt.TimeOfDay <= upper.TimeOfDay)
+                    {
+                        opens.Add(open);
+                        highs.Add(high);
+                        closes.Add(close);
+                        lows.Add(low);
+                        dates.Add(dt);
+                    }
+
+                }
 
                 return (opens, highs, lows, closes, dates);
             }

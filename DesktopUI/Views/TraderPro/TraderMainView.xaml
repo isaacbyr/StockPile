@@ -26,8 +26,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"></RowDefinition>
                 <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="90"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
@@ -45,25 +45,42 @@
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="0"
-                            Content="Main Menu" x:Name="Menu"></Button>
+                            Content="Main Menu" x:Name="Menu">
+                    </Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="1"
+                            Foreground="White" Grid.Column="2"
                             Content="Paper Trade" x:Name="PaperTrade"></Button>
                     <Button Background="SteelBlue" Margin="0 10 2 10"
-                            Foreground="White" Grid.Column="2" x:Name="PaperTradeLive"
+                            Foreground="White" Grid.Column="3" x:Name="PaperTradeLive"
                             Content="Paper Trade (Live)"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="3" x:Name="OpenStrategies"
+                            Foreground="White" Grid.Column="4" x:Name="OpenStrategies"
                             Content="Strategies"></Button>
-                   
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="5" x:Name="TWSStrategies"
+                            Content=" TWS Strategies"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="1"
+                            Content="Dashboard" x:Name="Dashboard">
+                    </Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="6"
+                            Content="Social" x:Name="OpenSocial"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="7"
+                            Content="Performance" x:Name="Performance"></Button>
+
                     <!--<Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="4"
                             Content="Logout"></Button>
@@ -81,6 +98,24 @@
                            VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
             </Border>
 
+            <!--Chart controls-->
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Background="SteelBlue" Width="100" Height="25"
+                            Foreground="White" Grid.Column="0"
+                            Content="Prev" x:Name="PrevWeek"></Button>
+
+                    <Button Background="SteelBlue" Width="100" Height="25"
+                            Foreground="White" Grid.Column="1"
+                            Content="Next" x:Name="NextWeek"></Button>
+                </Grid>
+            </StackPanel>
+            
             <!--Config Panel-->
             <Border CornerRadius="18" Background="#1d2d44" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
                     Margin="5 5 5 5" Grid.RowSpan="3">
@@ -291,8 +326,8 @@
             </Border>
             
             <!--Chart Ticker/Price-->
-            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="0" Grid.Row="3"
-                    Margin="10 5 5 5">
+            <Border CornerRadius="18" Background="#1d2d44" Grid.Column="0" Grid.Row="2"
+                    Margin="10 5 5 5" Height="60" VerticalAlignment="Bottom">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -310,16 +345,20 @@
 
                 <lvc:CartesianChart Foreground="black" Grid.Row="1" Grid.Column="0" Margin="25 25 25 20" 
                                     Series="{Binding SeriesCollection}" 
-                                    Zoom="Xy" Hoverable="False">
+                                     Hoverable="False">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Labels="{Binding Labels}" LabelsRotation="60">
                             <lvc:Axis.Separator>
-                                <lvc:Separator IsEnabled="False" Step="5"/>
+                                <lvc:Separator StrokeThickness="0.2" Step="{Binding XAxisStep}"/>
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Price"/>
+                        <lvc:Axis Title="Price">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator StrokeThickness="0.2"  />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
             </Border>
@@ -330,8 +369,8 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="220"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="240"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="15"></RowDefinition>
                         <RowDefinition Height="50"></RowDefinition>
@@ -386,10 +425,10 @@
                             <Style TargetType="ListViewItem">
                                 <Style.Triggers>
                                     <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
-                                        <Setter Property="Background" Value="LightBlue" />
+                                        <Setter Property="Background" Value="#1d2d44" />
                                     </Trigger>
                                     <Trigger Property="ItemsControl.AlternationIndex"  Value="1">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="#8A8A8A" />
                                     </Trigger>
                                 </Style.Triggers>
                                 <Setter Property="Foreground" Value="{Binding Converter={StaticResource TransactionItemColorConverter}}"></Setter>
@@ -403,13 +442,13 @@
                     </ListView>
                     
                     <!--Delete Button-->
-                    <!--Remove-->
+                    <!--Remove--><!--
                     <Button Content="Delete" Background="Red" Foreground="White"
                             VerticalAlignment="Center"
                             Grid.Row="2" MaxWidth="110" MinWidth="110" Grid.Column="1"
                             MaxHeight="25" MinHeight="25" FontSize="14"
                            x:Name="DeleteTransaction" Margin="0 0 0 0">
-                    </Button>
+                    </Button>-->
 
 
                     <!--Realized Profit Loss-->

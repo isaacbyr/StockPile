@@ -1,4 +1,5 @@
 ﻿using DesktopUI.Library.Models;
+using DesktopUI.Library.Models.Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,5 +13,6 @@ namespace DesktopUI.Library.Api.TraderPro
         Task<decimal> UpdateAndDeletePortfolio(PortfolioModel stock);
         Task<decimal> UpdatePortfolioSell(PortfolioModel stock);
         Task<List<PortfolioStockDashboardModel>> LoadPortfolioStocks();
+        Task<List<TopHoldingsModel>> LoadTopHoldings();
     }
 }

@@ -21,7 +21,7 @@ namespace DesktopUI.ViewModels
             _apiHelper = apiHelper;
         }
 
-        public void LaunchPortoflioPro()
+        public void LaunchPortfolioPro()
         {
             _events.PublishOnUIThread(new LaunchPortoflioProEvent());
         }

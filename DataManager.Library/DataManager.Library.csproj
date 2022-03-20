@@ -69,6 +69,7 @@
     <Compile Include="Models\PortfolioPro\RealizedPLChartModel.cs" />
     <Compile Include="Models\PortfolioPro\ResponseModel.cs" />
     <Compile Include="Models\Shared\SocialDashboardDataModel.cs" />
+    <Compile Include="Models\Shared\TopHoldingsModel.cs" />
     <Compile Include="Models\TraderPro\StrategyItemModel.cs" />
     <Compile Include="Models\TraderPro\StrategyModel.cs" />
     <Compile Include="Models\TraderPro\TWSTradeModel.cs" />

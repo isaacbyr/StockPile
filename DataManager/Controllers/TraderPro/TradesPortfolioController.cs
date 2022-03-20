@@ -1,5 +1,6 @@
 ﻿using DataManager.Library.DataAccess.TraderPro;
 using DataManager.Library.Models;
+using DataManager.Library.Models.Shared;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,18 @@ namespace DataManager.Controllers.TraderPro
     [RoutePrefix("api/tradesportfolio")]
     public class TradesPortfolioController : ApiController
     {
+
+        [HttpGet]
+        [Route("topholdings")]
+        public List<TopHoldingsModel> LoadTopHoldings()
+        {
+            var portfolioData = new TradesPortfolioData();
+
+            string id = RequestContext.Principal.Identity.GetUserId();
+
+            return portfolioData.LoadTopHoldings(id);
+        }
+
 
         [HttpGet]
         public List<PortfolioStockDashboardModel> LoadPortfolioStocks()

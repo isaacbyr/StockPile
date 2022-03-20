@@ -1,5 +1,6 @@
 ﻿using DataManager.Library.DataAccess.InternalAccess;
 using DataManager.Library.Models;
+using DataManager.Library.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,23 @@ namespace DataManager.Library.DataAccess.TraderPro
 {
     public class TradesPortfolioData
     {
+
+        public List<TopHoldingsModel> LoadTopHoldings(string id)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { UserId = id };
+
+            try
+            {
+                var output = sql.LoadData<TopHoldingsModel, dynamic>("dbo.spTradesPortfolio_LoadTopHoldings", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         public List<PortfolioStockDashboardModel> LoadPortfolio(string id)
         {

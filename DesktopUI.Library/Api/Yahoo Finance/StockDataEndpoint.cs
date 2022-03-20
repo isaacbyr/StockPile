@@ -204,7 +204,6 @@ namespace DesktopUI.Library.Api
                     throw new Exception(ex.Message);
                 }
 
-
                 return (stocks, symbol, marketPrice);
             }
 

@@ -110,9 +110,20 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private void ws_Opened(object sender, EventArgs e)
         {
+            string ticker = "NFLX";
+
             Console.WriteLine("Connected!");
             ws.Send("{\"action\":\"auth\",\"params\":\"g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1\"}");
-            ws.Send("{\"action\":\"subscribe\",\"params\":\"A.AAPL\"}");
+            //ws.Send("{\"action\":\"subscribe\",\"params\":\"A.AAPL\"}");
+
+            var wsModel = new WSModel
+            {
+                Action = "subscribe",
+                Params = $"A.{ticker}"
+            };
+
+            ws.Send(wsModel.ToString());
+
         }
 
 

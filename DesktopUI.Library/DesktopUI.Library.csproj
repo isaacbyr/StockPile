@@ -165,6 +165,7 @@
     <Compile Include="Models\Shared\ResponseModel.cs" />
     <Compile Include="Models\PortfolioPro\SocialDashboardDataModel.cs" />
     <Compile Include="Models\PortfolioPro\StockDashboardDataModel.cs" />
+    <Compile Include="Models\Shared\TopHoldingsModel.cs" />
     <Compile Include="Models\TraderPro\AsyncObservableCollection.cs" />
     <Compile Include="Models\TraderPro\ChartCrossoverModel.cs" />
     <Compile Include="Models\TraderPro\ChartPointModel.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\PortfolioPro\UserPortfolioOverviewModel.cs" />
     <Compile Include="Models\PortfolioPro\WatchlistDisplayModel.cs" />
     <Compile Include="Models\PortfolioPro\WatchlistModel.cs" />
+    <Compile Include="Models\TraderPro\WSModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

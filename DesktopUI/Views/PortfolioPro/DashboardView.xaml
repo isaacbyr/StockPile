@@ -14,7 +14,7 @@
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="225"></ColumnDefinition>
+                <ColumnDefinition Width="230"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -34,7 +34,7 @@
             </Grid.RowDefinitions>
             
             <!--Header-->
-            <TextBlock Text="StockPile" FontSize="40"
+            <TextBlock Text="PortfolioPro" FontSize="40"
                        HorizontalAlignment="Center" FontWeight="Bold"
                        VerticalAlignment="Center"></TextBlock>
             
@@ -268,7 +268,7 @@
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Price">
                                 <lvc:Axis.Separator>
-                                <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
+                                <lvc:Separator StrokeThickness="0.2"></lvc:Separator>
                                 </lvc:Axis.Separator>
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisY>
@@ -330,7 +330,7 @@
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Price">
                                 <lvc:Axis.Separator>
-                                    <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
+                                    <lvc:Separator StrokeThickness="0.2"></lvc:Separator>
                                 </lvc:Axis.Separator>
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisY>
@@ -439,7 +439,7 @@
                                Grid.Row="0" FontSize="22"
                                TextDecorations="Underline"></TextBlock>
                     <Button Content="View More" Foreground="White" Background="SteelBlue"
-                            Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" x:Name="ViewMorePortoflioSummary"
+                            Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" x:Name="ViewMorePortflioSummary"
                             Margin="30 10 18 10"></Button>
                     
                     <!--Stats-->

@@ -208,12 +208,10 @@
             </Grid.RowDefinitions>
 
             <!--Header-->
-            <Button Background="Transparent" Foreground="White" BorderBrush="Transparent"
-                    cal:Message.Attach="ReturnHome()" >
-                <TextBlock Text="StockPile" FontSize="40"
+            <!--Header-->
+            <TextBlock Text="PortfolioPro" FontSize="40"
                        HorizontalAlignment="Center" FontWeight="Bold"
-                       VerticalAlignment="Center"/>
-            </Button>
+                       VerticalAlignment="Center"></TextBlock>
 
 
             <!--Menu-->
@@ -347,12 +345,16 @@
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Labels="{Binding Labels}" LabelsRotation="60">
                             <lvc:Axis.Separator>
-                                <lvc:Separator IsEnabled="False" Step="5"/>
+                                <lvc:Separator StrokeThickness="0.2" Step="5"/>
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Price"/>
+                        <lvc:Axis Title="Price">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator StrokeThickness="0.2" />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
             </Border>

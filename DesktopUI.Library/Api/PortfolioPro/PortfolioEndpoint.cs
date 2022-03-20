@@ -1,4 +1,5 @@
 ﻿using DesktopUI.Library.Models;
+using DesktopUI.Library.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,22 @@ namespace DesktopUI.Library.Api
         public PortfolioEndpoint(IApiHelper apiHelper)
         {
             _apiHelper = apiHelper;
+        }
+
+        public async Task<List<TopHoldingsModel>> LoadTopHoldings()
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/portfolio/topholdings"))
+            {
+                if(response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<TopHoldingsModel>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
         }
 
         public async Task<List<PortfolioStockDashboardModel>> LoadPortfolioStocks()

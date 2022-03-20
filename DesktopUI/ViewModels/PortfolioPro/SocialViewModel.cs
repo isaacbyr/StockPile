@@ -54,7 +54,7 @@ namespace DesktopUI.ViewModels
         private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Interval = TimeSpan.FromSeconds(10);
             timer.Tick += tickevent;
             timer.Start();
         }
@@ -227,16 +227,22 @@ namespace DesktopUI.ViewModels
             if(results.Count > 0)
             {
                 SearchResults = new BindingList<FriendDisplayModel>();
-                
+                var friendIds = Friends.Select(f => f.Id);
+                var requestIds = FriendRequests.Select(f => f.Id);
+
                 foreach (var r in results)
                 {
-                    var user = new FriendDisplayModel
+                    if(!friendIds.Contains(r.Id) || !requestIds.Contains(r.Id))
                     {
-                        FullName = r.FirstName + " " + r.LastName,
-                        Id = r.Id
-                    };
+                        var user = new FriendDisplayModel
+                        {
+                            FullName = r.FirstName + " " + r.LastName,
+                            Id = r.Id
+                        };
 
-                    SearchResults.Add(user);
+                        SearchResults.Add(user);
+                    }
+
                 }
             }
             else

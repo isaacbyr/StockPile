@@ -15,6 +15,7 @@ using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -30,16 +31,18 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly TransactionInfoViewModel _transactionInfoVM;
         private readonly ExistingStrategiesViewModel _existingStrategiesVM;
         private readonly IEventAggregator _events;
+        private readonly IPolygonDataEndpoint _polygonDataEndpoint;
 
         public SeriesCollection SeriesCollection { get; set; }
         public List<string> Labels { get; set; } = new List<string>();
         public int ChartLength { get; set; }
 
-        public List<List<decimal>> IndicatorList { get; set; } = new List<List<decimal>>();
+        public List<List<decimal>> IndicatorList { get; set; }
 
         public TraderMainViewModel(IStockDataEndpoint stockDataEndpoint, IStrategyEndpoint strategyEndpoint,
             IWindowManager window, TransactionInfoViewModel transactionInfoVM, 
-            ExistingStrategiesViewModel existingStrategiesVM, IEventAggregator events)
+            ExistingStrategiesViewModel existingStrategiesVM, IEventAggregator events,
+            IPolygonDataEndpoint polygonDataEndpoint)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _strategyEndpoint = strategyEndpoint;
@@ -47,6 +50,7 @@ namespace DesktopUI.ViewModels.TraderPro
             _transactionInfoVM = transactionInfoVM;
             _existingStrategiesVM = existingStrategiesVM;
             _events = events;
+            _polygonDataEndpoint = polygonDataEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -69,15 +73,64 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
 
-        private async Task LoadChart(string ticker, string range = "3mo", string interval = "1d")
+        public async Task LoadPolygonChart(string ticker, string startTimestamp, string endTimestamp, int interval = 5)
         {
             Labels.Clear();
             SeriesCollection = new SeriesCollection();
             var Values = new ChartValues<OhlcPoint>();
             var volume = new ChartValues<long>();
-            Prices = new List<decimal>(); 
+            Prices = new List<decimal>();
+            int Index = 0;
+            XAxisStep = 10;
+
+            var (opens, highs, lows, closes, dates) = await _polygonDataEndpoint.LoadChartData(ticker, interval, startTimestamp, endTimestamp);
+
+            decimal max = (decimal)highs.Max();
+            decimal min = (decimal)lows.Min();
+
+            YAxisStep = (int)Math.Ceiling((max - min) / 10);
+
+            for (int i = 0; i < opens.Count; i++)
+            {
+                var ohlc = new OhlcPoint(opens[i], highs[i], lows[i], closes[i]);
+                Values.Add(ohlc);
+                Labels.Add(dates[i].ToString("t"));
+                Prices.Add(Math.Round((decimal)opens[i], 2));
+                Index++;
+            }
+            ChartLength = opens.Count;
+            ChartPrice = Values[Index - 1].Close.ToString();
+
+            SeriesCollection.Add(
+               new CandleSeries()
+               {
+                   Title = ChartSearch,
+                   Values = Values,
+                   StrokeThickness = 4
+               });
+
+
+            NotifyOfPropertyChange(() => SeriesCollection);
+            NotifyOfPropertyChange(() => Values);
+            NotifyOfPropertyChange(() => Labels);
+        }
+
+        private async Task LoadChart(string ticker, string range = "3mo", string interval = "1d")
+        {
+
+            Labels.Clear();
+            SeriesCollection = new SeriesCollection();
+            var Values = new ChartValues<OhlcPoint>();
+            var volume = new ChartValues<long>();
+            Prices = new List<decimal>();
+            XAxisStep = 10;
 
             var (results, symbol, marketPrice) = await _stockDataEndpoint.GetDashboardCharts(ticker, range, interval);
+
+            decimal max = results.Max(x=> x.High);
+            decimal min = results.Min(x => x.Low);
+
+            YAxisStep = (int)Math.Ceiling((max - min) / 10);
 
             ChartLength = results.Count;
 
@@ -106,6 +159,7 @@ namespace DesktopUI.ViewModels.TraderPro
             NotifyOfPropertyChange(() => Labels);
             NotifyOfPropertyChange(() => ChartLength);
         }
+
 
         private async Task LoadRegressionData(string color)
         {
@@ -170,6 +224,78 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        public async Task LoadPolygonEMA(string emaInterval, string color)
+        {
+            //convert color form string to SolidColorBrush
+            Color newColor = (Color)ColorConverter.ConvertFromString(color);
+            SolidColorBrush brush = new SolidColorBrush(newColor);
+
+            int emaRange;
+            int.TryParse(emaInterval, out emaRange);
+
+            var Values = new ChartValues<decimal>();
+
+            var maList = new List<decimal>();
+
+            if (ChartSearch != null && SelectedChartInterval != null && SelectedChartRange != null)
+            {
+                var emaStartDate = CheckIfWeekend(StartDate.AddDays(-1));
+                var lastResults = emaRange + ChartLength;
+
+                //TODO Remove hardcode
+                var closes =  await _polygonDataEndpoint.LoadMAData(ChartSearch, 5, emaStartDate.ToString("yyyy-MM-dd"), EndDate.ToString("yyyy-MM-dd"), lastResults);
+
+                decimal k = (decimal)2 / (emaRange + 1);
+                decimal sum = 0;
+
+                for (int i = 0; i < emaRange; i++)
+                {
+                    sum += (decimal)closes[i];
+                }
+                decimal sma = sum / emaRange;
+                Values.Add(sma);
+                maList.Add(sma);
+
+                int index = 0;
+                for (int i = emaRange; i < closes.Count; i++)
+                {
+                    decimal ema = ((decimal)closes[i] * k) + (maList[index] * (1 - k));
+                    Values.Add(ema);
+                    maList.Add(ema);
+
+                    index += 1;
+                }
+
+                var removeValues = Values.Count - ChartLength;
+                int idx = 0;
+                while (idx < removeValues)
+                {
+                    Values.RemoveAt(0);
+                    maList.RemoveAt(0);
+                    idx++;
+                }
+
+                SeriesCollection.Add(
+                    new LineSeries
+                    {
+                        Values = Values,
+                        Title = $"{emaRange}d SMA",
+                        Fill = Brushes.Transparent,
+                        Stroke = brush,
+                        StrokeThickness = 2,
+                        PointGeometry = null,
+
+                    });
+                IndicatorList.Add(maList);
+            }
+            else
+            {
+                return;
+            }
+            NotifyOfPropertyChange(() => SeriesCollection);
+            NotifyOfPropertyChange(() => Labels);
+            NotifyOfPropertyChange(() => IndicatorList);
+        }
 
         public async Task LoadEMA(string emaInterval, string color)
         {
@@ -194,7 +320,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
                 decimal k = (decimal)2 / (emaRange + 1);
                 decimal sum = 0;
-                //get sma
+
                 for(int i = 0; i < emaRange; i++)
                 {
                     sum += results[i].Close;
@@ -242,6 +368,8 @@ namespace DesktopUI.ViewModels.TraderPro
             }
             NotifyOfPropertyChange(() => SeriesCollection);
             NotifyOfPropertyChange(() => Labels);
+            NotifyOfPropertyChange(() => IndicatorList);
+
         }
 
         public async Task LoadSMA(string smaInterval,string color)
@@ -317,6 +445,26 @@ namespace DesktopUI.ViewModels.TraderPro
             NotifyOfPropertyChange(() => Labels);
         }
 
+        // function to check if passed date is weekend or not
+        // if it is the weekend change it to the friday before
+        public DateTime CheckIfWeekend(DateTime date)
+        {
+            if(date.DayOfWeek == DayOfWeek.Saturday)
+            {
+                return date.AddDays(-1);
+            }
+            else if(date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                return date.AddDays(-2);
+            }
+            else
+            {
+                return date;
+            }
+        }
+
+
+
         // return interval and string
         public (string, int) AddAndConvertDays(string range, string interval, int smaRange)
         {
@@ -372,8 +520,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => CurrentTime);
             }
         }
-
-
 
         private BindingList<string> _indicatorInterval = new BindingList<string> { "4", "9", "13", "21", "50" };
 
@@ -433,7 +579,6 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => SelectedColor);
             }
         }
-
 
         private string _chartPrice;
 
@@ -543,7 +688,6 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-
         private string _selectedChartRange;
 
         public string SelectedChartRange
@@ -566,6 +710,8 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 _selectedChartInterval = value;
                 NotifyOfPropertyChange(() => SelectedChartInterval);
+                NotifyOfPropertyChange(() => CanNextWeek);
+                NotifyOfPropertyChange(() => CanPrevWeek);
 
             }
         }
@@ -771,43 +917,140 @@ namespace DesktopUI.ViewModels.TraderPro
             NotifyOfPropertyChange(() => AddedIndicators);
         }
 
-        
+        private int _yAxisStep = 10;
+
+        public int YAxisStep
+        {
+            get { return _yAxisStep; }
+            set 
+            {
+                _yAxisStep = value;
+                NotifyOfPropertyChange(() => YAxisStep);
+            }
+        }
+
+        private int _xAxisStep = 10;
+
+        public int XAxisStep
+        {
+            get { return _xAxisStep; }
+            set
+            {
+                _xAxisStep = value;
+                NotifyOfPropertyChange(() => XAxisStep);
+            }
+        }
+
+        private DateTime startDate;
+
+        public DateTime StartDate
+        {
+            get { return startDate; }
+            set 
+            {
+                startDate = value;
+                NotifyOfPropertyChange(() => StartDate);
+            }
+        }
+
+        private DateTime _endDate = DateTime.Now;
+
+        public  DateTime EndDate
+        {
+            get { return _endDate; }
+            set 
+            {
+                _endDate = value;
+                NotifyOfPropertyChange(() => EndDate);
+            }
+        }
+
         public async Task RunIndicators()
         {
-            await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
+            SeriesCollection = new SeriesCollection();
+            IndicatorList = new List<List<decimal>>();
 
-            if(AddedIndicators.Count == 0)
+            if(SelectedChartInterval == "5m" || SelectedChartInterval == "15m"  ||SelectedChartInterval == "1m")
             {
-                return;
-            }
+                // TODO: REMOVE HARDCODE
+                StartDate = CheckIfWeekend(EndDate.AddDays(-5));
+                await LoadPolygonChart(ChartSearch, StartDate.ToString("yyyy-MM-dd"), EndDate.ToString("yyyy-MM-dd"), 5);
+                //await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
 
-            if (SelectedIndicator == "SMA")
-            {
-                
-                foreach (var indicator in AddedIndicators)
+                if (AddedIndicators.Count == 0)
                 {
-                    await LoadSMA(indicator.Interval, indicator.Color);
+                    return;
+                }
+
+                if (SelectedIndicator == "SMA")
+                {
+
+                    foreach (var indicator in AddedIndicators)
+                    {
+                        await LoadSMA(indicator.Interval, indicator.Color);
+                    }
+
+                }
+                else if (SelectedIndicator == "EMA" || SelectedIndicator == "MACD")
+                {
+                    foreach (var indicator in AddedIndicators)
+                    {
+                        await LoadPolygonEMA(indicator.Interval, indicator.Color);
+                        //await LoadEMA(indicator.Interval, indicator.Color);
+
+                    }
+                }
+                else if (SelectedIndicator == "Regression")
+                {
+                    await LoadRegressionData(AddedIndicators[0].Color);
+                }
+
+
+                if (BuyShares > 0 && SellShares > 0)
+                {
+                    await FindCrossovers();
+                    await AddTransactionsToChart();
+                    await GetProfitLoss();
                 }
 
             }
-            else if (SelectedIndicator == "EMA" || SelectedIndicator == "MACD")
+            else
             {
-                foreach(var indicator in AddedIndicators)
+                await LoadChart(ChartSearch, SelectedChartRange, SelectedChartInterval);
+
+                if (AddedIndicators.Count == 0)
                 {
-                    await LoadEMA(indicator.Interval, indicator.Color);
+                    return;
                 }
-            }
-            else if (SelectedIndicator == "Regression")
-            {
-                await LoadRegressionData(AddedIndicators[0].Color);
-            }
+
+                if (SelectedIndicator == "SMA")
+                {
+
+                    foreach (var indicator in AddedIndicators)
+                    {
+                        await LoadSMA(indicator.Interval, indicator.Color);
+                    }
+
+                }
+                else if (SelectedIndicator == "EMA" || SelectedIndicator == "MACD")
+                {
+                    foreach (var indicator in AddedIndicators)
+                    {
+                        await LoadEMA(indicator.Interval, indicator.Color);
+                    }
+                }
+                else if (SelectedIndicator == "Regression")
+                {
+                    await LoadRegressionData(AddedIndicators[0].Color);
+                }
 
 
-            if (BuyShares > 0 && SellShares > 0)
-            {
-                await FindCrossovers();
-                await AddTransactionsToChart();
-                await GetProfitLoss();
+                if (BuyShares > 0 && SellShares > 0)
+                {
+                    await FindCrossovers();
+                    await AddTransactionsToChart();
+                    await GetProfitLoss();
+                }
             }
 
         }
@@ -819,71 +1062,72 @@ namespace DesktopUI.ViewModels.TraderPro
             Sells = new List<ChartPointModel>();
             CrossoverTransactions = new BindingList<CrossoverTransactionModel>();
 
-            string firstName = SeriesCollection[1].Title;
-            firstName.Remove(firstName.Length -1);
-
-            string secondName = SeriesCollection[1].Title;
-            secondName.Remove(secondName.Length - 1);
-
             var ema1 = new ChartCrossoverModel();
 
-            // figure out what ema is on top vs bottom
-            if(IndicatorList[0][0] > IndicatorList[1][0])
+            try
             {
-                ema1.IsTop = true;     
-            }
-            else 
-            {
-                ema1.IsTop = false;
-            }
+                // figure out what ema is on top vs bottom
+                if (IndicatorList[0][0] > IndicatorList[1][0])
+                {
+                    ema1.IsTop = true;
+                }
+                else
+                {
+                    ema1.IsTop = false;
+                }
 
-            for(int i = 0; i < IndicatorList[0].Count; i++)
+                for (int i = 0; i < IndicatorList[0].Count; i++)
+                {
+                    if (ema1.IsTop == true)
+                    {
+                        if (IndicatorList[0][i] <= IndicatorList[1][i])
+                        {
+                            var crossover = new CrossoverTransactionModel
+                            {
+                                Index = i > 1 ? i - 1 : i,
+                                Date = i > 1 ? Labels[i - 1] : Labels[i],
+                                BuyOrSell = "Sell",
+                                Price = i > 1 ? Prices[i - 1] : Prices[i],
+                                Shares = SellShares
+                            };
+                            var sell = new ChartPointModel
+                            {
+                                Price = i > 1 ? Prices[i - 1] : Prices[i],
+                                Index = i > 1 ? i - 1 : i
+                            };
+                            Sells.Add(sell);
+                            CrossoverTransactions.Add(crossover);
+                            ema1.IsTop = false;
+                        }
+                    }
+                    else if (ema1.IsTop == false)
+                    {
+                        if (IndicatorList[0][i] >= IndicatorList[1][i])
+                        {
+                            var crossover = new CrossoverTransactionModel
+                            {
+                                Index = i > 1 ? i - 1 : i,
+                                Date = i > 1 ? Labels[i - 1] : Labels[i],
+                                BuyOrSell = "Buy",
+                                Price = i > 1 ? Prices[i - 1] : Prices[i],
+                                Shares = BuyShares
+                            };
+                            var buy = new ChartPointModel
+                            {
+                                Price = i > 1 ? Prices[i - 1] : Prices[i],
+                                Index = i > 1 ? i - 1 : i
+                            };
+                            Buys.Add(buy);
+                            CrossoverTransactions.Add(crossover);
+                            ema1.IsTop = true;
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
             {
-                if(ema1.IsTop == true)
-                {
-                    if(IndicatorList[0][i] <= IndicatorList[1][i])
-                    {
-                        var crossover = new CrossoverTransactionModel
-                        {
-                            Index = i > 1 ? i - 1 : i,
-                            Date = i > 1 ? Labels[i - 1] : Labels[i],
-                            BuyOrSell = "Sell",
-                            Price = i > 1 ? Prices[i-1] : Prices[i],
-                            Shares = SellShares
-                        };
-                        var sell = new ChartPointModel
-                        {
-                            Price = i > 1 ? Prices[i - 1] : Prices[i],
-                            Index = i > 1 ? i - 1: i
-                        };
-                        Sells.Add(sell);
-                        CrossoverTransactions.Add(crossover);
-                        ema1.IsTop = false;
-                    }
-                }
-                if(ema1.IsTop == false)
-                {
-                    if (IndicatorList[0][i] >= IndicatorList[1][i])
-                    {
-                        var crossover = new CrossoverTransactionModel
-                        {
-                            Index = i > 1 ? i - 1 : i,
-                            Date = i > 1 ? Labels[i-1] : Labels[i],
-                            BuyOrSell = "Buy",
-                            Price = i > 1 ? Prices[i - 1] : Prices[i],
-                            Shares = BuyShares
-                        };
-                        var buy = new ChartPointModel
-                        {
-                            Price = i > 1 ? Prices[i - 1] : Prices[i],
-                            Index = i > 1 ? i - 1 : i
-                        };
-                        Buys.Add(buy);
-                        CrossoverTransactions.Add(crossover);
-                        ema1.IsTop = true;
-                    }
-                }
-                
+                throw new Exception(e.Message);
             }
             
         }
@@ -932,9 +1176,11 @@ namespace DesktopUI.ViewModels.TraderPro
                 {
                     Values = buyValues,
                     Title = "Buy",
+                    Fill = Brushes.LightSeaGreen,
+                    Opacity = 0.1,
                     Stroke = System.Windows.Media.Brushes.LightSeaGreen,
                     PointGeometrySize = 12,
-                    Foreground = Brushes.Black
+                    PointForeground = Brushes.Black,
                 });
 
             SeriesCollection.Add(
@@ -942,11 +1188,11 @@ namespace DesktopUI.ViewModels.TraderPro
                 {
                     Values = sellValues,
                     Title = "Sell",
+                    Fill = Brushes.Crimson,
                     Stroke = System.Windows.Media.Brushes.Crimson,
                     PointGeometrySize = 12,
-                    Foreground = Brushes.Black
-                });
-
+                    PointForeground = Brushes.Black,
+                }) ;
         }
 
         private async Task GetProfitLoss()
@@ -1003,7 +1249,7 @@ namespace DesktopUI.ViewModels.TraderPro
                         Buys.Remove(b);
                     }
                 }
-
+                SeriesCollection.RemoveAt(3);
             }
             else
             {
@@ -1012,9 +1258,11 @@ namespace DesktopUI.ViewModels.TraderPro
                     if(s.Index == SelectedTransaction.Index)
                     {
                         Sells.Remove(s);
-                        break;
+                        //break;
                     }
                 }
+                SeriesCollection.RemoveAt(4);
+
             }
 
             //TODO FIGURE OUT NOT UPDATING
@@ -1024,7 +1272,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 NotifyOfPropertyChange(() => CrossoverTransactions);
             }
 
-            await UpdateAfterChange();
+           // await UpdateAfterChange();
         }
 
         private async Task UpdateAfterChange()
@@ -1040,12 +1288,12 @@ namespace DesktopUI.ViewModels.TraderPro
                 }
 
             }
-            else if (SelectedIndicator == "SMA")
+            else if (SelectedIndicator == "EMA")
             {
 
                 foreach (var indicator in AddedIndicators)
                 {
-                    await LoadSMA(indicator.Interval, indicator.Color);
+                    await LoadEMA(indicator.Interval, indicator.Color);
                 }
 
             }
@@ -1120,6 +1368,25 @@ namespace DesktopUI.ViewModels.TraderPro
             
         }
 
+        public void TWSStrategies()
+        {
+            _events.PublishOnUIThread(new OpenTradeStrategyView(false));
+        }
+
+        public void Performance()
+        {
+            _events.PublishOnUIThread(new OpenTraderPerformanceView());
+        }
+
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+       public void Dashboard()
+        {
+            _events.PublishOnUIThread(new OpenTraderDashboardView());
+        }
 
         public void OpenStrategies()
         {
@@ -1139,6 +1406,49 @@ namespace DesktopUI.ViewModels.TraderPro
         public void Menu()
         {
             _events.PublishOnUIThread(new OpenMainMenuEvent());
+        }
+
+        public bool CanPrevWeek
+        {
+            get
+            {
+                if (SelectedChartInterval == "5m" || SelectedChartInterval == "15m" || SelectedChartInterval == "1m")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool CanNextWeek
+        {
+            get
+            {
+                if (SelectedChartInterval == "5m" || SelectedChartInterval == "15m" || SelectedChartInterval == "1m")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+           
+        }
+
+        public async Task PrevWeek()
+        {
+            EndDate = CheckIfWeekend(EndDate.AddDays(-5));
+            await RunIndicators();
+        }
+
+        public async Task NextWeek()
+        {
+            EndDate = CheckIfWeekend(EndDate.AddDays(5));
+            await RunIndicators();
         }
     }
 }

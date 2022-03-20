@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Windows.Media;
 
-namespace DesktopUI.ViewModels
+namespace DesktopUI.ViewModels.PortfolioPro
 {
     public class DashboardViewModel: Screen
     {
@@ -72,35 +72,34 @@ namespace DesktopUI.ViewModels
             await LoadPortfolioOverview();
             await LoadFriends();
             await LoadDashboard();
-            LoadTopHoldings();
+            await LoadTopHoldings();
             StartClock();
         }
 
-        private void LoadTopHoldings()
+        private async Task LoadTopHoldings()
         {
-            TopHoldingsSeriesCollection = new SeriesCollection
-            {
-                new ColumnSeries()
-                {
-                    Values = new ChartValues<double> {10000},
-                    Title = "AAPL", 
-                    Fill = System.Windows.Media.Brushes.AliceBlue
-                },
-                new ColumnSeries()
-                {
-                    Values = new ChartValues<double> {11800},
-                    Title = "NFLX",
-                    Fill = System.Windows.Media.Brushes.CadetBlue
-                },
-                new ColumnSeries()
-                {
-                    Values = new ChartValues<double> {7500},
-                    Title = "LULU",
-                    Fill = System.Windows.Media.Brushes.LightBlue
-                },
-            };
+            List<SolidColorBrush> colors = new List<SolidColorBrush> { Brushes.AliceBlue, Brushes.CadetBlue, Brushes.LightBlue };
+            
+            var results = await _portfolioEndpoint.LoadTopHoldings();
 
-            TopHoldingsLabels = new List<string>{ "AAPL", "NFLX", "LULU"};
+            int index = 0;
+            TopHoldingsSeriesCollection = new SeriesCollection();
+            TopHoldingsLabels = new List<string>();
+
+            foreach (var r in results)
+            {
+                var column = new ColumnSeries()
+                {
+                    Values = new ChartValues<int> { r.Shares },
+                    Title = r.Ticker,
+                    Fill = colors[index],
+                };
+
+                TopHoldingsSeriesCollection.Add(column);
+                TopHoldingsLabels.Add(r.Ticker);
+                index++;
+
+            }
             Formatter = value => value.ToString("N");
 
             NotifyOfPropertyChange(() => TopHoldingsLabels);
@@ -646,7 +645,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private NewsArticleModel _selectedArticle;
 
         public NewsArticleModel SelectedArticle
@@ -756,11 +754,10 @@ namespace DesktopUI.ViewModels
             _events.PublishOnUIThread(new OpenPortfolioSummaryView());
         }
 
-        public void ViewMorePortoflioSummary()
+        public void ViewMoreSocial()
         {
-            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+            _events.PublishOnUIThread(new OpenSocialView());
         }
-
 
         public void Performance()
         {

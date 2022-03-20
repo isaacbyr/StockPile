@@ -68,9 +68,9 @@
                         <TextBlock Text="Password:" Grid.Column="1" Grid.Row="3"
                    HorizontalAlignment="Right" Margin="0 0 5 0"
                    VerticalAlignment="Center"></TextBlock>
-                        <TextBox Grid.Row="3" Grid.Column="2" VerticalContentAlignment="Center"
+                        <PasswordBox Grid.Row="3" Grid.Column="2" VerticalContentAlignment="Center"
                  Margin="5 10 5 10" MaxWidth="250" MinWidth="250" MinHeight="40" MaxHeight="40"
-                 HorizontalAlignment="Left" x:Name="Password"></TextBox>
+                 HorizontalAlignment="Left" x:Name="Password"></PasswordBox>
                     </StackPanel>
                     
                     <!--Login Button-->

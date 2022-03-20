@@ -87,12 +87,13 @@ namespace DesktopUI.ViewModels
             //ActivateItem(_tradeProDashboardVM);
             //ActivateItem(_twitterScreenerVM);
             //ActivateItem(_traderPortoflioOverviewVM);
-            ActivateItem(_tradeStrategyVM);
+            //ActivateItem(_tradeStrategyVM);
+            ActivateItem(_traderMainVM);
         }
 
         public void Handle(LogOnEvent message)
         {
-            ActivateItem(_dashboardVM);
+            ActivateItem(_mainMenuVM);
         }
 
         public void Handle(OpenPortfolioStockView message)

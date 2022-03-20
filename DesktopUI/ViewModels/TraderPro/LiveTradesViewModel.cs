@@ -673,7 +673,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public async Task SearchForTrades()
         {
-            var (opens, highs, lows, closes, dates) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedChartInterval, DateTime.Now.ToString("yyyy-MM-dd"));
+            var (opens, highs, lows, closes, dates) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedChartInterval, DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
 
             ChartSymbol = Ticker;
 

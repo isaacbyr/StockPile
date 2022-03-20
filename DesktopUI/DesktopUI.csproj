@@ -247,6 +247,7 @@
     <Compile Include="Converters\TraderProTransactionItemColorConverter.cs" />
     <Compile Include="Converters\WatchlistItemColorConverter.cs" />
     <Compile Include="EWrapperImpl.cs" />
+    <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="ViewModels\PortfolioPro\DashboardViewModel.cs" />
     <Compile Include="ViewModels\Menus\LoginViewModel.cs" />
     <Compile Include="ViewModels\Menus\MainMenuViewModel.cs" />

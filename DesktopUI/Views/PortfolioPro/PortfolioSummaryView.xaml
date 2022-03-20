@@ -14,7 +14,7 @@
     <Border CornerRadius="18" Background="#3E4C76">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="225"></ColumnDefinition>
+                <ColumnDefinition Width="230"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -30,7 +30,7 @@
             </Grid.RowDefinitions>
 
             <!--Header-->
-            <TextBlock Text="StockPile" FontSize="40"
+            <TextBlock Text="PortfolioPro" FontSize="40"
                        HorizontalAlignment="Center" FontWeight="Bold"
                        VerticalAlignment="Center"></TextBlock>
             <!--Menu-->
@@ -95,12 +95,16 @@
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Labels="{Binding Labels}" LabelsRotation="60">
                                 <lvc:Axis.Separator>
-                                    <lvc:Separator IsEnabled="False" Step="1"></lvc:Separator>
+                                    <lvc:Separator StrokeThickness="0.2" Step="1"></lvc:Separator>
                                 </lvc:Axis.Separator>
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Profit"></lvc:Axis>
+                            <lvc:Axis Title="Profit">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator StrokeThickness="0.2"></lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
                         </lvc:CartesianChart.AxisY>
                     </lvc:CartesianChart>
 

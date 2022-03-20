@@ -1,5 +1,6 @@
 ﻿using DataManager.Library.DataAccess;
 using DataManager.Library.Models;
+using DataManager.Library.Models.Shared;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,17 @@ namespace DataManager.Controllers
     [RoutePrefix("api/portfolio")]
     public class PortfolioController : ApiController
     {
+        [HttpGet]
+        [Route("topholdings")]
+        public List<TopHoldingsModel> LoadTopHoldings()
+        {
+            var portfolioData = new PortfolioData();
+
+            string id = RequestContext.Principal.Identity.GetUserId();
+
+            return portfolioData.LoadTopHoldings(id);
+        }
+
         [HttpGet]
         public List<PortfolioStockDashboardModel> LoadPortfolioStocks()
         {
