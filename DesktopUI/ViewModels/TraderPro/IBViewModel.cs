@@ -58,7 +58,7 @@ namespace DesktopUI.ViewModels.TraderPro
             // request to use delayed data
             ibClient.ClientSocket.reqMarketDataType(3); // 3
 
-            ibClient.ClientSocket.reqMktData(1, contract, "233", false, false, mktDataOptions);
+            ibClient.ClientSocket.reqMktData(1, contract, "", false, false, mktDataOptions);
 
         }
 
@@ -69,19 +69,19 @@ namespace DesktopUI.ViewModels.TraderPro
 
             if (Convert.ToInt32(tickerPrice[0]) == 1)
             {
-                if (Convert.ToInt32(tickerPrice[1]) == 68) // 68
+                if (Convert.ToInt32(tickerPrice[1]) == 4) // 68
                 {
                     // LAST QUOTE FOR DELAYED DATA
                     Console.WriteLine("DELAYED QUOTE: ", tickerPrice[2]);
                     Last = Convert.ToDouble(tickerPrice[2]);
                 }
-                else if (Convert.ToInt32(tickerPrice[1]) == 67) //  67
+                else if (Convert.ToInt32(tickerPrice[1]) == 2) //  67
                 {
                     // DELAYED ASK QUOTE
                     Console.WriteLine("DELAYED ASK QUOTE: ", tickerPrice[2]);
                     Ask = Convert.ToDouble(tickerPrice[2]);
                 }
-                else if (Convert.ToInt32(tickerPrice[1]) == 66) // 66
+                else if (Convert.ToInt32(tickerPrice[1]) == 1) // 66
                 {
                     // DELAYED BIG QUOTE
                     Console.WriteLine("DELAYED BID QUOTE", tickerPrice[2]);

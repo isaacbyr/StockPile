@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace DataManager.Controllers
 {
@@ -18,7 +19,9 @@ namespace DataManager.Controllers
         {
             var transactionData = new TransactionData();
 
-            transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            //TODO: REMOVE HARDCODE OF USER ID
+            transaction.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             transactionData.PostTransaction(transaction);
         }

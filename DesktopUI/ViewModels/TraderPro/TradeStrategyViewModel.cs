@@ -23,22 +23,18 @@ namespace DesktopUI.ViewModels.TraderPro
         private readonly ITWSTradingEndpoint _tWSTradingEndpoint;
         private readonly IStockDataEndpoint _stockDataEndpoint;
 
-        public List<decimal> MA1History { get; set; }
-        public List<decimal> MA2History { get; set; }
-
-
         public int ChartLength { get; set; } = 78;
 
         // Create the ibClient object to represent the connection
-        EWrapperImpl ibClient;
+        public EWrapperImpl ibClient;
 
         public TradeStrategyViewModel(bool addNew)
         {
             AddNew = addNew;
 
-            // instanitate the ibClient
-            ibClient = new EWrapperImpl();
+           
         }
+
 
         public TradeStrategyViewModel(string ticker, int buyShares, int sellShares, string ma1, string ma2, 
             string indicator, string interval, string range, bool addNew ,
@@ -66,22 +62,11 @@ namespace DesktopUI.ViewModels.TraderPro
             }
 
             await LoadTWSStrategies();
-            var results1 =  await LoadEMAHistory(ActiveMA1);
-            MA1History = new List<decimal>(results1);
-            var results2 = await LoadEMAHistory(ActiveMA2);
-            MA2History = new List<decimal>(results2);
-            CurrentMA1 = await UpdateEMA(results1, ActiveMA1);
-            CurrentMA2 = await UpdateEMA(results2, ActiveMA2);
 
-            if(CurrentMA1 > CurrentMA2)
-            {
-                IsTop = true;
-            }
-            else
-            {
-                IsTop = false;
-            }
-            StartConnection();
+            // instanitate the ibClient
+            ibClient = new EWrapperImpl();
+            //Connect();
+            //StartConnection();
 
         }
 
@@ -110,19 +95,18 @@ namespace DesktopUI.ViewModels.TraderPro
 
         private void ws_Opened(object sender, EventArgs e)
         {
-            string ticker = "NFLX";
 
             Console.WriteLine("Connected!");
             ws.Send("{\"action\":\"auth\",\"params\":\"g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1\"}");
-            //ws.Send("{\"action\":\"subscribe\",\"params\":\"A.AAPL\"}");
+            ws.Send("{\"action\":\"subscribe\",\"params\":\"A.AAPL\"}");
 
-            var wsModel = new WSModel
-            {
-                Action = "subscribe",
-                Params = $"A.{ticker}"
-            };
+            //var wsModel = new WSModel
+            //{
+            //    Action = "subscribe",
+            //    Params = $"A.{ActiveTicker}"
+            //};
 
-            ws.Send(wsModel.ToString());
+            //ws.Send(wsModel.ToString());
 
         }
 
@@ -195,8 +179,10 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 MA1History[MA1History.Count - 1] = close;
                 MA2History[MA2History.Count - 1] = close;
-                CurrentMA1 = await UpdateEMA(MA1History, ActiveInterval);
-                CurrentMA2 = await UpdateEMA(MA2History, ActiveInterval);
+               // MA1History.Add(close);
+                //MA2History.Add(close);
+                CurrentMA1 = await UpdateEMA(MA1History, ActiveMA1);
+                CurrentMA2 = await UpdateEMA(MA2History, ActiveMA2);
                 await FindCrosovers(CurrentMA1, CurrentMA2);
             }
         }
@@ -205,6 +191,7 @@ namespace DesktopUI.ViewModels.TraderPro
         // start TWS Connection
         public void Connect()
         {
+
             // Parameters to connect to TWS
             // host - IP address or host name of the host running TWS
             // port - listening to port 7497
@@ -222,15 +209,13 @@ namespace DesktopUI.ViewModels.TraderPro
             })
             { IsBackground = true }.Start();
 
-            while (ibClient.NextOrderId <= 0) 
-            {
-                getData();
-            }
+            while (ibClient.NextOrderId <= 0) { }
+
+            ibClient.tradeStrategyVM = this;
 
             // load in order id 
             OrderId = ibClient.NextOrderId;
 
-            //ibClient.ibVM = this;
 
         }
 
@@ -246,7 +231,7 @@ namespace DesktopUI.ViewModels.TraderPro
             List<TagValue> mktDataOptions = new List<TagValue>();
 
             // Set the stock ticker to get data for
-            contract.Symbol = Ticker;
+            contract.Symbol = ActiveTicker;
   
             // Set the security type to stk for a stock
             contract.SecType = "STK";
@@ -260,10 +245,10 @@ namespace DesktopUI.ViewModels.TraderPro
             // request to use delayed data
             ibClient.ClientSocket.reqMarketDataType(3); // 3
 
-            ibClient.ClientSocket.reqMktData(1, contract, "233", false, false, mktDataOptions);
+            ibClient.ClientSocket.reqMktData(1, contract, "", false, false, mktDataOptions);
         }
 
-        // this funciton updates ema values as new prices come in from websocket
+        // this funciton updaes ema values as new prices come in from websocket
         private async Task<decimal> UpdateEMA(List<decimal> results, string emaInterval)
         {
             int emaRange;
@@ -298,7 +283,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 idx++;
             }
 
-            return Math.Round(maList[maList.Count-1],2);
+            return Math.Round(maList[maList.Count-1],4);
 
         }
 
@@ -311,7 +296,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
             if (ActiveMA1 != null && ActiveInterval != null)
             {
-                var (range, lastResults) = AddAndConvertDays(ActiveRange, ActiveInterval, emaRange);
+                var (range, lastResults) = AddAndConvertDays(emaRange);
 
                 var (results, symbol, marketPrice) = await _stockDataEndpoint.GetMAChartData(ActiveTicker, range, ActiveInterval, lastResults);
 
@@ -333,48 +318,52 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public async Task FindCrosovers(decimal currentMA1, decimal currentMA2)
         {
-           
-            if(IsTop)
+            //await send_order("BUY");
+
+            if (IsTop)
             {
                 // represents a sell
                 if (currentMA1 <= currentMA2)
                 {
-                    send_order("BUY");
+                    await send_order("SELL");
+                    IsTop = false;
                 }
+                
             }
             else
             {
                 // represents a buy
-                if(currentMA1 >= currentMA2)
+                if (currentMA1 >= currentMA2)
                 {
-                    send_order("SELL");
+                    await send_order("BUY");
+                    IsTop = true;
                 }
             }
         }
 
-        public void send_order(string side)
-        {
-            // create a new contract to specify the security we are looking for
+        public async Task send_order(string side)
+        {// create a new contract to specify the security we are looking for
             var contract = new Contract();
 
-            contract.Symbol = Ticker;
+            contract.Symbol = ActiveTicker;
             contract.SecType = "STK";
             contract.Exchange = "SMART";
             contract.PrimaryExch = "ISLAND";
             contract.Currency = "USD";
 
             var order = new Order();
-            // Set OrderId
+            // gets the next order id from the text box
             order.OrderId = OrderId;
             // get the side of the order (buy or sell)
             order.Action = side;
             // get thes order type (limit or market)
-            order.OrderType = "MKT";
+            order.OrderType = "LMT";
             // gets number of shares (double)
-            order.TotalQuantity = (side == "BUY" ? BuyShares : SellShares);
+            order.TotalQuantity = 100;
             // gets price converts to double
             order.LmtPrice = CurrentPrice;
 
+          
             // visible shares to the market
             order.DisplaySize = 100;
             // is outside trading hours
@@ -383,13 +372,14 @@ namespace DesktopUI.ViewModels.TraderPro
             //place the order
             ibClient.ClientSocket.placeOrder(OrderId, contract, order);
 
-            OrderId += 2;
+            OrderId+=2;
+
 
         }
 
 
         // return interval and string
-        public (string, int) AddAndConvertDays(string range, string interval, int smaRange)
+        public (string, int) AddAndConvertDays( int smaRange)
         {
             decimal temp;
 
@@ -401,7 +391,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 var denom = Math.Ceiling(ChartLength / days);
                 temp = Math.Ceiling((ChartLength + (decimal)smaRange) / denom);
 
-                return ($"{temp}d", ChartLength + smaRange);
+                return ($"{20}d", ChartLength + smaRange);
             }
             else if (ActiveRange == "1mo" && ActiveInterval == "5m")
             {
@@ -482,6 +472,30 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private List<decimal> _ma1History;
+
+        public List<decimal> MA1History
+        {
+            get { return _ma1History; }
+            set
+            {
+                _ma1History = value;
+                NotifyOfPropertyChange(() => MA1History);
+            }
+        }
+
+        private List<decimal> _ma2History;
+
+        public List<decimal> MA2History
+        {
+            get { return _ma2History; }
+            set 
+            {
+                _ma2History = value;
+                NotifyOfPropertyChange(() => MA2History);
+            }
+        }
+
         private BindingList<TWSTradeModel> _strategies;
 
         public BindingList<TWSTradeModel> Strategies
@@ -491,6 +505,18 @@ namespace DesktopUI.ViewModels.TraderPro
             {
                 _strategies = value;
                 NotifyOfPropertyChange(() => Strategies);
+            }
+        }
+
+        private TWSTradeModel _selectedStrategy;
+
+        public TWSTradeModel SelectedStrategy
+        {
+            get { return _selectedStrategy; }
+            set 
+            {
+                _selectedStrategy = value;
+                NotifyOfPropertyChange(() => SelectedStrategy);
             }
         }
 
@@ -650,7 +676,31 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private string _activeMA1 = "13";
+        private int _activeBuyShares;
+
+        public int ActiveBuyShares
+        {
+            get { return _activeBuyShares; }
+            set 
+            {
+                _activeBuyShares = value;
+                NotifyOfPropertyChange(() => ActiveBuyShares);
+            }
+        }
+
+        private int _activeSellShares;
+
+        public int ActiveSellShares
+        {
+            get { return _activeSellShares; }
+            set 
+            {
+                _activeSellShares = value;
+                NotifyOfPropertyChange(() => ActiveSellShares);
+            }
+        }
+
+        private string _activeMA1 = "";
 
         public string ActiveMA1
         {
@@ -662,7 +712,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private string _activeMA2 = "21";
+        private string _activeMA2 = "";
 
         public string ActiveMA2
         {
@@ -674,7 +724,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private string _activeIndicator = "EMA";
+        private string _activeIndicator = "";
 
         public string ActiveIndicator
         {
@@ -686,7 +736,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private string _activeRange = "1mo";
+        private string _activeRange = "";
 
         public string ActiveRange
         {
@@ -698,7 +748,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private string _activeInterval = "5m";
+        private string _activeInterval = "";
 
         public string ActiveInterval
         {
@@ -710,7 +760,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private string _activeTicker = "AAPL";
+        private string _activeTicker = "";
 
         public string ActiveTicker
         {
@@ -746,5 +796,40 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        public async Task Activate()
+        {
+            if (SelectedStrategy == null) return;
+
+            ActiveTicker = SelectedStrategy.Ticker;
+            ActiveMA1 = SelectedStrategy.MA1;
+            ActiveMA2 = SelectedStrategy.MA2;
+            ActiveIndicator = SelectedStrategy.Indicator;
+            ActiveInterval = SelectedStrategy.Interval;
+            ActiveRange = SelectedStrategy.Range;
+            ActiveBuyShares = SelectedStrategy.BuyShares;
+            ActiveSellShares = SelectedStrategy.SellShares;
+
+           
+            Connect();
+
+
+            var results1 = await LoadEMAHistory(ActiveMA1);
+            MA1History = new List<decimal>(results1);
+            var results2 = await LoadEMAHistory(ActiveMA2);
+            MA2History = new List<decimal>(results2);
+            CurrentMA1 = await UpdateEMA(results1, ActiveMA1);
+            CurrentMA2 = await UpdateEMA(results2, ActiveMA2);
+
+            StartConnection();
+
+            if (CurrentMA1 > CurrentMA2)
+            {
+                IsTop = true;
+            }
+            else
+            {
+                IsTop = false;
+            }
+        }
     }
 }

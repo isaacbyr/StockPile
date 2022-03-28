@@ -74,7 +74,7 @@ namespace DesktopUI.ViewModels
             _events.Subscribe(this);
 
             //ActivateItem(socialVM);
-            //ActivateItem(_loginVM);
+            ActivateItem(_loginVM);
             // ActivateItem(_mainVM);
             //ActivateItem(_registerVM);
             //ActivateItem(_portfolioStockVM);
@@ -88,7 +88,7 @@ namespace DesktopUI.ViewModels
             //ActivateItem(_twitterScreenerVM);
             //ActivateItem(_traderPortoflioOverviewVM);
             //ActivateItem(_tradeStrategyVM);
-            ActivateItem(_traderMainVM);
+            //ActivateItem(_traderMainVM);
         }
 
         public void Handle(LogOnEvent message)

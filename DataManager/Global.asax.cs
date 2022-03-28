@@ -19,5 +19,22 @@ namespace DataManager
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_BeginRequest()
+        {
+            if (Request.Headers.AllKeys.Contains("Origin") && Request.HttpMethod == "OPTIONS")
+            {
+                Response.Flush();
+            }
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            //if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
+            //{
+            //    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "POST, PUT, DELETE");
+
+            //    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+            //    HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
+            //    HttpContext.Current.Response.End();
+            //}
+        }
     }
 }

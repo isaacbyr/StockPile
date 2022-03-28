@@ -7,10 +7,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace DataManager.Controllers
 {
     [RoutePrefix("api/useraccount")]
+    //[EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     public class UserAccountController : ApiController
     {
         [HttpGet]
@@ -18,7 +20,12 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = RequestContext.Principal.Identity.GetUserId();
+
+            //TODO: REMOVE HARDCODE OF USER ID
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+
 
             return userAccountData.LoadPortfolioOverview(id);
         }
@@ -43,7 +50,9 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            update.UserId = RequestContext.Principal.Identity.GetUserId();
+            //TODO: REMOVE HARDCODE OF USER ID
+            update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            //update.UserId = RequestContext.Principal.Identity.GetUserId();
 
             userAccountData.UpdatePortfolioAccountBalance(update);
         }

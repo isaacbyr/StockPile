@@ -164,19 +164,19 @@ namespace DesktopUI.Library.Api
                 var marketPrice = data.SelectToken("chart.result[0].meta.regularMarketPrice").ToString();
 
                 var open = data.SelectToken("chart.result[0].indicators.quote[0].open").ToList();
-                open = open.Skip(Math.Max(0, open.Count - lastResult)).Take(lastResult).ToList();
+               // open = open.Skip(Math.Max(0, open.Count - lastResult)).Take(lastResult).ToList();
 
                 var high = data.SelectToken("chart.result[0].indicators.quote[0].high").ToList();
-                high = high.Skip(Math.Max(0, high.Count - lastResult)).Take(lastResult).ToList();
+                //high = high.Skip(Math.Max(0, high.Count - lastResult)).Take(lastResult).ToList();
 
                 var low = data.SelectToken("chart.result[0].indicators.quote[0].low").ToList();
-                low = low.Skip(Math.Max(0, low.Count - lastResult)).Take(lastResult).ToList();
+               // low = low.Skip(Math.Max(0, low.Count - lastResult)).Take(lastResult).ToList();
 
                 var close = data.SelectToken("chart.result[0].indicators.quote[0].close").ToList();
-                close = close.Skip(Math.Max(0, close.Count - lastResult)).Take(lastResult).ToList();
+                //close = close.Skip(Math.Max(0, close.Count - lastResult)).Take(lastResult).ToList();
 
                 var volume = data.SelectToken("chart.result[0].indicators.quote[0].volume").ToList();
-                volume = volume.Skip(Math.Max(0, volume.Count - lastResult)).Take(lastResult).ToList();
+                //volume = volume.Skip(Math.Max(0, volume.Count - lastResult)).Take(lastResult).ToList();
 
                 List<OhlcStockModel> stocks = new List<OhlcStockModel>();
 

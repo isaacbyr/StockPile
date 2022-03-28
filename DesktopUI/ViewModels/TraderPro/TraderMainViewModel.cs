@@ -353,7 +353,7 @@ namespace DesktopUI.ViewModels.TraderPro
                     {
                         Values = Values,
                         Title = $"{emaRange}d SMA",
-                        Fill = System.Windows.Media.Brushes.Transparent,
+                        Fill = Brushes.Transparent,
                         Stroke = brush,
                         StrokeThickness = 2,
                         PointGeometry = null,
@@ -464,7 +464,6 @@ namespace DesktopUI.ViewModels.TraderPro
         }
 
 
-
         // return interval and string
         public (string, int) AddAndConvertDays(string range, string interval, int smaRange)
         {
@@ -478,7 +477,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 var denom = Math.Ceiling(ChartLength / days);
                 temp = Math.Ceiling((ChartLength + (decimal)smaRange) / denom);
 
-                return ($"{temp}d", ChartLength + smaRange);
+                return ($"{20}d", ChartLength + smaRange);
             }
             else if (SelectedChartRange == "1mo" && SelectedChartInterval == "5m")
             {
@@ -995,8 +994,8 @@ namespace DesktopUI.ViewModels.TraderPro
                 {
                     foreach (var indicator in AddedIndicators)
                     {
-                        await LoadPolygonEMA(indicator.Interval, indicator.Color);
-                        //await LoadEMA(indicator.Interval, indicator.Color);
+                        //await LoadPolygonEMA(indicator.Interval, indicator.Color);
+                        await LoadEMA(indicator.Interval, indicator.Color);
 
                     }
                 }

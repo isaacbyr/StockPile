@@ -3,7 +3,7 @@
 AS
 BEGIN
 	SET NOCOUNT ON;
-	SELECT [u].StartAmount, [u].PortfolioAccountBalance, [r].TotalRealized
+	SELECT [u].StartAmount, [u].PortfolioAccountBalance as 'AccountBalance', [r].TotalRealized
 	FROM [dbo].[UserAccount] AS u
 	FULL JOIN [dbo].[RealizedProfitLoss] AS r ON [u].UserId = [r].UserId
 	WHERE [u].UserId = @UserId

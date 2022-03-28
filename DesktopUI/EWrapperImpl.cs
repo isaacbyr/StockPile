@@ -20,7 +20,7 @@ namespace DesktopUI
 		public readonly EReaderSignal Signal;
 
 		public IBViewModel ibVM;
-
+		public TradeStrategyViewModel tradeStrategyVM;
 		//! [socket_declare]
 
 		//! [socket_init]
@@ -84,7 +84,11 @@ namespace DesktopUI
 
 			string _tickPrice = tickerId + "," + field + "," + price + "," + attribs.CanAutoExecute;
 
-			ibVM.GetTickerPrice(_tickPrice);
+			if(ibVM != null)
+			{
+				ibVM.GetTickerPrice(_tickPrice);
+			}
+			
 
 			Console.WriteLine(strData);
 		}
@@ -106,11 +110,11 @@ namespace DesktopUI
 			string tickStringData = "Tick string. Ticker Id:" + tickerId + ", Type: " + tickType + ", Value: " + value;
 
 			// contains last price, trade size, trade time, total volume, vwap, single trade flag true, or false
-			if(tickType == 48)
-			{
-				string _tickString = value;
-				ibVM.AddTickString(_tickString);
-			}
+			//if(tickType == 48)
+			//{
+			//	string _tickString = value;
+			//	ibVM.AddTickString(_tickString);
+			//}
 		}
 		//! [tickstring]
 
