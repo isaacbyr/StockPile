@@ -50,6 +50,7 @@
     <Compile Include="DataAccess\InternalAccess\SqlDataAccess.cs" />
     <Compile Include="DataAccess\PortfolioPro\PortfolioData.cs" />
     <Compile Include="DataAccess\PortfolioPro\RealizedPLData.cs" />
+    <Compile Include="DataAccess\Shared\CommentsData.cs" />
     <Compile Include="DataAccess\TraderPro\StrategyData.cs" />
     <Compile Include="DataAccess\TraderPro\TradeRealizedPLData.cs" />
     <Compile Include="DataAccess\TraderPro\TradesPortfolioData.cs" />
@@ -61,6 +62,9 @@
     <Compile Include="DataAccess\PortfolioPro\WatchlistData.cs" />
     <Compile Include="Models\PortfolioPro\FriendModel.cs" />
     <Compile Include="Models\PortfolioPro\FriendRequestModel.cs" />
+    <Compile Include="Models\Shared\AuthenticatedUserModel.cs" />
+    <Compile Include="Models\Shared\UserLoginModel.cs" />
+    <Compile Include="Models\Shared\CommentModel.cs" />
     <Compile Include="Models\Shared\LeaderboardModel.cs" />
     <Compile Include="Models\Shared\LoggedInUserModel.cs" />
     <Compile Include="Models\PortfolioPro\NewFriendshipModel.cs" />
@@ -68,8 +72,10 @@
     <Compile Include="Models\PortfolioPro\PortfolioStockDashboardModel.cs" />
     <Compile Include="Models\PortfolioPro\RealizedPLChartModel.cs" />
     <Compile Include="Models\PortfolioPro\ResponseModel.cs" />
+    <Compile Include="Models\Shared\NewCommentModel.cs" />
     <Compile Include="Models\Shared\SocialDashboardDataModel.cs" />
     <Compile Include="Models\Shared\TopHoldingsModel.cs" />
+    <Compile Include="Models\Shared\TrendingModel.cs" />
     <Compile Include="Models\TraderPro\StrategyItemModel.cs" />
     <Compile Include="Models\TraderPro\StrategyModel.cs" />
     <Compile Include="Models\TraderPro\TWSTradeModel.cs" />

@@ -18,7 +18,9 @@ namespace DataManager.Controllers
         {
             var realizedPLData = new RealizedPLData();
 
-            realizedPL.UserId = RequestContext.Principal.Identity.GetUserId();
+            //TODO: REMOVE HARDCODE OF USER ID
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            realizedPL.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             realizedPLData.PostRealizedPL(realizedPL);
         }
@@ -28,7 +30,9 @@ namespace DataManager.Controllers
         {
             var realizedPLData = new RealizedPLData();
 
-            string id = RequestContext.Principal.Identity.GetUserId();
+            //TODO: REMOVE HARDCODE OF USER ID
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return realizedPLData.LoadHistory(id);
         }

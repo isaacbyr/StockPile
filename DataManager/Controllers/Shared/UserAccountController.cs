@@ -90,7 +90,9 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            update.UserId = RequestContext.Principal.Identity.GetUserId();
+            //TODO: 
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return userAccountData.UpdateAfterSale(update);
         }

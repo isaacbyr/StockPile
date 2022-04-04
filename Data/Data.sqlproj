@@ -133,6 +133,13 @@
     <Build Include="dbo\Tables\Twitter\NLPTrainingData.sql" />
     <Build Include="dbo\Stored Procedures\PortfolioPro\spPortfolio_LoadTopHoldings.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_LoadTopHoldings.sql" />
+    <Build Include="dbo\Tables\Shared\Comments.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spComments_LoadCommentsByTicker.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spComments_PostNewComment.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spComments_LoadAllComments.sql" />
+    <Build Include="dbo\Stored Procedures\Shared\spComments_LoadTrending.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spTransaction_LoadAllTransactions.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradeTransaction_LoadCurrent.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

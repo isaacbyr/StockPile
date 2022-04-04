@@ -966,6 +966,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public async Task RunIndicators()
         {
+            ChartSymbol = ChartSearch;
             SeriesCollection = new SeriesCollection();
             IndicatorList = new List<List<decimal>>();
 
@@ -994,8 +995,8 @@ namespace DesktopUI.ViewModels.TraderPro
                 {
                     foreach (var indicator in AddedIndicators)
                     {
-                        //await LoadPolygonEMA(indicator.Interval, indicator.Color);
-                        await LoadEMA(indicator.Interval, indicator.Color);
+                        await LoadPolygonEMA(indicator.Interval, indicator.Color);
+                        //await LoadEMA(indicator.Interval, indicator.Color);
 
                     }
                 }

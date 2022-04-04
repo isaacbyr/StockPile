@@ -27,6 +27,23 @@ namespace DataManager.Library.DataAccess.TraderPro
             }
         }
 
+        public List<TransactionModel> LoadCurrentTransactions(string id)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { UserId = id };
+
+            try
+            {
+                var output = sql.LoadData<TransactionModel, dynamic>("dbo.spTradeTransaction_LoadCurrent", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public List<TransactionModel> LoadTransactions(string id)
         {
             var sql = new SqlDataAccess();

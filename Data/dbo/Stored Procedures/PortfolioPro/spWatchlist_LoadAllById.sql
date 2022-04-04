@@ -3,7 +3,7 @@
 AS
 BEGIN
 	SET NOCOUNT ON;
-	SELECT Ticker
+	SELECT Ticker, UserId
 	FROM [dbo].[WatchList]
 	WHERE UserId = @UserId
 END

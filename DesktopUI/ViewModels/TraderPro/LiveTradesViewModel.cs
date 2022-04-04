@@ -110,7 +110,7 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             Console.WriteLine("Connected!");
             ws.Send("{\"action\":\"auth\",\"params\":\"g3B6V1o8p6eb1foQLIPYHI46hrnq8Sw1\"}");
-            ws.Send("{\"action\":\"subscribe\",\"params\":\"A.*\"}");
+            ws.Send("{\"action\":\"subscribe\",\"params\":\"A.AAPL\"}");
         }
 
 
@@ -565,7 +565,7 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             get
             { 
-                return Math.Round((CurrentPositionAveragePrice - (decimal)Price) * CurrentPositionShares, 2);
+                return Math.Round(((decimal)Price - CurrentPositionAveragePrice) * CurrentPositionShares, 2);
             }
         }
 
@@ -647,6 +647,7 @@ namespace DesktopUI.ViewModels.TraderPro
                 _price = value;
                 NotifyOfPropertyChange(() => Price);
                 NotifyOfPropertyChange(() => CashAmount);
+                NotifyOfPropertyChange(() => ProfitLoss);
                 NotifyOfPropertyChange(() => CanBuy);
                 NotifyOfPropertyChange(() => CanSell);
 

@@ -32,9 +32,20 @@ namespace DataManager.Controllers
 
             var transactionData = new TransactionData();
 
-            string id = RequestContext.Principal.Identity.GetUserId();
+            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            //TODO: REMOVE HARDCODE OF USER ID
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return transactionData.LoadTransactions(id);
+        }
+
+        [HttpGet]
+        [Route("all")]
+        public List<SocialDashboardDataModel> LoadAllTransaction()
+        {
+            var transactionData = new TransactionData();
+
+            return transactionData.LoadAllTransactions();
         }
 
         [HttpGet]

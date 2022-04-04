@@ -27,6 +27,23 @@ namespace DataManager.Library.DataAccess
             }
         }
 
+        public List<SocialDashboardDataModel> LoadAllTransactions()
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { };
+
+            try
+            {
+                var output = sql.LoadData<SocialDashboardDataModel, dynamic>("dbo.spTransaction_LoadAllTransactions", p, "StockPileData");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public List<TransactionModel> LoadTransactions(string id)
         {
             var sql = new SqlDataAccess();
