@@ -140,6 +140,8 @@
     <Build Include="dbo\Stored Procedures\Shared\spComments_LoadTrending.sql" />
     <Build Include="dbo\Stored Procedures\PortfolioPro\spTransaction_LoadAllTransactions.sql" />
     <Build Include="dbo\Stored Procedures\TraderPro\spTradeTransaction_LoadCurrent.sql" />
+    <Build Include="dbo\Stored Procedures\PortfolioPro\spPortfolio_LoadPortfolioByUserId.sql" />
+    <Build Include="dbo\Stored Procedures\TraderPro\spTradesPortfolio_LoadPortfolioByUserId.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Data.refactorlog" />

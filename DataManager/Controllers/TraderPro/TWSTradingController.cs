@@ -19,9 +19,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var trading = new TWSTradingData();
 
-            //TODO : CANGE HARDCODE
-            //trade.UserId = RequestContext.Principal.Identity.GetUserId();
-            trade.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            trade.UserId = RequestContext.Principal.Identity.GetUserId();
+            //trade.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             trading.PostTWSStrategy(trade);
         }
@@ -31,9 +30,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var trading = new TWSTradingData();
 
-            //TODO : CANGE HARDCODE
-            //trade.UserId = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return trading.LoadAllStrategies(id);
         }

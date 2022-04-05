@@ -19,10 +19,10 @@ namespace DataManager.Controllers.TraderPro
         [Route("topholdings")]
         public List<TopHoldingsModel> LoadTopHoldings()
         {
-            var portfolioData = new TradesPortfolioData(); 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            var portfolioData = new TradesPortfolioData();
+            
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return portfolioData.LoadTopHoldings(id);
         }
@@ -33,12 +33,21 @@ namespace DataManager.Controllers.TraderPro
         {
             var portfolioData = new TradesPortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return portfolioData.LoadPortfolio(id);
         }
+
+        [HttpGet]
+        [Route("id/{id}")]
+        public List<PortfolioStockDashboardModel> LoadPortfolioStocksByUserId(string id)
+        {
+            var portfolioData = new TradesPortfolioData();
+
+            return portfolioData.LoadPortfolioByUserId(id);
+        }
+
 
         [HttpGet]
         [Route("{ticker}")]
@@ -46,9 +55,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var portfolioData = new TradesPortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return portfolioData.LoadPortfolioStock(id, ticker);
         }
@@ -58,9 +66,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var portfolioData = new TradesPortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
-            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            //stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
 
             portfolioData.PostStockToPortfolio(stock);
@@ -72,9 +79,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var portfolioData = new TradesPortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
-            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            //stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
 
             portfolioData.UpdatePortfolioBuy(stock);
@@ -86,9 +92,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var portfolioData = new TradesPortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
-            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            //stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return portfolioData.UpdatePortfolioSell(stock);
         }
@@ -99,9 +104,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var portfolioData = new TradesPortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
-            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            //stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return portfolioData.UpdateAndDeleteStock(stock);
         }

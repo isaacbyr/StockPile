@@ -45,6 +45,24 @@ namespace DataManager.Library.DataAccess
             }
         }
 
+        public List<PortfolioStockDashboardModel> LoadPortfolioByUserId(string id)
+        {
+            var sql = new SqlDataAccess();
+
+            var p = new { UserId = id };
+
+            try
+            {
+                var output = sql.LoadData<PortfolioStockDashboardModel, dynamic>("dbo.spPortfolio_LoadPortfolioByUserId", p, "StockPileData");
+                return output;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
         public PortfolioStockDashboardModel LoadPortfolioStock(string id, string ticker)
         {
             var sql = new SqlDataAccess();

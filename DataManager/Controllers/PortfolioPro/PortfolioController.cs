@@ -21,9 +21,7 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
 
             return portfolioData.LoadTopHoldings(id);
         }
@@ -33,11 +31,18 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
 
             return portfolioData.LoadPortfolio(id);
+        }
+
+        [HttpGet]
+        [Route("id/{id}")]
+        public List<PortfolioStockDashboardModel> LoadPortfolioStocksByUserId(string id)
+        {
+            var portfolioData = new PortfolioData();
+
+            return portfolioData.LoadPortfolioByUserId(id);
         }
 
         [HttpGet]
@@ -46,9 +51,8 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return portfolioData.LoadPortfolioStock(id, ticker);
         }
@@ -59,9 +63,8 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
-            //TODO: REMOVE HARDCODE OF USER ID
-            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            //stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
 
             portfolioData.UpdatePortfolioBuy(stock);
@@ -73,9 +76,8 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
-            //TODO: REMOVE HARDCODE OF USER ID
-            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            //stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return portfolioData.UpdatePortfolioSell(stock);
         }
@@ -85,9 +87,8 @@ namespace DataManager.Controllers
         {
             var portfolioData = new PortfolioData();
 
-            //stock.UserId = RequestContext.Principal.Identity.GetUserId();
-            //TODO: REMOVE HARDCODE OF USER ID
-            stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            stock.UserId = RequestContext.Principal.Identity.GetUserId();
+            //stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             portfolioData.PostStockToPortfolio(stock);
         }
@@ -99,7 +100,7 @@ namespace DataManager.Controllers
             var portfolioData = new PortfolioData();
 
             stock.UserId = RequestContext.Principal.Identity.GetUserId();
-
+            //stock.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
             return portfolioData.UpdateAndDeleteStock(stock);
         }
     }

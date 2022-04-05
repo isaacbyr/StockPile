@@ -18,9 +18,8 @@ namespace DataManager.Controllers
         {
             var friendsData = new FriendsData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
             return friendsData.LoadFriends(id);
         }
 

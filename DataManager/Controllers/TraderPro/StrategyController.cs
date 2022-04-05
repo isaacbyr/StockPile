@@ -18,8 +18,7 @@ namespace DataManager.Controllers.TraderPro
         [Route("new")]
         public int Post(StrategyModel strategy)
         {
-            strategy.UserId = "123";
-            //strategy.UserId = RequestContext.Principal.Identity.GetUserId();
+            strategy.UserId = RequestContext.Principal.Identity.GetUserId();
 
             var strategyData = new StrategyData();
 
@@ -42,7 +41,7 @@ namespace DataManager.Controllers.TraderPro
             var strategyData = new StrategyData();
 
             // TODO : Change hardcode of id
-            string id = "123";
+            string id = RequestContext.Principal.Identity.GetUserId();
 
             return strategyData.LoadStrategies(id);
         }

@@ -45,9 +45,7 @@ namespace DataManager.Controllers.Shared
         {
             var commentsData = new CommentsData();
 
-            // TODO: REPLACE HARDCODE
-            //comment.UserId = RequestContext.Principal.Identity.GetUserId();
-            comment.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            comment.UserId = RequestContext.Principal.Identity.GetUserId();
 
             commentsData.PostNewComment(comment);
         }

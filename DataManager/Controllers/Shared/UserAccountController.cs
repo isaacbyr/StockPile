@@ -21,10 +21,8 @@ namespace DataManager.Controllers
             var userAccountData = new UserAccountData();
 
             //string id = RequestContext.Principal.Identity.GetUserId();
-
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+           // string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
 
             return userAccountData.LoadPortfolioOverview(id);
@@ -36,9 +34,8 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return userAccountData.LoadTradesPortfolioOverview(id);
         }
@@ -50,9 +47,8 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            //TODO: REMOVE HARDCODE OF USER ID
-            update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
-            //update.UserId = RequestContext.Principal.Identity.GetUserId();
+            //update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            update.UserId = RequestContext.Principal.Identity.GetUserId();
 
             userAccountData.UpdatePortfolioAccountBalance(update);
         }
@@ -63,8 +59,8 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            //update.UserId = RequestContext.Principal.Identity.GetUserId();
-            update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            update.UserId = RequestContext.Principal.Identity.GetUserId();
+            //update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
 
             userAccountData.UpdateTradesAccountBalance(update);
@@ -76,9 +72,8 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            //TODO: 
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return userAccountData.LoadTradesAccountBalance(id);
         }
@@ -90,9 +85,8 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            //TODO: 
-            //string id = RequestContext.Principal.Identity.GetUserId();
-            update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            update.UserId= RequestContext.Principal.Identity.GetUserId();
+            //update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return userAccountData.UpdateAfterSale(update);
         }
@@ -104,9 +98,8 @@ namespace DataManager.Controllers
         {
             var userAccountData = new UserAccountData();
 
-            //TODO: CHANGE HARDCODE
-            update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
-            //update.UserId = RequestContext.Principal.Identity.GetUserId();
+            //update.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            update.UserId = RequestContext.Principal.Identity.GetUserId();
 
             return userAccountData.UpdateTradesAfterSale(update);
         }

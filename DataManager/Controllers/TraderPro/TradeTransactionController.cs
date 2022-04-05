@@ -19,9 +19,8 @@ namespace DataManager.Controllers.TraderPro
 
             var transactionData = new TradeTransactionData();
 
-            //TODO: REMOVE HARDCODE USER ID
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return transactionData.LoadTransactions(id);
         }
@@ -32,9 +31,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var transactionData = new TradeTransactionData();
 
-            //TODO: REMOVE HARDCODE USER ID
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return transactionData.LoadCurrentTransactions(id);
         }
@@ -45,9 +43,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var transactionData = new TradeTransactionData();
 
-            //TODO: REMOVE HARDCODE USER ID
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
-            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            string id = RequestContext.Principal.Identity.GetUserId();
+            //string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return transactionData.LoadChartData(id);
         }
@@ -57,9 +54,8 @@ namespace DataManager.Controllers.TraderPro
         {
             var transactionData = new TradeTransactionData();
 
-            //TODO: REMOVE HARDCODE USER ID
-            //transaction.UserId = RequestContext.Principal.Identity.GetUserId();
-            transaction.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
+            transaction.UserId = RequestContext.Principal.Identity.GetUserId();
+            //transaction.UserId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             transactionData.PostTransaction(transaction);
         }

@@ -12,7 +12,7 @@ namespace DataManager.Controllers.Shared
     public class TokenController : ApiController
     {
         [HttpPost]
-        public List<AuthenticatedUserModel> NewUserLogin(UserLoginModel user)
+        public List<AuthenticatedUserModel> NewUserLogin(FormUrlEncodedContent user)
         {
 
             return new List<AuthenticatedUserModel>();
