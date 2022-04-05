@@ -404,7 +404,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private int _speedOuter = 1000;
+        private int _speedOuter = 2500;
 
         public int SpeedOuter
         {
@@ -416,7 +416,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private int _speedInner = 100;
+        private int _speedInner = 250;
 
         public int SpeedInner
         {
@@ -492,7 +492,7 @@ namespace DesktopUI.ViewModels.TraderPro
 
         public async Task SearchForTrades()
         {
-            var (open, high, low, close, dates) = await _polygonDataEndpoint.LoadTradeData(Ticker, SelectedChartInterval, SelectedDate.ToString("yyyy-MM-dd"), SelectedDate.ToString("yyyy-MM-dd"));
+            var (open, high, low, close, dates) = await _polygonDataEndpoint.LoadTradeData(Ticker, 1, SelectedDate.ToString("yyyy-MM-dd"), SelectedDate.ToString("yyyy-MM-dd"));
 
             var trades =  await GroupStockResults(open, high, low, close, SelectedChartInterval);
             await DisplayChart(trades);
@@ -506,20 +506,29 @@ namespace DesktopUI.ViewModels.TraderPro
             var Trades = new List<List<double>>();
 
             var intervalList = new List<double>();
-            while(index < open.Count)
-            {
-                for(int i = index; i < index + interval; i++)
-                {
-                    intervalList.Add(open[i]);
-                    intervalList.Add(high[i]);
-                    intervalList.Add(low[i]);
-                    intervalList.Add(close[i]);
-                }
-                Trades.Add(intervalList);
-                intervalList = new List<double>();
 
-                index += interval; 
+            try
+            {
+                while (index < Math.Floor(open.Count/5.0)*5)
+                {
+                    for (int i = index; i < index + interval; i++)
+                    {
+                        intervalList.Add(open[i]);
+                        intervalList.Add(high[i]);
+                        intervalList.Add(low[i]);
+                        intervalList.Add(close[i]);
+                    }
+                    Trades.Add(intervalList);
+                    intervalList = new List<double>();
+
+                    index += interval;
+                }
             }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+           
 
             return Trades;
         }

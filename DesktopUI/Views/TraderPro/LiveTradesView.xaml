@@ -182,7 +182,7 @@
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis MinValue="0" MaxValue="{Binding XAxisMax}" Labels="{Binding Labels}" LabelsRotation="60">
+                        <lvc:Axis  Labels="{Binding Labels}" LabelsRotation="60">
                             <lvc:Axis.Separator>
                                 <lvc:Separator  StrokeThickness="0.2"></lvc:Separator>
                             </lvc:Axis.Separator>

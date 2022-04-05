@@ -18,7 +18,9 @@ namespace DataManager.Controllers
         {
             var friendRequestsData = new FriendRequestsData();
 
-            string id = RequestContext.Principal.Identity.GetUserId();
+            //TODO: 
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            string id = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             return friendRequestsData.LoadFriendRequests(id);
         }
@@ -29,7 +31,9 @@ namespace DataManager.Controllers
         {
             var friendRequestData = new FriendRequestsData();
 
-            string followeeId = RequestContext.Principal.Identity.GetUserId();
+            //TODO: 
+            //string id = RequestContext.Principal.Identity.GetUserId();
+            string followeeId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             friendRequestData.DeleteRequest(followeeId, followerId);
         }
@@ -39,7 +43,8 @@ namespace DataManager.Controllers
         {
             var friendReqData = new FriendRequestsData();
 
-            request.FollowerId = RequestContext.Principal.Identity.GetUserId();
+            //request.FollowerId = RequestContext.Principal.Identity.GetUserId();
+            request.FollowerId = "3c0056da-6bfa-40f5-81cf-b0e34b8a198f";
 
             friendReqData.PostRequest(request);
         }

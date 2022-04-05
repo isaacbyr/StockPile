@@ -230,9 +230,9 @@
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis MinValue="0" MaxValue="100">
+                        <lvc:Axis MinValue="0" MaxValue="75">
                             <lvc:Axis.Separator>
-                                <lvc:Separator Step="5" StrokeThickness="0.2"></lvc:Separator>
+                                <lvc:Separator Step="2" StrokeThickness="0.2"></lvc:Separator>
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>

@@ -11,7 +11,7 @@ SELECT TOP(1)  @Prevtotal = TotalRealized
 	WHERE UserId = @UserId
 	ORDER BY [Date] DESC
 
-INSERT INTO [dbo].[RealizedProfitLoss] (UserId, ProfitLoss, TotalRealized)
+INSERT INTO [dbo].[TradesRealizedProtitLoss] (UserId, ProfitLoss, TotalRealized)
 	VALUES (@UserId, @RealizedProfitLoss, @PrevTotal + @RealizedProfitLoss)
 
 END
