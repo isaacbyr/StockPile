@@ -62,7 +62,7 @@ namespace DesktopUI.ViewModels.TraderPro
         private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Interval = TimeSpan.FromSeconds(10);
             timer.Tick += Tickevent;
             timer.Start();
         }
@@ -1373,19 +1373,9 @@ namespace DesktopUI.ViewModels.TraderPro
             _events.PublishOnUIThread(new OpenTradeStrategyView(false));
         }
 
-        public void Performance()
-        {
-            _events.PublishOnUIThread(new OpenTraderPerformanceView());
-        }
-
         public void OpenSocial()
         {
             _events.PublishOnUIThread(new OpenSocialView());
-        }
-
-       public void Dashboard()
-        {
-            _events.PublishOnUIThread(new OpenTraderDashboardView());
         }
 
         public void OpenStrategies()
@@ -1393,14 +1383,9 @@ namespace DesktopUI.ViewModels.TraderPro
             _events.PublishOnUIThread(new OpenStrategiesView());
         }
 
-        public void PaperTradeLive()
+        public void IBOrders()
         {
-            _events.PublishOnUIThread(new OpenPaperTradeLiveView());
-        }
-
-        public void PaperTrade()
-        {
-            _events.PublishOnUIThread(new OpenPaperTradeView());
+            _events.PublishOnUIThread(new LaunchTWSTradingEvent());
         }
 
         public void Menu()

@@ -26,7 +26,7 @@
             </Grid.RowDefinitions>
 
             <!--Header-->
-            <TextBlock Text="TraderPro" FontSize="40"
+            <TextBlock Text="AlgoPro" FontSize="40"
                        HorizontalAlignment="Center" FontWeight="Bold"
                        VerticalAlignment="Center"></TextBlock>
 
@@ -34,37 +34,32 @@
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="0"
-                            Content="Main Menu" x:Name="Menu"></Button>
+                            Content="Main Menu" x:Name="Menu">
+                    </Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="1"
-                            Content="Paper Trade" x:Name="PaperTrade"></Button>
+                            Content="Trade Crossovers" x:Name="TradeCrossovers"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="2" x:Name="PaperTradeLive"
-                            Content="Paper Trade (Live)"></Button>
+                            Foreground="White" Grid.Column="2" x:Name="OpenStrategies"
+                            Content="Strategies"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="3" x:Name="TradeCrossovers"
-                            Content="Trade Crossovers"></Button>
-                    <!--<Button Background="SteelBlue" Margin="0 10 2 10"
-                            Foreground="White" Grid.Column="3"
-                            Content="Account"></Button>
+                            Foreground="White" Grid.Column="3" x:Name="IBOrders"
+                            Content="IB Orders"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="4"
-                            Content="Logout"></Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="5"
-                            Content="Exit"></Button>-->
+                            Content="Social" x:Name="OpenSocial"></Button>
                 </Grid>
             </StackPanel>
 

@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
 using DesktopUI.Library.Api.TraderPro;
+using DesktopUI.Library.EventModels;
+using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.Library.Models.TraderPro;
 using IBApi;
 using Newtonsoft.Json.Linq;
@@ -13,6 +15,7 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using WebSocket4Net;
 
 namespace DesktopUI.ViewModels.TraderPro
@@ -22,6 +25,7 @@ namespace DesktopUI.ViewModels.TraderPro
         WebSocket ws;
         private readonly ITWSTradingEndpoint _tWSTradingEndpoint;
         private readonly IStockDataEndpoint _stockDataEndpoint;
+        private readonly IEventAggregator _events;
 
         public int ChartLength { get; set; } = 78;
 
@@ -31,14 +35,12 @@ namespace DesktopUI.ViewModels.TraderPro
         public TradeStrategyViewModel(bool addNew)
         {
             AddNew = addNew;
-
-           
         }
 
 
         public TradeStrategyViewModel(string ticker, int buyShares, int sellShares, string ma1, string ma2, 
             string indicator, string interval, string range, bool addNew ,
-            ITWSTradingEndpoint tWSTradingEndpoint, IStockDataEndpoint stockDataEndpoint)
+            ITWSTradingEndpoint tWSTradingEndpoint, IStockDataEndpoint stockDataEndpoint, IEventAggregator events)
         {
             Ticker = ticker;
             BuyShares = buyShares;
@@ -51,6 +53,7 @@ namespace DesktopUI.ViewModels.TraderPro
             Range = range;
             _tWSTradingEndpoint = tWSTradingEndpoint;
             _stockDataEndpoint = stockDataEndpoint;
+            _events = events;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -67,7 +70,21 @@ namespace DesktopUI.ViewModels.TraderPro
             ibClient = new EWrapperImpl();
             //Connect();
             //StartConnection();
+            StartClock();
 
+        }
+
+        private void StartClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(10);
+            timer.Tick += Tickevent;
+            timer.Start();
+        }
+
+        private void Tickevent(object sender, EventArgs e)
+        {
+            CurrentTime = DateTime.Now.ToString("t");
         }
 
         // start webstocket connection
@@ -796,6 +813,18 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private string _currentTime = DateTime.Now.ToString("t");
+
+        public string CurrentTime
+        {
+            get { return _currentTime; }
+            set
+            {
+                _currentTime = value;
+                NotifyOfPropertyChange(() => CurrentTime);
+            }
+        }
+
         public async Task Activate()
         {
             if (SelectedStrategy == null) return;
@@ -831,5 +860,31 @@ namespace DesktopUI.ViewModels.TraderPro
                 IsTop = false;
             }
         }
+
+       public void IBOrders()
+        {
+            _events.PublishOnUIThread(new LaunchTWSTradingEvent());
+        }
+
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+        public void OpenStrategies()
+        {
+            _events.PublishOnUIThread(new OpenStrategiesView());
+        }
+
+        public void TradeCrossovers()
+        {
+            _events.PublishOnUIThread(new LaunchTraderProEvent());
+        }
+
+        public void Menu()
+        {
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
+        }
+
     }
 }

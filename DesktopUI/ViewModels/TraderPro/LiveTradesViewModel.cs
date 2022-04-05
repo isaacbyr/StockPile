@@ -354,7 +354,7 @@ namespace DesktopUI.ViewModels.TraderPro
         private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(15);
+            timer.Interval = TimeSpan.FromSeconds(10);
             timer.Tick += Tickevent;
             timer.Start();
         }
@@ -789,14 +789,20 @@ namespace DesktopUI.ViewModels.TraderPro
             await LoadPortfolioOverview(ChartSymbol);
         }
 
-        public void TradeCrossovers()
+
+        public void Performance()
         {
-            _events.PublishOnUIThread(new LaunchTraderProEvent());
+            _events.PublishOnUIThread(new OpenTraderPerformanceView());
         }
 
-        public void OpenStrategies()
+        public void OpenSocial()
         {
-            _events.PublishOnUIThread(new OpenStrategiesView());
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+        public void Dashboard()
+        {
+            _events.PublishOnUIThread(new OpenTraderDashboardView());
         }
 
         public void PaperTrade()

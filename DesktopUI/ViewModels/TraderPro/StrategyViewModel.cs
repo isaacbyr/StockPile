@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -26,6 +27,7 @@ namespace DesktopUI.ViewModels.TraderPro
         protected override async void OnViewLoaded(object view)
         {
            await LoadStrategies();
+            StartClock();
         }
 
         private async Task LoadStrategies()
@@ -34,7 +36,18 @@ namespace DesktopUI.ViewModels.TraderPro
             Strategies = new BindingList<StrategyModel>(results);
         }
 
+        private void StartClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(10);
+            timer.Tick += ClockTickevent;
+            timer.Start();
+        }
 
+        private void ClockTickevent(object sender, EventArgs e)
+        {
+            CurrentTime = DateTime.Now.ToString("t");
+        }
 
         private BindingList<StrategyModel> _strategiess;
 
@@ -168,7 +181,17 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
+        private string _currentTime = DateTime.Now.ToString("t");
 
+        public string CurrentTime
+        {
+            get { return _currentTime; }
+            set
+            {
+                _currentTime = value;
+                NotifyOfPropertyChange(() => CurrentTime);
+            }
+        }
 
         public async Task StrategyView()
         {
@@ -203,19 +226,25 @@ namespace DesktopUI.ViewModels.TraderPro
             _events.PublishOnUIThread(new LaunchTraderProEvent());
         }
 
-        public void PaperTradeLive()
+        public void TWSStrategies()
         {
-            _events.PublishOnUIThread(new OpenPaperTradeView());
+            _events.PublishOnUIThread(new OpenTradeStrategyView(false));
         }
 
-        public void PaperTrade()
+        public void OpenSocial()
         {
-            _events.PublishOnUIThread(new OpenPaperTradeView());
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+        public void IBOrders()
+        {
+            _events.PublishOnUIThread(new LaunchTWSTradingEvent());
         }
 
         public void Menu()
         {
             _events.PublishOnUIThread(new OpenMainMenuEvent());
         }
+
     }
 }

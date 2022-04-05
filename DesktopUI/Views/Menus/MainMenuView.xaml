@@ -76,7 +76,7 @@
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="TWS Trading" VerticalAlignment="Center" FontSize="36" 
+                            <TextBlock Text="AlgoPro" VerticalAlignment="Center" FontSize="36" 
                                        FontWeight="ExtraBold" Grid.ColumnSpan="2" Margin="10,14,190.4,13.2"></TextBlock>
                             <Button VerticalAlignment="Center" Grid.Column="1" Content="Launch" Background="SteelBlue" Margin="276,20,4.4,15.2" Foreground="White"
                                     Width="150" Height="40" FontSize="24" FontWeight="ExtraBold" x:Name="LaunchTWSTrading"></Button>

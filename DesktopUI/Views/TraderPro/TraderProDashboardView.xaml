@@ -46,11 +46,7 @@
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-
-
+                        
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -67,20 +63,10 @@
                             Foreground="White" Grid.Column="2" x:Name="PaperTradeLive"
                             Content="Paper Trade (Live)"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="3" x:Name="OpenStrategies"
-                            Content="Strategies"></Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="4" x:Name="TWSStrategies"
-                            Content=" TWS Strategies"></Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="5"
-                            Content="Trade Crossovers" x:Name="TradeCrossovers">
-                    </Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="6"
+                            Foreground="White" Grid.Column="4"
                             Content="Social" x:Name="OpenSocial"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="7"
+                            Foreground="White" Grid.Column="3"
                             Content="Performance" x:Name="Performance"></Button>
                 </Grid>
             </StackPanel>

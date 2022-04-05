@@ -764,8 +764,12 @@ namespace DesktopUI.ViewModels.PortfolioPro
             _events.PublishOnUIThread(new OpenPortfolioSummaryView());
         }
 
+        public void MainMenu()
+        {
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
+        }
 
-        public void BuyStocks()
+        public void BuySellStocks()
         {
             _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
         }
@@ -776,16 +780,5 @@ namespace DesktopUI.ViewModels.PortfolioPro
             _events.PublishOnUIThread(new OpenSocialView());
         }
 
-
-        public void Logout()
-        {
-            _apiHelper.Logout();
-            _events.PublishOnUIThread(new LogOffEvent());
-        }
-        
-        public void Exit()
-        {
-            _events.PublishOnUIThread(new ExitAppEvent());
-        }
     }
 }

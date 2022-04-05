@@ -33,7 +33,7 @@ namespace DesktopUI.ViewModels
 
         public void LaunchTWSTrading()
         {
-            _events.PublishOnUIThread(new LaunchTWSTradingEvent());
+            _events.PublishOnUIThread(new LaunchTraderProEvent());
         }
 
         public void Logout()

@@ -107,7 +107,7 @@ namespace DesktopUI.ViewModels
         private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMinutes(1);
+            timer.Interval = TimeSpan.FromSeconds(10);
             timer.Tick += tickevent;
             timer.Start();
         }
@@ -645,16 +645,19 @@ namespace DesktopUI.ViewModels
         }
 
 
+        public void MainMenu()
+        {
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
+        }
+
+        public void Dashboard()
+        {
+            _events.PublishOnUIThread(new LaunchPortoflioProEvent());
+        }
 
         public void Performance()
         {
             _events.PublishOnUIThread(new OpenPortfolioSummaryView());
-        }
-
-
-        public void Home()
-        {
-            _events.PublishOnUIThread(new ReturnHomeEvent());
         }
 
 
@@ -663,17 +666,6 @@ namespace DesktopUI.ViewModels
             _events.PublishOnUIThread(new OpenSocialView());
         }
 
-
-        public void Logout()
-        {
-            _apiHelper.Logout();
-            _events.PublishOnUIThread(new LogOffEvent());
-        }
-
-        public void Exit()
-        {
-            _events.PublishOnUIThread(new ExitAppEvent());
-        }
 
     }
 }

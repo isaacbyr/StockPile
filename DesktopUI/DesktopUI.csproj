@@ -256,7 +256,6 @@
     <Compile Include="ViewModels\PortfolioPro\PortfolioSummaryViewModel.cs" />
     <Compile Include="ViewModels\Menus\RegisterViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\Slack\SlackTraderViewModel.cs" />
     <Compile Include="ViewModels\PortfolioPro\SocialViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\ExistingStrategiesViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\IBViewModel.cs" />
@@ -268,7 +267,6 @@
     <Compile Include="ViewModels\TraderPro\TraderMainViewModel.cs" />
     <Compile Include="ViewModels\TraderPro\TradeStrategyViewModel.cs" />
     <Compile Include="ViewModels\PortfolioPro\TransactionInfoViewModel.cs" />
-    <Compile Include="ViewModels\Twitter\TwitterScreenerViewModel.cs" />
     <Compile Include="Views\PortfolioPro\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
@@ -296,9 +294,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\Slack\SlackTraderView.xaml.cs">
-      <DependentUpon>SlackTraderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PortfolioPro\SocialView.xaml.cs">
       <DependentUpon>SocialView.xaml</DependentUpon>
@@ -333,9 +328,6 @@
     <Compile Include="Views\PortfolioPro\TransactionInfoView.xaml.cs">
       <DependentUpon>TransactionInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Twitter\TwitterScreenerView.xaml.cs">
-      <DependentUpon>TwitterScreenerView.xaml</DependentUpon>
-    </Compile>
     <Page Include="Views\PortfolioPro\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -365,10 +357,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Slack\SlackTraderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -413,10 +401,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PortfolioPro\TransactionInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Twitter\TwitterScreenerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

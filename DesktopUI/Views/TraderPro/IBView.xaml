@@ -31,8 +31,53 @@
                 <RowDefinition Height="80"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            
-            
+
+            <!--Header-->
+            <TextBlock Text="AlgoPro" FontSize="40"
+                       HorizontalAlignment="Center" FontWeight="Bold"
+                       VerticalAlignment="Center"></TextBlock>
+
+            <!--Menu-->
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="0"
+                            Content="Main Menu" x:Name="Menu">
+                    </Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="1"
+                            Content="Trade Crossovers" x:Name="TradeCrossovers"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="2" x:Name="OpenStrategies"
+                            Content="Strategies"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="3" x:Name="TWSStrategies"
+                            Content=" TWS Strategies"></Button>
+                    <Button Background="SteelBlue" Margin="2 10 2 10"
+                            Foreground="White" Grid.Column="4"
+                            Content="Social" x:Name="OpenSocial"></Button>
+                </Grid>
+            </StackPanel>
+
+            <!--Time-->
+            <Border CornerRadius="18" Grid.Column="5" Grid.Row="0"
+                    Background="#1d2d44" Margin="15 10 15 5">
+
+                <TextBlock Foreground="White" Text="{Binding CurrentTime}" FontSize="30"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </Border>
+
 
             <Border Margin="10 5 5 5" Grid.RowSpan="6" Background="#1d2d44" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" CornerRadius="18">
                 <Grid>

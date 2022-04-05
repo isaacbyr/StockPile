@@ -33,7 +33,7 @@
             </Grid.RowDefinitions>
 
             <!--Header-->
-            <TextBlock Text="TraderPro" FontSize="40"
+            <TextBlock Text="AlgoPro" FontSize="40"
                        HorizontalAlignment="Center" FontWeight="Bold"
                        VerticalAlignment="Center"></TextBlock>
 
@@ -41,9 +41,6 @@
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
@@ -59,34 +56,17 @@
                             Content="Main Menu" x:Name="Menu">
                     </Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="2"
-                            Content="Paper Trade" x:Name="PaperTrade"></Button>
-                    <Button Background="SteelBlue" Margin="0 10 2 10"
-                            Foreground="White" Grid.Column="3" x:Name="PaperTradeLive"
-                            Content="Paper Trade (Live)"></Button>
+                            Foreground="White" Grid.Column="1"
+                            Content="IB Orders" x:Name="IBOrders"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="4" x:Name="OpenStrategies"
+                            Foreground="White" Grid.Column="2" x:Name="OpenStrategies"
                             Content="Strategies"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="5" x:Name="TWSStrategies"
+                            Foreground="White" Grid.Column="3" x:Name="TWSStrategies"
                             Content=" TWS Strategies"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="1"
-                            Content="Dashboard" x:Name="Dashboard">
-                    </Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="6"
-                            Content="Social" x:Name="OpenSocial"></Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="7"
-                            Content="Performance" x:Name="Performance"></Button>
-
-                    <!--<Button Background="SteelBlue" Margin="2 10 2 10"
                             Foreground="White" Grid.Column="4"
-                            Content="Logout"></Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="5"
-                            Content="Exit"></Button>-->
+                            Content="Social" x:Name="OpenSocial"></Button>
                 </Grid>
             </StackPanel>
             

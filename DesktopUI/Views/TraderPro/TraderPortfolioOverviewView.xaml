@@ -40,8 +40,6 @@
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
                         <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
                     
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -62,17 +60,7 @@
                             Foreground="White" Grid.Column="3" x:Name="PaperTradeLive"
                             Content="Paper Trade (Live)"></Button>
                     <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="4" x:Name="OpenStrategies"
-                            Content="Strategies"></Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="5" x:Name="TWSStrategies"
-                            Content=" TWS Strategies"></Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="6"
-                            Content="Trade Crossovers" x:Name="TradeCrossovers">
-                    </Button>
-                    <Button Background="SteelBlue" Margin="2 10 2 10"
-                            Foreground="White" Grid.Column="7"
+                            Foreground="White" Grid.Column="4"
                             Content="Social" x:Name="OpenSocial"></Button>
                     
                 </Grid>

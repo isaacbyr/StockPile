@@ -12,6 +12,8 @@ using System.Windows.Threading;
 using System.Windows.Input;
 using System.ComponentModel;
 using DesktopUI.Library.Models.TraderPro;
+using DesktopUI.Library.EventModels.TraderPro;
+using DesktopUI.Library.EventModels;
 
 namespace DesktopUI.ViewModels.TraderPro
 {
@@ -19,17 +21,33 @@ namespace DesktopUI.ViewModels.TraderPro
     {
         // Create the ibClient object to represent the connection
         EWrapperImpl ibClient;
+        private readonly IEventAggregator _events;
 
-        public IBViewModel()
+
+        public IBViewModel(IEventAggregator events)
         {
             // instanitate the ibClient
             ibClient = new EWrapperImpl();
-
+            _events = events;
+            StartClock();
         }
 
         protected override async void OnViewLoaded(object view)
         {
             
+        }
+
+        private void StartClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(10);
+            timer.Tick += ClockTickevent;
+            timer.Start();
+        }
+
+        private void ClockTickevent(object sender, EventArgs e)
+        {
+            CurrentTime = DateTime.Now.ToString("t");
         }
 
         private void getData()
@@ -191,6 +209,19 @@ namespace DesktopUI.ViewModels.TraderPro
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+
+
+        private string _currentTime = DateTime.Now.ToString("t");
+
+        public string CurrentTime
+        {
+            get { return _currentTime; }
+            set
+            {
+                _currentTime = value;
+                NotifyOfPropertyChange(() => CurrentTime);
             }
         }
 
@@ -725,6 +756,32 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             ibClient.ClientSocket.cancelOrder(OrderId - 1);
         }
+
+        public void TWSStrategies()
+        {
+            _events.PublishOnUIThread(new OpenTradeStrategyView(false));
+        }
+
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+        public void OpenStrategies()
+        {
+            _events.PublishOnUIThread(new OpenStrategiesView());
+        }
+
+        public void TradeCrossovers()
+        {
+            _events.PublishOnUIThread(new LaunchTraderProEvent());
+        }
+
+        public void Menu()
+        {
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
+        }
+
 
     }
 }

@@ -10,9 +10,7 @@ using DesktopUI.Library.EventModels;
 using DesktopUI.Library.EventModels.PortfolioPro;
 using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.ViewModels.PortfolioPro;
-using DesktopUI.ViewModels.Slack;
 using DesktopUI.ViewModels.TraderPro;
-using DesktopUI.ViewModels.Twitter;
 
 namespace DesktopUI.ViewModels
 {
@@ -35,10 +33,8 @@ namespace DesktopUI.ViewModels
         private readonly LiveTradesViewModel _liveTradesVM;
         private readonly IBViewModel _ibVM;
         private readonly MainMenuViewModel _mainMenuVM;
-        private readonly SlackTraderViewModel _slackTraderVM;
         private readonly StrategyViewModel _strategyVM;
         private readonly TradeStrategyViewModel _tradeStrategyVM;
-        private readonly TwitterScreenerViewModel _twitterScreenerVM;
         private readonly TraderProDashboardViewModel _tradeProDashboardVM;
         private readonly TraderPortfolioOverviewViewModel _traderPortoflioOverviewVM;
         private readonly FriendProfileViewModel _friendProfileVM;
@@ -47,8 +43,8 @@ namespace DesktopUI.ViewModels
             PortfolioStockViewModel portfolioStockVM, PortfolioSummaryViewModel portfolioSummaryVM,
             SocialViewModel socialVM, RegisterViewModel registerVM, TraderMainViewModel traderMainVM, IWindowManager window,
             PaperTradeViewModel paperTradeVM, LiveTradesViewModel liveTradesVM, IBViewModel ibVM, MainMenuViewModel mainMenuVM,
-            SlackTraderViewModel slackTraderVM, StrategyViewModel strategyVM, TradeStrategyViewModel tradeStrategyVM,
-            TwitterScreenerViewModel twitterScreenerVM, TraderProDashboardViewModel tradeProDashboardVM, 
+             StrategyViewModel strategyVM, TradeStrategyViewModel tradeStrategyVM,
+            TraderProDashboardViewModel tradeProDashboardVM, 
             TraderPortfolioOverviewViewModel traderPortoflioOverviewVM, FriendProfileViewModel friendProfileVM)
         {
             _events = events;
@@ -64,10 +60,8 @@ namespace DesktopUI.ViewModels
             _liveTradesVM = liveTradesVM;
             _ibVM = ibVM;
             _mainMenuVM = mainMenuVM;
-            _slackTraderVM = slackTraderVM;
             _strategyVM = strategyVM;
             _tradeStrategyVM = tradeStrategyVM;
-            _twitterScreenerVM = twitterScreenerVM;
             _tradeProDashboardVM = tradeProDashboardVM;
             _traderPortoflioOverviewVM = traderPortoflioOverviewVM;
             _friendProfileVM = friendProfileVM;

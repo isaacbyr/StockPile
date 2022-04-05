@@ -725,11 +725,6 @@ namespace DesktopUI.ViewModels.TraderPro
             _events.PublishOnUIThread(new OpenSocialView());
         }
 
-        public void TWSStrategies()
-        {
-            _events.PublishOnUIThread(new OpenTradeStrategyView(false));
-        }
-
         public void Performance()
         {
             _events.PublishOnUIThread(new OpenTraderPerformanceView());
@@ -738,16 +733,6 @@ namespace DesktopUI.ViewModels.TraderPro
         public void OpenSocial()
         {
             _events.PublishOnUIThread(new OpenSocialView());
-        }
-
-        public void TradeCrossovers()
-        {
-            _events.PublishOnUIThread(new LaunchTraderProEvent());
-        }
-
-        public void OpenStrategies()
-        {
-            _events.PublishOnUIThread(new OpenStrategiesView());
         }
 
         public void PaperTradeLive()

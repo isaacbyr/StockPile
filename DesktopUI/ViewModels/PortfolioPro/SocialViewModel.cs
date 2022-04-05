@@ -452,33 +452,25 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        public void Performance()
+      
+        public void MainMenu()
         {
-            _events.PublishOnUIThread(new OpenPortfolioSummaryView());
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
         }
 
-
-        public void BuyStocks()
+        public void AlgoPro()
         {
-            _events.PublishOnUIThread(new OpenPortfolioStockView("AAPL"));
+            _events.PublishOnUIThread(new LaunchTraderProEvent());
         }
 
-
-        public void Home()
+        public void PortfolioPro()
         {
-            _events.PublishOnUIThread(new ReturnHomeEvent());
+            _events.PublishOnUIThread(new LaunchPortoflioProEvent());
         }
 
-
-        public void Logout()
+        public void TraderPro()
         {
-            _apiHelper.Logout();
-            _events.PublishOnUIThread(new LogOffEvent());
-        }
-
-        public void Exit()
-        {
-            _events.PublishOnUIThread(new ExitAppEvent());
+            _events.PublishOnUIThread(new LaunchTraderProEvent());
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using DesktopUI.Library.Api;
 using DesktopUI.Library.Api.TraderPro;
+using DesktopUI.Library.EventModels;
+using DesktopUI.Library.EventModels.TraderPro;
 using DesktopUI.Library.Models;
 using DesktopUI.Library.Models.TraderPro;
 using LiveCharts;
@@ -27,17 +29,18 @@ namespace DesktopUI.ViewModels.TraderPro
     {
         private readonly IStockDataEndpoint _stockDataEndpoint;
         private readonly IPolygonDataEndpoint _polygonDataEndpoint;
-
+        private readonly IEventAggregator _events;
         ManualResetEvent manualResetEvent = new ManualResetEvent(false);
 
         public ChartValues<double> Buys { get; set; }
         public ChartValues<double> Sells { get; set; }
         public ChartValues<OhlcPoint> Values { get; set; }
 
-        public PaperTradeViewModel(IStockDataEndpoint stockDataEndpoint, IPolygonDataEndpoint polygonDataEndpoint)
+        public PaperTradeViewModel(IStockDataEndpoint stockDataEndpoint, IPolygonDataEndpoint polygonDataEndpoint, IEventAggregator events)
         {
             _stockDataEndpoint = stockDataEndpoint;
             _polygonDataEndpoint = polygonDataEndpoint;
+            _events = events;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -404,7 +407,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private int _speedOuter = 2500;
+        private int _speedOuter = 3500;
 
         public int SpeedOuter
         {
@@ -416,7 +419,7 @@ namespace DesktopUI.ViewModels.TraderPro
             }
         }
 
-        private int _speedInner = 250;
+        private int _speedInner = 350;
 
         public int SpeedInner
         {
@@ -584,7 +587,7 @@ namespace DesktopUI.ViewModels.TraderPro
         {
             if (IsRunning == true)
             {
-                if(SpeedOuter < 5000 & SpeedInner < 500 )
+                if(SpeedOuter < 8000 & SpeedInner < 800 )
                 {
                     SpeedOuter += 500;
                     SpeedInner += 50;
@@ -667,6 +670,30 @@ namespace DesktopUI.ViewModels.TraderPro
             ProfitLoss = Math.Round(sum, 2);
         }
 
+        public void Performance()
+        {
+            _events.PublishOnUIThread(new OpenTraderPerformanceView());
+        }
+
+        public void OpenSocial()
+        {
+            _events.PublishOnUIThread(new OpenSocialView());
+        }
+
+        public void PaperTradeLive()
+        {
+            _events.PublishOnUIThread(new OpenPaperTradeLiveView());
+        }
+
+        public void Dashboard()
+        {
+            _events.PublishOnUIThread(new OpenTraderDashboardView());
+        }
+
+        public void Menu()
+        {
+            _events.PublishOnUIThread(new OpenMainMenuEvent());
+        }
     }
 
     
