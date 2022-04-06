@@ -7,4 +7,5 @@ BEGIN
 	[dbo].[Comments] as [c]
 	LEFT JOIN [dbo].[User] as [u] ON [c].UserId = [u].Id
 	WHERE [c].Ticker = @Ticker
+	ORDER BY [c].PostedAt DESC
 END
