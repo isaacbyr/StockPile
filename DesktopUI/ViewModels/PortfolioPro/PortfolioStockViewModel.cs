@@ -579,17 +579,20 @@ namespace DesktopUI.ViewModels
                 Shares = NewPositionShares
             };
 
+
+            decimal averageprice;
+            decimal.TryParse(CurrentPositionAveragePrice, out averageprice);
             // if sold shares equals shares in portfolio delete entry
-            decimal realizedProfitLoss;
+            decimal realizedProfitLoss = (price - averageprice) * NewPositionShares;
 
             if (CurrentPositionShares == NewPositionShares)
             {
-               realizedProfitLoss = await _portfolioEndpoint.UpdateAndDeletePortfolio(stock);
+              var pl = await _portfolioEndpoint.UpdateAndDeletePortfolio(stock);
             }
             else
             {
                 // else update exisitng position
-                realizedProfitLoss = await _portfolioEndpoint.UpdatePortfolioSell(stock);
+                var pl = await _portfolioEndpoint.UpdatePortfolioSell(stock);
             }
 
             // update user account table, account balance and realizedgains

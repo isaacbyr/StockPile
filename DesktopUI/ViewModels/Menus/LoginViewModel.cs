@@ -20,7 +20,7 @@ namespace DesktopUI.ViewModels
             _events = events;
         }
 
-        private string _email;
+        private string _email = "i.byron@hotmail.com";
 
         public string Email
         {
@@ -32,7 +32,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private string _password;
+        private string _password = "Test#12";
 
         public string Password
         {

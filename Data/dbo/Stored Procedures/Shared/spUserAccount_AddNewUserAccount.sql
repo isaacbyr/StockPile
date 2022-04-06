@@ -5,6 +5,6 @@
 AS
 BEGIN
 	SET NOCOUNT ON;
-	INSERT INTO [dbo].[UserAccount] (UserId, StartAmount, PortfolioAccountBalance)
-	Values (@UserId, @StartAmount, @AccountBalance)
+	INSERT INTO [dbo].[UserAccount] (UserId, StartAmount, PortfolioAccountBalance, TradesAccountBalance)
+	Values (@UserId, @StartAmount, @AccountBalance, @AccountBalance)
 END

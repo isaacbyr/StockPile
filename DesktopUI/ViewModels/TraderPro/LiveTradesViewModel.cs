@@ -748,16 +748,16 @@ namespace DesktopUI.ViewModels.TraderPro
 
 
             // if sold shares equals shares in portfolio delete entry
-            decimal realizedProfitLoss;
+            decimal realizedProfitLoss = ((decimal)Price - CurrentPositionAveragePrice) * Shares;
 
             if (CurrentPositionShares == Shares)
             {
-                realizedProfitLoss = await _tradePortfolioEndpoint.UpdateAndDeletePortfolio(stock);
+                var pl = await _tradePortfolioEndpoint.UpdateAndDeletePortfolio(stock);
             }
             else
             {
                 // else update exisitng position
-                realizedProfitLoss = await _tradePortfolioEndpoint.UpdatePortfolioSell(stock);
+                var pl = await _tradePortfolioEndpoint.UpdatePortfolioSell(stock);
             }
 
             // update user account table, account balance and realizedgains

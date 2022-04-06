@@ -167,8 +167,8 @@
                 <lvc:CartesianChart  Zoom="Xy" x:Name="MainChart" Margin="15">
                     <lvc:CartesianChart.Series>
                         <lvc:CandleSeries Values="{Binding Values}" />
-                        <lvc:LineSeries Values="{Binding Buys}" Stroke="LightSeaGreen" PointGeometrySize="12" PointForeground="Black"></lvc:LineSeries>
-                        <lvc:LineSeries Values="{Binding Sells}" Stroke="Crimson"  PointGeometrySize="12" PointForeground="Black"></lvc:LineSeries>
+                        <lvc:LineSeries Values="{Binding Buys}" Stroke="LightSeaGreen" PointGeometrySize="12" PointForeground="Black" Fill="LightSeaGreen"></lvc:LineSeries>
+                        <lvc:LineSeries Values="{Binding Sells}" Stroke="Crimson"  PointGeometrySize="12" PointForeground="Black" Fill="Crimson"></lvc:LineSeries>
                     </lvc:CartesianChart.Series>
                     <lvc:CartesianChart.AxisY>
 

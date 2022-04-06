@@ -219,7 +219,7 @@
                     </Grid.RowDefinitions>
 
                     <!--Header-->
-                    <TextBlock Text="Active Strategy" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2"
+                    <TextBlock Text="Active Strategy" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="4"
                                FontSize="24" TextDecorations="Underline"></TextBlock>
 
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="Ticker" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"></TextBlock>
